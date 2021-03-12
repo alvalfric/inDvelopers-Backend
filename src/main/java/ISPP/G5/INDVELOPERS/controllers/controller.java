@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/endPoint")
+@RequestMapping("/PruebaComunicacion")
 public class controller {
 
 	/*
