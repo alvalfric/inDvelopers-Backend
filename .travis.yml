@@ -13,8 +13,3 @@ addons:
       - oracle-java8-installer
 before_install:
   - chmod +x mvnw
-branches:
-  only:
-  - master
-  - develop
-  - '#13'
