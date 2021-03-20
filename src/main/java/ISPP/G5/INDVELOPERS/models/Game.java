@@ -29,6 +29,7 @@ public class Game extends BaseEntity{
 	
 	private Double price;
 	
+	private String idCloud;
 	
 	
 	private Boolean isNotMalware;
