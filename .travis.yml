@@ -1,7 +1,7 @@
 warnings_are_errors: false
 language: java
 jdk:
-- oraclejdk8
+  - oraclejdk8
 sudo: true
 dist: trusty
 services:
@@ -12,3 +12,8 @@ addons:
       - oracle-java8-installer
 before_install:
   - chmod +x mvnw
+branches:
+  only:
+  - master
+  - develop
+  - '#13'
