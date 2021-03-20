@@ -1,0 +1,14 @@
+warnings_are_errors: false
+language: java
+jdk:
+- oraclejdk8
+sudo: true
+dist: trusty
+services:
+  - mongodb
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
+before_install:
+  - chmod +x mvnw
