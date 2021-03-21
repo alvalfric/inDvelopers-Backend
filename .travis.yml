@@ -31,7 +31,7 @@ install:
 script: 
   - mvn clean package -DskipTests=true
   - mvn test -Dspring.profiles.active=mysql-travis
-  - coverage xml
+  - java -jar codacy-coverage-reporter-assembly-latest.jar report -l Java -r jacoco.xml
 after_success:
   - java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r target/jacoco/jacoco.xml
 branches:
