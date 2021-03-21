@@ -34,7 +34,7 @@ script:
   - sudo apt-get install jq
   - wget -O ~/codacy-coverage-reporter-assembly-latest.jar https://oss.sonatype.org/service/local/repositories/releases/content/com/codacy/codacy-coverage-reporter/2.0.2/codacy-coverage-reporter-2.0.2-assembly.jar
   - mvn clean package -Pcoverage-report
-  - java -cp codacy-coverage-reporter-assembly.jar com.codacy.CodacyCoverageReporter --debug -l Java -r ./test-output/site/jacoco/report.xml
+  - java -cp ~/codacy-coverage-reporter-assembly-latest.jar com.codacy.CodacyCoverageReporter --debug -l Java -r ./target/site/jacoco/jacoco.xml
 after_success:
   - java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r target/jacoco/jacoco.xml
 branches:
