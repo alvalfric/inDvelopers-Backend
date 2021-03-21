@@ -17,7 +17,6 @@ before_install:
   - sudo apt-get install jq
   - wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r .assets[0].browser_download_url)
 install:
-  - pip install -r requirements.txt
   - pip install codacy-coverage
   - pip install selenium
   - sudo apt-get install chromium-browser
@@ -30,6 +29,11 @@ script:
   - mvn clean package -DskipTests=true
 after_success:
   - java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r target/jacoco/jacoco.xml
+branches:
+  only:
+  - main
+  - develop
+  - "#13"
 notifications:
   email: false
 warnings_are_errors: false
