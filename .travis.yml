@@ -6,7 +6,7 @@ addons:
   firefox: latest
 language: java
 jdk:
-  - oraclejdk8
+  - openjdk8
 sudo: required
 before_cache:
   - rm -rf $HOME/.m2/repository/ISPP/G5/INDVELOPERS
