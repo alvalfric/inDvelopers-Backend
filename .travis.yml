@@ -27,6 +27,7 @@ install:
   - sudo chmod +x /usr/bin/chromedriver
 script: 
   - mvn clean package -DskipTests=true
+  - mvn test -Dspring.profiles.active=mongodb-travis
 after_success:
   - java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r target/jacoco/jacoco.xml
 branches:
