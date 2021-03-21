@@ -1,6 +1,8 @@
 dist: xenial
 
-services: mongodb
+services: 
+  - mongodb
+  - mysql
 addons:
   chrome: stable
   firefox: latest
@@ -16,6 +18,7 @@ cache:
 before_install:
   - sudo apt-get install jq
   - wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r .assets[0].browser_download_url)
+  - mysql -e 'CREATE DATABASE InDvelopers;
 install:
   - pip install codacy-coverage
   - pip install selenium
@@ -27,7 +30,7 @@ install:
   - sudo chmod +x /usr/bin/chromedriver
 script: 
   - mvn clean package -DskipTests=true
-  - mvn test -Dspring.profiles.active=mongodb-travis
+  - mvn test -Dspring.profiles.active=mysql-travis
 after_success:
   - java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r target/jacoco/jacoco.xml
 branches:
