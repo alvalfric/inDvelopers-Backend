@@ -31,10 +31,8 @@ public class Game extends BaseEntity{
 	
 	private String idCloud;
 	
-	
 	private Boolean isNotMalware;
 	
-	
-	
+	private Developer creator;
 	
 }
