@@ -38,8 +38,6 @@ script:
   - mvn clean package -Pcoverage-report
 after_success:
   - bash <(curl -Ls https://coverage.codacy.com/get.sh)
-after_success:
-  - java -jar ~/codacy-coverage-reporter-assembly-latest.jar com.codacy.CodacyCoverageReporter --debug -l Java -r target/jacoco/jacoco.xml
 branches:
   only:
   - main
