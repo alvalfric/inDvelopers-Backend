@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,7 @@ public class PublicationController {
 
 	}
 
-	@GetMapping("/{username}")
+	@GetMapping("find/{username}")
 	public ResponseEntity<List<Publication>> getPublicationsByUsername(@PathVariable String username) {
 
 		try {
@@ -40,31 +41,31 @@ public class PublicationController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<Publication> getPublication(@PathVariable String id){
+
+	@GetMapping("find/{id}")
+	public ResponseEntity<Publication> getPublication(@PathVariable String id) {
 		try {
 			return ResponseEntity.ok(this.publicationService.findById(id));
-		} catch(IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-	
-	@PostMapping("/crear")
+
+	@PostMapping("/add")
 	public String addPrueba(@RequestBody Publication publication) {
 		return this.publicationService.addPublication(publication);
 	}
-	
-	@GetMapping("/{id}/delete")
-	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deletePublicationById(@PathVariable String id)  {
-		Publication p = this.publicationService.findById(id);
-		if(p==null) {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-		}else {
+
+	@DeleteMapping("delete/{id}")
+	public ResponseEntity<Void> deletePublicationById(@PathVariable String id) {
+		try {
+			Publication p = this.publicationService.findById(id);
 			this.publicationService.deletePublication(p);
 			return new ResponseEntity<Void>(HttpStatus.OK);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Publication couldn't be deleted.");
 		}
+
 	}
-	
+
 }

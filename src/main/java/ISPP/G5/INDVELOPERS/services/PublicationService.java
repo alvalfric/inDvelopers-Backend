@@ -26,7 +26,7 @@ public class PublicationService {
 			return publication.get();
 
 		} else {
-			throw new IllegalArgumentException("No existe esa publicacion.");
+			throw new IllegalArgumentException("This publication doesn't exist.");
 		}
 
 	}
@@ -37,11 +37,12 @@ public class PublicationService {
 
 	public String addPublication(Publication p) {
 			this.publicationRepository.save(p);
-			return "successfully added";
+			return "Successfully added with id: " + p.getId();
 	}
 
-	public void deletePublication(Publication p) {
+	public String deletePublication(Publication p) {
 		this.publicationRepository.delete(p);
+		return "Delete publication with id: " + p.getId();
 	}
 
 	public Publication updatePublication(Publication p) {
