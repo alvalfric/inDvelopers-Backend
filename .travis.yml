@@ -32,7 +32,7 @@ before_script:
   - bash <(curl -Ls https://coverage.codacy.com/get.sh) download
 script: 
   - mvn clean package -DskipTests=true
-  - mvn test -Dspring.profiles.active=mysql-travis
+  - mvn test -Dspring.profiles.active=mongodb-travis
   - sudo apt-get install jq
   - wget -O ~/codacy-coverage-reporter-assembly-latest.jar https://oss.sonatype.org/service/local/repositories/releases/content/com/codacy/codacy-coverage-reporter/2.0.2/codacy-coverage-reporter-2.0.2-assembly.jar
   - mvn clean package -Pcoverage-report
