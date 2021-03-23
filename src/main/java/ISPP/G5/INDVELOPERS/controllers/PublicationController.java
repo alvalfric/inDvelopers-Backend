@@ -32,9 +32,9 @@ public class PublicationController {
 
 	}
 
-	@GetMapping("find/{username}")
+	@GetMapping("/username/{username}")
 	public ResponseEntity<List<Publication>> getPublicationsByUsername(@PathVariable String username) {
-
+ 
 		try {
 			return ResponseEntity.ok(this.publicationService.findByUSername(username));
 		} catch (IllegalArgumentException e) {
@@ -42,8 +42,8 @@ public class PublicationController {
 		}
 	}
 
-	@GetMapping("find/{id}")
-	public ResponseEntity<Publication> getPublication(@PathVariable String id) {
+	@GetMapping("/id/{id}")
+	public ResponseEntity<Publication> getPublicationById(@PathVariable String id) {
 		try {
 			return ResponseEntity.ok(this.publicationService.findById(id));
 		} catch (IllegalArgumentException e) {
@@ -56,7 +56,7 @@ public class PublicationController {
 		return this.publicationService.addPublication(publication);
 	}
 
-	@DeleteMapping("delete/{id}")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Void> deletePublicationById(@PathVariable String id) {
 		try {
 			Publication p = this.publicationService.findById(id);

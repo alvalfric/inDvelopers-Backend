@@ -1,5 +1,6 @@
 package ISPP.G5.INDVELOPERS.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,12 +33,19 @@ public class PublicationService {
 	}
 
 	public List<Publication> findByUSername(String username) {
-		return this.publicationRepository.findByUsername(username);
+		List<Publication> allPublications = this.publicationRepository.findAll();
+		List<Publication> publications = new ArrayList<Publication>();
+		for (Publication p : allPublications) {
+			if (p.getUsername().contentEquals(username) ) {
+				publications.add(p);
+			}
+		}
+		return publications;
 	}
 
 	public String addPublication(Publication p) {
-			this.publicationRepository.save(p);
-			return "Successfully added with id: " + p.getId();
+		this.publicationRepository.save(p);
+		return "Successfully added with id: " + p.getId();
 	}
 
 	public String deletePublication(Publication p) {
