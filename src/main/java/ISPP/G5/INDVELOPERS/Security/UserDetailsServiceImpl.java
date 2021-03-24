@@ -8,26 +8,28 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.UserEntity;
+import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
 import ISPP.G5.INDVELOPERS.repositories.UserEntityRepository;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserDetailsServiceImpl implements UserDetailsService {
-
-    private final UserEntityRepository userEntityRepository;
+    
+    private final DeveloperRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user;
+        Developer developer;
 
-        user = userEntityRepository.findByUsername(username).orElse(null);
+        developer = repository.findByUsername(username).orElse(null);
 
-        if(user != null) {
+        if(developer != null) {
             return User//
                     .withUsername(username)//
-                    .password(user.getPassword())//
-                    .authorities(user.getAuthorities())//
+                    .password(developer.getPassword())//
+                    .authorities(developer.getAuthorities())//
                     .accountExpired(false)//
                     .accountLocked(false)//
                     .credentialsExpired(false)//
