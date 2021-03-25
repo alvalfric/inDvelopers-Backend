@@ -21,20 +21,27 @@ public class ReviewService {
 	}
 
 	public List<Review> findAll() {
-		return this.repository.findAll();
+		return repository.findAll();
 	}
 
 	public Review findById(final String id) {
-		return this.repository.findById(id).get();
+		return repository.findById(id).get();
 	}
 
 	public String saveReview(final Review review) {
-		this.repository.save(review);
-		return "Added Review with Id: " + review.getId();
+		List<Review> allReviews = repository.findAll();
+		for(Review re: allReviews) {
+			if(re.getDeveloper().getId().equals(review.getDeveloper().getId()) &&
+				re.getGame().getId().equals(review.getGame().getId()))
+				return "Not saved Review because Developer with Id: " + review.getDeveloper().getId()+
+					" already had reviewed the Game with Id: " + review.getDeveloper().getId();
+		}
+		repository.save(review);
+		return "Saved Review with Id: " + review.getId();
 	}
 
 	public String deleteReview(final String id) {
-		this.repository.deleteById(id);
+		repository.deleteById(id);
 		return "Deleted Review with Id: " + id;
 	}
 

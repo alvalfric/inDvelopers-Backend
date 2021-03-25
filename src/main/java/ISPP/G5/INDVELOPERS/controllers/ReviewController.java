@@ -19,7 +19,7 @@ import ISPP.G5.INDVELOPERS.services.ReviewService;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/Review")
+@RequestMapping("/reviews")
 public class ReviewController {
 
 	@Autowired
@@ -28,26 +28,26 @@ public class ReviewController {
 
 	@GetMapping("/communicate")
 	public String communicateWithReact() {
-		return this.service.communicateWithReact();
+		return service.communicateWithReact();
 	}
 	@GetMapping("/findAll")
 	public List<Review> findAll() {
-		return this.service.findAll();
+		return service.findAll();
 	}
 	@GetMapping("/{id}")
 	public Review findById(@PathVariable final String id) {
-		return this.service.findById(id);
+		return service.findById(id);
 	}
 	@PostMapping("/add")
 	public String addReview(@RequestBody final Review review) {
-		return this.service.saveReview(review);
+		return service.saveReview(review);
 	}
 	@PutMapping("/{id}/edit")
 	public String editReview(@RequestBody final Review review, @PathVariable final String id) {
-		return this.service.saveReview(review);
+		return service.saveReview(review);
 	}
 	@DeleteMapping("/{id}/delete")
 	public String deleteReview(@PathVariable final String id) {
-		return this.service.deleteReview(id);
+		return service.deleteReview(id);
 	}
 }
