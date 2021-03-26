@@ -53,7 +53,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/developers/sign-up").permitAll()
             .antMatchers("/developers/login").permitAll()
             .antMatchers("/developers").permitAll()
-            .antMatchers("/developers/**").permitAll()
+            .antMatchers("/publications/**").permitAll()
+            .antMatchers("/developers/findAll").permitAll()
+            .antMatchers("/developers/add").authenticated()
+            .antMatchers("/Game/findAll").permitAll()
             //.antMatchers("/swagger-ui.html").permitAll()
             // Disallow everything else..
             .anyRequest().authenticated();
