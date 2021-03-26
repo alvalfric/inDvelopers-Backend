@@ -53,16 +53,23 @@ public class PublicationService {
 	}
 
 	public String addPublication(Publication p, Developer d) {
-		Optional<Publication> publication = this.publicationRepository.findById(p.getId());
-		publication.get().setDeveloper(d);
+		p.setDeveloper(d);
 		this.publicationRepository.save(p);
 		return "Successfully added with id: " + p.getId();
 	}
 
 	public String deletePublication(Publication p) {
-		p.setDeveloper(null);
-		this.publicationRepository.delete(p);
-		return "Delete publication with id: " + p.getId();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userDetails = (UserDetails) auth.getPrincipal();
+		String usuario = userDetails.getUsername();
+		if (usuario.contentEquals(p.getUsername())) {
+			p.setDeveloper(null);
+			this.publicationRepository.delete(p);
+			return "Delete publication with id: " + p.getId();
+		} else {
+			throw new IllegalArgumentException("You don't have permissions to perform this action.");
+		}
+
 	}
 
 	public Publication updatePublication(Publication p) {

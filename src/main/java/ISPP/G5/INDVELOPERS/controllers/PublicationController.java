@@ -40,9 +40,8 @@ public class PublicationController {
 
 	}
 
-	@GetMapping("/findByName/{username}")
-	public ResponseEntity<List<Publication>> getPublicationsByUsername(@PathVariable String username) {
-		
+	@GetMapping("/findByName")
+	public ResponseEntity<List<Publication>> getPublicationsByUsername() {
 		try {
 			return ResponseEntity.ok(this.publicationService.findByUSername());
 		} catch (IllegalArgumentException e) {
@@ -80,8 +79,8 @@ public class PublicationController {
 			Publication p = this.publicationService.findById(id);
 			this.publicationService.deletePublication(p);
 			return new ResponseEntity<Void>(HttpStatus.OK);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Publication couldn't be deleted.");
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("You don't have permissions to perform this action.");
 		}
 
 	}
