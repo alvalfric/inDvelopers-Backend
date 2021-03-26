@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,10 +51,12 @@ public class GameController {
 	}
 	
 	@PostMapping("/add")
-	public ResponseEntity<String> addGame(@RequestBody Game game) {
+	public ResponseEntity<String> addGame(@RequestBody Game game) throws NotFoundException {
 		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			game.setCreator(this.developerService.findByUsername(userDetails.getUsername()));
 			return ResponseEntity.status(HttpStatus.CREATED).body(this.gameService.addGame(game));
-
 		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
@@ -98,15 +101,16 @@ public class GameController {
 		}
 	}
 	
-	@GetMapping("/find/myGames")
+	/*@GetMapping("/find/myGames")
 	public ResponseEntity<List<Game>> getGameByMyGames() {
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String name = authentication.getName();
-			return ResponseEntity.ok(this.gameService.findByMyGames(this.developerService.findByUsername(name)));
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			
+			return ResponseEntity.ok(this.gameService.findByMyGames(this.developerService.findByUsername(userDetails.getUsername())));
 		} catch(IllegalArgumentException | NotFoundException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
-	}
+	}*/
 	
 }

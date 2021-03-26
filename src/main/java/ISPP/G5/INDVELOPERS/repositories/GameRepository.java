@@ -20,7 +20,8 @@ public interface GameRepository extends MongoRepository<Game,String>{
 	@Query("{ 'creator' : ?0 }")
 	List<Game> findByDeveloper(Developer developer);
 	
-	List<Game> findByMyGames(Developer developer) throws DataAccessException;
+	/*@Query("{ ")
+	List<Game> findByMyGames(Developer developer) throws DataAccessException;*/
 	
 	@Override
 	List<Game> findAll() throws DataAccessException;
