@@ -1,6 +1,7 @@
 package ISPP.G5.INDVELOPERS.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
@@ -33,10 +34,10 @@ public class GameService {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
-		if(developer.getIsPremium() == false && game.getPrice() != 0) 
+		if(developer.getIsPremium() == false && game.getPrice() != 0.0) 
 			throw new IllegalArgumentException("Only premium developers can sell non-free games");
-		if(developer.getIsPremium() == false && (developer.getGameList().size() + 1 == 6))
-			throw new IllegalArgumentException("Premium developers only can have a maximun of five games published");
+		if(developer.getIsPremium() == false && (findByMyGames().size() + 1 == 6))
+			throw new IllegalArgumentException("Non premium developers only can have a maximun of five games published");
 		
 		this.gameRepository.save(game);
 		return "Added game with title:"+ game.getTitle();
@@ -50,15 +51,18 @@ public class GameService {
 		return gameRepository.findByDeveloper(developer);
 	}
 	
-	/*public List<Game> findByMyGames(Developer developer) {
-		return gameRepository.findByMyGames(developer);
-	}*/
-	
-	public Game updateGame(Game gameToUpdate) throws NotFoundException {
-		Assert.notNull(gameToUpdate);
+	public List<Game> findByMyGames() throws NotFoundException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
+		return gameRepository.findByMyGames(developer);
+	}
+	
+	public Game updateGame(String id) throws NotFoundException {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
+		Game gameToUpdate = findById(id);
 		if (gameToUpdate.getCreator() != developer) 
 			throw new IllegalArgumentException("Only the creator of the game can edit it");
 		

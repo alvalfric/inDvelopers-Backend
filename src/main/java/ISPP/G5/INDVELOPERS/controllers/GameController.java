@@ -63,9 +63,9 @@ public class GameController {
 	}
 	
 	@PutMapping("/edit/{id}")
-	public ResponseEntity<String> updateGame(@PathVariable String id, @RequestBody Game game) throws NotFoundException{
+	public ResponseEntity<String> updateGame(@PathVariable String id) throws NotFoundException{
 		try {
-			this.gameService.updateGame(game);
+			this.gameService.updateGame(id);
 			return new ResponseEntity<String>("Game update succesfully", HttpStatus.OK);
 		} catch(IllegalArgumentException e){
 			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
@@ -83,7 +83,7 @@ public class GameController {
 		}
 	}
 	
-	@GetMapping("/find/{title}")
+	@GetMapping("/findByTitle/{title}")
 	public ResponseEntity<Game> getGameByTitle(@PathVariable String title) {
 		try {
 			return ResponseEntity.ok(this.gameService.findByTitle(title));
@@ -92,7 +92,7 @@ public class GameController {
 		}
 	}
 	
-	@GetMapping("/find/{developerUsername}")
+	@GetMapping("/findByDeveloper/{developerUsername}")
 	public ResponseEntity<List<Game>> getGameByDeveloper(@PathVariable String developerUsername) {
 		try {
 			return ResponseEntity.ok(this.gameService.findByDeveloper(this.developerService.findByUsername(developerUsername)));
@@ -101,16 +101,13 @@ public class GameController {
 		}
 	}
 	
-	/*@GetMapping("/find/myGames")
+	@GetMapping("/findMyGames")
 	public ResponseEntity<List<Game>> getGameByMyGames() {
 		try {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-			
-			return ResponseEntity.ok(this.gameService.findByMyGames(this.developerService.findByUsername(userDetails.getUsername())));
+			return ResponseEntity.ok(this.gameService.findByMyGames());
 		} catch(IllegalArgumentException | NotFoundException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
-	}*/
+	}
 	
 }
