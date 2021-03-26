@@ -30,7 +30,7 @@ public class ReviewController {
 	public String communicateWithReact() {
 		return service.communicateWithReact();
 	}
-	@GetMapping("/findAll")
+	@GetMapping
 	public List<Review> findAll() {
 		return service.findAll();
 	}
@@ -40,11 +40,12 @@ public class ReviewController {
 	}
 	@PostMapping("/add")
 	public String addReview(@RequestBody final Review review) {
-		return service.saveReview(review);
+		return service.addReview(review);
 	}
 	@PutMapping("/{id}/edit")
 	public String editReview(@RequestBody final Review review, @PathVariable final String id) {
-		return service.saveReview(review);
+		review.setId(id);
+		return service.updateReview(review);
 	}
 	@DeleteMapping("/{id}/delete")
 	public String deleteReview(@PathVariable final String id) {

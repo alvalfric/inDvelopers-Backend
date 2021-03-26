@@ -25,22 +25,39 @@ public class ReviewService {
 	}
 
 	public Review findById(final String id) {
+		if (!repository.findById(id).isPresent())
+			return null;
+
 		return repository.findById(id).get();
 	}
 
-	public String saveReview(final Review review) {
-		List<Review> allReviews = repository.findAll();
-		for(Review re: allReviews) {
-			if(re.getDeveloper().getId().equals(review.getDeveloper().getId()) &&
-				re.getGame().getId().equals(review.getGame().getId()))
-				return "Not saved Review because Developer with Id: " + review.getDeveloper().getId()+
-					" already had reviewed the Game with Id: " + review.getDeveloper().getId();
-		}
+	public String addReview(final Review review) {
+		// VALIDADOR para evitar que undeveloper pueda realizar varias reviews al mismo juego
+		/*
+		 * List<Review> allReviews = repository.findAll();
+		 * for(Review re: allReviews) {
+		 * if(re.getDeveloper().getId().equals(review.getDeveloper().getId()) &&
+		 * re.getGame().getId().equals(review.getGame().getId()))
+		 * return "Not saved Review because Developer with Id: " + review.getDeveloper().getId()+
+		 * " already had reviewed the Game with Id: " + review.getDeveloper().getId();
+		 * }
+		 */
 		repository.save(review);
-		return "Saved Review with Id: " + review.getId();
+		return "Added Review with Id: " + review.getId();
+	}
+
+	public String updateReview(final Review review) {
+		if (!repository.findById(review.getId()).isPresent())
+			return "Error Id: Review with id " + review.getId() + " do not exist";
+
+		repository.save(review);
+		return "Updated Review with Id: " + review.getId();
 	}
 
 	public String deleteReview(final String id) {
+		if (!repository.findById(id).isPresent())
+			return "Error Id: Review with id " + id + " do not exist";
+
 		repository.deleteById(id);
 		return "Deleted Review with Id: " + id;
 	}
