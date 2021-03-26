@@ -17,15 +17,12 @@ public interface GameRepository extends MongoRepository<Game,String>{
 	@Query("{ 'title' : ?0 }")
 	Optional<Game> findByTitle(String title);
 	
-	@Query("{ 'creator' : ?0 }")
-	List<Game> findByDeveloper(Developer developer);
+	@Query("{ 'creator.id' : ?0 }")
+	List<Game> findByDeveloper(String developerId);
 	
-	@Query("{ 'creator' : ?0 }")
-	List<Game> findByMyGames(Developer developer);
+	@Query("{ 'creator.id' : ?0 }")
+	List<Game> findByMyGames(String developerId);
 	
 	@Override
 	List<Game> findAll() throws DataAccessException;
-	
-	@Query("{ 'id' : ?0 }")
-	Optional<Game> findById(String id);
 }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ISPP.G5.INDVELOPERS.models.Game;
+import ISPP.G5.INDVELOPERS.repositories.GameRepository;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
 import ISPP.G5.INDVELOPERS.services.GameService;
 
@@ -31,6 +32,9 @@ public class GameController {
 
 	@Autowired
 	private GameService gameService;
+	
+	@Autowired
+	private GameRepository gameRepository;
 	
 	@Autowired
 	private DeveloperService developerService;
@@ -63,23 +67,27 @@ public class GameController {
 	}
 	
 	@PutMapping("/edit/{id}")
-	public ResponseEntity<String> updateGame(@PathVariable String id) throws NotFoundException{
+	public ResponseEntity<String> updateGame(@PathVariable String id, @RequestBody Game game) throws NotFoundException{
+		Game gameData = this.gameService.findById(id);
 		try {
-			this.gameService.updateGame(id);
-			return new ResponseEntity<String>("Game update succesfully", HttpStatus.OK);
+			gameData.setDescription(game.getDescription());
+			gameData.setRequirements(game.getRequirements());
+			gameData.setPrice(game.getPrice());
+			gameData.setIsNotMalware(game.getIsNotMalware());
+			gameData.setIdCloud(game.getIdCloud());
+			 return new ResponseEntity<>(this.gameService.updateGame(gameData), HttpStatus.OK);
 		} catch(IllegalArgumentException e){
 			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Void> deleteGameById(@PathVariable String id) throws NotFoundException{
-		Game game = this.gameService.findById(id);
+	public ResponseEntity<HttpStatus> deleteGameById(@PathVariable("id") String id) throws NotFoundException{
 		try {
-			this.gameService.deleteGame(game);
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			this.gameService.deleteGame(id);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch(IllegalArgumentException e) {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
@@ -95,7 +103,7 @@ public class GameController {
 	@GetMapping("/findByDeveloper/{developerUsername}")
 	public ResponseEntity<List<Game>> getGameByDeveloper(@PathVariable String developerUsername) {
 		try {
-			return ResponseEntity.ok(this.gameService.findByDeveloper(this.developerService.findByUsername(developerUsername)));
+			return ResponseEntity.ok(this.gameService.findByDeveloper(developerUsername));
 		} catch(IllegalArgumentException | NotFoundException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}

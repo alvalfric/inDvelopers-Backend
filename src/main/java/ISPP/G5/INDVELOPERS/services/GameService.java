@@ -20,6 +20,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class GameService {
 	
+	@Autowired
 	private GameRepository gameRepository;
 	
 	private DeveloperService developerService;
@@ -47,41 +48,44 @@ public class GameService {
 		return gameRepository.findByTitle(title).orElseThrow(NotFoundException::new);
 	}
 	
-	public List<Game> findByDeveloper(Developer developer) {
-		return gameRepository.findByDeveloper(developer);
+	public List<Game> findByDeveloper(String name) throws NotFoundException {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
+		return gameRepository.findByDeveloper(developer.getId());
 	}
 	
 	public List<Game> findByMyGames() throws NotFoundException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
-		return gameRepository.findByMyGames(developer);
+		return gameRepository.findByMyGames(developer.getId());
 	}
 	
-	public Game updateGame(String id) throws NotFoundException {
+	public String updateGame(Game game) throws NotFoundException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
-		Game gameToUpdate = findById(id);
-		if (gameToUpdate.getCreator() != developer) 
+		if (game.getCreator().getId() != developer.getId()) 
 			throw new IllegalArgumentException("Only the creator of the game can edit it");
 		
-		return this.gameRepository.save(gameToUpdate);
+		this.gameRepository.save(game);
+		return "Updated game with title:"+ game.getTitle();
 	}
 	
-	public String deleteGame(Game game) throws NotFoundException {
-		Assert.notNull(game);
+	public void deleteGame(String id) throws NotFoundException {
+		Game game = findById(id);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
-		if (game.getCreator() != developer) 
+		if (game.getCreator().getId() != developer.getId()) { 
 			throw new IllegalArgumentException("Only the creator of the game can remove it");
-		String title = game.getTitle();
-		this.gameRepository.delete(game);
-		return "The game: " + title + " has been removed succesfully";
+		} else {
+			this.gameRepository.deleteById(id);
+		}
 	}
 	
-	public Game findById(String id) throws NotFoundException{
+	public Game findById(String id) throws NotFoundException {
 		return this.gameRepository.findById(id).orElseThrow(NotFoundException::new);
 	}
 }
