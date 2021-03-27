@@ -42,7 +42,7 @@ public class MongoDBPopulate {
 
             userEntityRepository.save(master);
 
-            Game game1 = new Game("25 caminos oscuros",
+            /*Game game1 = new Game("25 caminos oscuros",
                     "Es un juego en el que elijas el camino que elijas pierdes",
                     "No tiene grandes requisitos, 20 gigas de ram",
                     25.65,
@@ -57,7 +57,7 @@ public class MongoDBPopulate {
                     true);
 
             gameRepository.save(game1);
-            gameRepository.save(game2);
+            gameRepository.save(game2);*/
         };
 
     }
