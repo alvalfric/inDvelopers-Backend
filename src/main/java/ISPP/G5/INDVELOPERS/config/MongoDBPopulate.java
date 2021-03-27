@@ -28,6 +28,7 @@ public class MongoDBPopulate {
         return strings -> {
 
             userEntityRepository.deleteAll();
+            gameRepository.deleteAll();
 
             /*
                 ================= USERS =================
