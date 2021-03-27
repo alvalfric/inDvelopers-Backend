@@ -7,12 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ISPP.G5.INDVELOPERS.Security.JwtTokenProvider;
 import ISPP.G5.INDVELOPERS.models.Developer;
+import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
 
@@ -44,6 +48,8 @@ public class DeveloperService {
 
 		developer.setPassword(new BCryptPasswordEncoder(12).encode(developer.getPassword()));
 		developer.setRoles(Stream.of(UserRole.USER).collect(Collectors.toSet()));
+		
+
 		
 		this.developerRepository.save(developer);
 
@@ -79,6 +85,21 @@ public class DeveloperService {
 	public Developer findByEmail(String email) throws IllegalArgumentException, NotFoundException{
 		Assert.hasLength(email);
 		return this.developerRepository.findByEmail(email).orElseThrow(NotFoundException::new);
+	}
+	
+	public Developer findById(String id) throws NotFoundException {
+		return this.developerRepository.findById(id).orElseThrow(NotFoundException::new);
+	}
+	
+	public void deleteDeveloper(String id) throws NotFoundException {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		Developer admin = this.developerRepository.findByUsername(userDetails.getUsername()).orElseThrow(NotFoundException::new);
+		if (!admin.getRoles().contains(UserRole.ADMIN)) { 
+			throw new IllegalArgumentException("Only the admin can remove a developer");
+		} else {
+			this.developerRepository.deleteById(id);
+		}
 	}
 	
 	
