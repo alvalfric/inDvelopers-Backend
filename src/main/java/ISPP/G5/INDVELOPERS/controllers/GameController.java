@@ -70,6 +70,7 @@ public class GameController {
 	public ResponseEntity<String> updateGame(@PathVariable String id, @RequestBody Game game) throws NotFoundException{
 		Game gameData = this.gameService.findById(id);
 		try {
+			gameData.setTitle(game.getTitle());
 			gameData.setDescription(game.getDescription());
 			gameData.setRequirements(game.getRequirements());
 			gameData.setPrice(game.getPrice());

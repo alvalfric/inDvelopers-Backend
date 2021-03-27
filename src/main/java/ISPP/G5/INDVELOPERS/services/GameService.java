@@ -39,6 +39,8 @@ public class GameService {
 			throw new IllegalArgumentException("Only premium developers can sell non-free games");
 		if(developer.getIsPremium() == false && (findByMyGames().size() + 1 == 6))
 			throw new IllegalArgumentException("Non premium developers only can have a maximun of five games published");
+		if(game.getIsNotMalware()==false)
+			throw new IllegalArgumentException("We don´t publish malwares, only games");
 		
 		this.gameRepository.save(game);
 		return "Added game with title:"+ game.getTitle();
@@ -66,7 +68,7 @@ public class GameService {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
-		if (game.getCreator().getId() != developer.getId()) 
+		if (!game.getCreator().getId().equals(developer.getId())) 
 			throw new IllegalArgumentException("Only the creator of the game can edit it");
 		
 		this.gameRepository.save(game);
@@ -78,7 +80,7 @@ public class GameService {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
-		if (game.getCreator().getId() != developer.getId()) { 
+		if (!game.getCreator().getId().equals(developer.getId())) { 
 			throw new IllegalArgumentException("Only the creator of the game can remove it");
 		} else {
 			this.gameRepository.deleteById(id);
