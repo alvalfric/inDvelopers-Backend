@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
+import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
 
 import java.util.List;
@@ -60,6 +61,31 @@ public class DeveloperController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
+	
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<HttpStatus> deleteDeveloperById(@PathVariable("id") String id) throws NotFoundException{
+		try {
+			this.developerService.deleteDeveloper(id);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch(IllegalArgumentException e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PutMapping("/edit/{id}")
+	public ResponseEntity<Developer> updateDeveloper(@PathVariable String id, @RequestBody Developer developer) throws NotFoundException{
+		Developer developer2 = this.developerService.findById(id);
+		try {
+			developer2.setUsername(developer.getUsername());
+			developer2.setUserImage(developer.getUserImage());
+			developer2.setTechnologies(developer.getTechnologies());
+			developer2.setDescription(developer.getDescription());
+			 return new ResponseEntity<>(this.developerService.updateDeveloper(developer2), HttpStatus.OK);
+		} catch(IllegalArgumentException e){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 
 
 }
