@@ -1,20 +1,20 @@
 package ISPP.G5.INDVELOPERS.config;
 
-import ISPP.G5.INDVELOPERS.models.Game;
-import ISPP.G5.INDVELOPERS.models.UserEntity;
-import ISPP.G5.INDVELOPERS.models.UserRole;
-import ISPP.G5.INDVELOPERS.repositories.GameRepository;
-import ISPP.G5.INDVELOPERS.repositories.UserEntityRepository;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.validation.constraints.NotBlank;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import ISPP.G5.INDVELOPERS.models.Developer;
+import ISPP.G5.INDVELOPERS.models.UserEntity;
+import ISPP.G5.INDVELOPERS.models.UserRole;
+import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
+import ISPP.G5.INDVELOPERS.repositories.GameRepository;
+import ISPP.G5.INDVELOPERS.repositories.UserEntityRepository;
 
 @Configuration
 public class MongoDBPopulate {
@@ -23,7 +23,7 @@ public class MongoDBPopulate {
 
     @Bean
     CommandLineRunner commandLineRunner(
-            UserEntityRepository userEntityRepository,
+            UserEntityRepository userEntityRepository, DeveloperRepository developerRepository,
             GameRepository gameRepository) {
         return strings -> {
 
@@ -42,6 +42,13 @@ public class MongoDBPopulate {
 
             userEntityRepository.save(master);
 
+            Developer master2 = new Developer("master2",
+                    passwordEncoder.encode("master2"),
+                    "https://dummyimage.com/300",
+                    null, null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
+                    null, null, true);
+
+            developerRepository.save(master2);
             /*Game game1 = new Game("25 caminos oscuros",
                     "Es un juego en el que elijas el camino que elijas pierdes",
                     "No tiene grandes requisitos, 20 gigas de ram",
