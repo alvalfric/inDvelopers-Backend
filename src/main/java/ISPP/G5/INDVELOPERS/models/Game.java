@@ -1,6 +1,7 @@
 package ISPP.G5.INDVELOPERS.models;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -27,14 +28,13 @@ public class Game extends BaseEntity{
 	@NotBlank
 	private String requirements;
 	
+	@NotNull
 	private Double price;
 	
 	private String idCloud;
 	
-	
 	private Boolean isNotMalware;
 	
-	
-	
+	private Developer creator;
 	
 }
