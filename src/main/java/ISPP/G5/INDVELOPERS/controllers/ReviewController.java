@@ -70,7 +70,7 @@ public class ReviewController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-	@PutMapping("/{id}/edit")
+	@PutMapping("/edit/{id}")
 	public ResponseEntity<String> editReview(@RequestBody final Review review, @PathVariable("id") final String id) throws NotFoundException {
 		Review r = service.findById(id);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -88,7 +88,7 @@ public class ReviewController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	@DeleteMapping("/{id}/delete")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<HttpStatus> deleteReview(@PathVariable final String id) throws NotFoundException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();

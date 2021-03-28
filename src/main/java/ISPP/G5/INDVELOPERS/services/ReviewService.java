@@ -1,7 +1,6 @@
 
 package ISPP.G5.INDVELOPERS.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +25,7 @@ public class ReviewService {
 	}
 
 	public List<Review> findAllByGameId(final String gameId) {
-		List<Review> res = new ArrayList<>();
-		for (Review r : repository.findAll())
-			if (r.getGame().getId().equals(gameId))
-				res.add(r);
-		return res;
+		return repository.findAllByGameId(gameId);
 	}
 
 	public Review findById(final String id) throws NotFoundException {
