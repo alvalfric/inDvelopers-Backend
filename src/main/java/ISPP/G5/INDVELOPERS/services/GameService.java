@@ -2,6 +2,7 @@ package ISPP.G5.INDVELOPERS.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
@@ -46,8 +47,8 @@ public class GameService {
 		return "Added game with title:"+ game.getTitle();
 	}
 
-	public Game findByTitle(String title) throws NotFoundException {
-		return gameRepository.findByTitle(title).orElseThrow(NotFoundException::new);
+	public List<Game> findByTitle(String title) throws NotFoundException {
+		return findAll().stream().filter(g -> g.getTitle().contains(title)).collect(Collectors.toList());
 	}
 	
 	public List<Game> findByDeveloper(String name) throws NotFoundException {
