@@ -9,7 +9,7 @@ import ISPP.G5.INDVELOPERS.models.Developer;
 public class DeveloperDTOConverter {
 
 	
-	public GetDeveloperDTO DevelopertoGetDeveloperDTO(Developer developer) {
+	public static GetDeveloperDTO DevelopertoGetDeveloperDTO(Developer developer) {
 		
 		return GetDeveloperDTO.builder().username(developer.getUsername())
 				.email(developer.getEmail())
