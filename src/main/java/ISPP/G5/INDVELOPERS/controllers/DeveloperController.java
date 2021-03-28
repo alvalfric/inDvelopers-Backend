@@ -13,6 +13,7 @@ import ISPP.G5.INDVELOPERS.services.DeveloperService;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/developers")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
