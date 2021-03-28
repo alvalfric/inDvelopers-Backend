@@ -52,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/users/login").permitAll()
             .antMatchers("/developers/sign-up").permitAll()
             .antMatchers("/developers/login").permitAll()
+            .antMatchers("/developers/me").permitAll()
             .antMatchers("/developers").permitAll()
             .antMatchers("/publications/**").permitAll()
             .antMatchers("/developers/findAll").permitAll()
@@ -64,6 +65,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/games/delete/**").authenticated()
             .antMatchers("/games/findMyGames").authenticated()
             .antMatchers("/games/**").authenticated()
+            .antMatchers("/reviews/**").permitAll()
+            .antMatchers("/reviews**").permitAll()
             //.antMatchers("/swagger-ui.html").permitAll()
             // Disallow everything else..
             .anyRequest().authenticated();
