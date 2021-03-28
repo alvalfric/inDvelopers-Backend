@@ -36,12 +36,16 @@ public class GameService {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
-		if(developer.getIsPremium() == false && game.getPrice() != 0.0) 
+		boolean isPremium = false;
+		
+		if(developer.getIsPremium() != null) {
+			isPremium = developer.getIsPremium();
+		}
+
+		if(isPremium == false && game.getPrice() != 0.0) 
 			throw new IllegalArgumentException("Only premium developers can sell non-free games");
-		if(developer.getIsPremium() == false && (findByMyGames().size() + 1 == 6))
+		if(isPremium == false && (findByMyGames().size() + 1 == 6))
 			throw new IllegalArgumentException("Non premium developers only can have a maximun of five games published");
-		if(game.getIsNotMalware()==false)
-			throw new IllegalArgumentException("We don´t publish malwares, only games");
 		
 		this.gameRepository.save(game);
 		return "Added game with title:"+ game.getTitle();
