@@ -1,13 +1,18 @@
 
 package ISPP.G5.INDVELOPERS.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import ISPP.G5.INDVELOPERS.models.Developer;
+import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.Review;
 import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
+import io.jsonwebtoken.lang.Assert;
 
 @Service
 public class ReviewService {
@@ -16,45 +21,44 @@ public class ReviewService {
 	private ReviewRepository repository;
 
 
-	public String communicateWithReact() {
-		return "Mensaje desde Spring";
-	}
-
 	public List<Review> findAll() {
 		return repository.findAll();
 	}
 
-	public Review findById(final String id) {
-		if (!repository.findById(id).isPresent())
-			return null;
-
-		return repository.findById(id).get();
+	public List<Review> findAllByGameId(final String gameId) {
+		List<Review> res = new ArrayList<>();
+		for (Review r : repository.findAll())
+			if (r.getGame().getId().equals(gameId))
+				res.add(r);
+		return res;
 	}
 
-	public String addReview(final Review review) {
-		// VALIDADOR para evitar que undeveloper pueda realizar varias reviews al mismo juego
-		/*
-		 * List<Review> allReviews = repository.findAll();
-		 * for(Review re: allReviews) {
-		 * if(re.getDeveloper().getId().equals(review.getDeveloper().getId()) &&
-		 * re.getGame().getId().equals(review.getGame().getId()))
-		 * return "Not saved Review because Developer with Id: " + review.getDeveloper().getId()+
-		 * " already had reviewed the Game with Id: " + review.getDeveloper().getId();
-		 * }
-		 */
+	public Review findById(final String id) throws NotFoundException {
+		return repository.findById(id).orElseThrow(NotFoundException::new);
+	}
+
+	public String addReview(final Review review, final Game game, final Developer developer) throws NotFoundException {
+		Assert.notNull(review);
+		review.setDeveloper(developer);
+		review.setGame(game);
+		List<Review> allReviews = findAllByGameId(game.getId());
+		for (Review re : allReviews)
+			if (re.getDeveloper().getId().equals(developer.getId()))
+				throw new IllegalArgumentException("Not saved Review because Developer with Id: " + review.getDeveloper().getId() + " already had reviewed the Game with Id: " + review.getGame().getId());
+
 		repository.save(review);
 		return "Added Review with Id: " + review.getId();
 	}
 
-	public String updateReview(final Review review) {
+	public String updateReview(final Review review) throws NotFoundException {
 		if (!repository.findById(review.getId()).isPresent())
-			return "Error Id: Review with id " + review.getId() + " do not exist";
+			throw new IllegalArgumentException("Error Id: Review with id " + review.getId() + " do not exist");
 
 		repository.save(review);
 		return "Updated Review with Id: " + review.getId();
 	}
 
-	public String deleteReview(final String id) {
+	public String deleteReview(final String id) throws NotFoundException {
 		if (!repository.findById(id).isPresent())
 			return "Error Id: Review with id " + id + " do not exist";
 
