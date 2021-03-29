@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ISPP.G5.INDVELOPERS.models.Game;
-import ISPP.G5.INDVELOPERS.services.DeveloperService;
-import ISPP.G5.INDVELOPERS.services.GameService;
 import ISPP.G5.INDVELOPERS.services.OwnedGameService;
 
 
@@ -29,22 +27,19 @@ public class OwnedGameController {
 	private OwnedGameService ownedGameService;
 	
 	@Autowired
-	private GameService gameService;
-	
-	@Autowired
-	private DeveloperService developerService;
-	
-	@Autowired
-	public OwnedGameController(final OwnedGameService ownedGameService, final GameService gameService, final DeveloperService developerService) {
+	public OwnedGameController(final OwnedGameService ownedGameService) {
 		this.ownedGameService = ownedGameService;
-		this.gameService = gameService;
-		this.developerService = developerService;
 	}
 	
 	@GetMapping("/findOwnedGames")
 	public ResponseEntity<List<Game>> findAll() throws NotFoundException {
 		try {
-			return ResponseEntity.ok(new ArrayList<>(this.ownedGameService.findByCurrentUser().getOwnedGame()));
+			List<Game> ownedGames = this.ownedGameService.findAllMyOwnedGames();
+			if(ownedGames == null) {
+				ownedGames = new ArrayList<Game>();
+			}
+			
+			return ResponseEntity.ok(ownedGames);
 		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}

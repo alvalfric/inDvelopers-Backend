@@ -27,15 +27,21 @@ public class OwnedGameService {
 	@Autowired
 	private GameService gameService;
 	
-	public OwnedGame findByBuyerId(String buyerId) {
-		return ownedGameRepository.findByBuyerId(buyerId);
+	public OwnedGame findByDeveloper(Developer developer) {
+		OwnedGame result = ownedGameRepository.findByBuyerId(developer.getId());
+		
+		if(result == null) {
+			result = new OwnedGame(developer, new ArrayList<Game>());
+		}
+
+		return result;
 	}
 	
 	public OwnedGame findByCurrentUser() throws NotFoundException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
-		return ownedGameRepository.findByBuyerId(developer.getId());
+		return this.findByDeveloper(developer);
 	}
 	
 	public List<Game> findAllMyOwnedGames() throws NotFoundException {

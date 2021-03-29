@@ -1,5 +1,7 @@
 package ISPP.G5.INDVELOPERS.config;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -10,25 +12,30 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
+import ISPP.G5.INDVELOPERS.models.Game;
+import ISPP.G5.INDVELOPERS.models.OwnedGame;
 import ISPP.G5.INDVELOPERS.models.UserEntity;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
+import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
 import ISPP.G5.INDVELOPERS.repositories.UserEntityRepository;
 
 @Configuration
-public class MongoDBPopulate {
+public class MongoDBPopulate<E> {
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
     @Bean
     CommandLineRunner commandLineRunner(
             UserEntityRepository userEntityRepository, DeveloperRepository developerRepository,
-            GameRepository gameRepository) {
+            GameRepository gameRepository, OwnedGameRepository ownedGameRepository) {
         return strings -> {
 
             userEntityRepository.deleteAll();
+            developerRepository.deleteAll();
             gameRepository.deleteAll();
+            ownedGameRepository.deleteAll();
 
             /*
                 ================= USERS =================
@@ -49,22 +56,56 @@ public class MongoDBPopulate {
                     null, null, true);
 
             developerRepository.save(master2);
-            /*Game game1 = new Game("25 caminos oscuros",
+            
+            Developer alvaro = new Developer("alvaro",
+                    passwordEncoder.encode("alvaro"),
+                    "alvaro@gmail.com",
+                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true);
+
+            developerRepository.save(alvaro);
+            
+            Developer dummyDeveloper = new Developer("dummyDeveloper",
+                    passwordEncoder.encode("dummyDeveloper"),
+                    "dummyDeveloper@gmail.com",
+                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true);
+
+            developerRepository.save(dummyDeveloper);
+            
+            /*
+            ================= GAMES =================
+             */
+            
+            Game game1 = new Game("25 caminos oscuros",
                     "Es un juego en el que elijas el camino que elijas pierdes",
                     "No tiene grandes requisitos, 20 gigas de ram",
                     25.65,
                     "25.icloud.",
-                    true);
-
+                    true, 
+                    dummyDeveloper);
+            
+            gameRepository.save(game1);
+            
             Game game2 = new Game("Payaso que salta",
                     "No intentes que el payaso se quede quieto, siempre salta",
                     "Con tener ordenador ya te tira",
                     21.43,
                     "no tiene",
-                    true);
-
-            gameRepository.save(game1);
-            gameRepository.save(game2);*/
+                    true, 
+                    dummyDeveloper);
+            
+            gameRepository.save(game2);
+            
+            
+            /*
+            ================= OWNED-GAMES =================
+             */
+            
+            OwnedGame ownedGame1 = new OwnedGame(alvaro, new ArrayList<Game>(List.of(game1)));
+            
+            ownedGameRepository.save(ownedGame1);
+            
         };
 
     }
