@@ -19,7 +19,6 @@ import lombok.ToString;
 public class Game extends BaseEntity{
 
 	@NotBlank
-	@Indexed(unique=true)
 	private String title;
 	
 	@NotBlank

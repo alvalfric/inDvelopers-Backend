@@ -31,8 +31,7 @@ public class MongoDBPopulate<E> {
             UserEntityRepository userEntityRepository, DeveloperRepository developerRepository,
             GameRepository gameRepository, OwnedGameRepository ownedGameRepository) {
         return strings -> {
-
-            userEntityRepository.deleteAll();
+        	userEntityRepository.deleteAll();
             developerRepository.deleteAll();
             gameRepository.deleteAll();
             ownedGameRepository.deleteAll();
@@ -105,7 +104,6 @@ public class MongoDBPopulate<E> {
             OwnedGame ownedGame1 = new OwnedGame(alvaro, new ArrayList<Game>(List.of(game1)));
             
             ownedGameRepository.save(ownedGame1);
-            
         };
 
     }

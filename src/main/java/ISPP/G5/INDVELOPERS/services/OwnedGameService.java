@@ -36,30 +36,16 @@ public class OwnedGameService {
 
 		return result;
 	}
-	
-	public OwnedGame findByCurrentUser() throws NotFoundException {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
-		return this.findByDeveloper(developer);
-	}
-	
-	public List<Game> findAllMyOwnedGames() throws NotFoundException {
-		return new ArrayList<>(this.findByCurrentUser().getOwnedGame());
-	}
-	
-	public String buyGameByGameId(String gameId) throws NotFoundException {
-		OwnedGame ownedGame = this.findByCurrentUser();
 		
-		if(ownedGame == null) {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-			Developer developer = this.developerService.findByUsername(userDetails.getUsername());
-			ownedGame = new OwnedGame(developer, new ArrayList<Game>());
-		}
+	public List<Game> findAllMyOwnedGames(Developer developer) throws NotFoundException {
+		return new ArrayList<>(this.findByDeveloper(developer).getOwnedGame());
+	}
+		
+	public String buyGameByDeveloperAndGameId(Developer developer, String gameId) throws NotFoundException {
+		OwnedGame ownedGame = this.findByDeveloper(developer);
 		
 		Game game = this.gameService.findById(gameId);
-		
+
 		if(ownedGame.getOwnedGame().contains(game)) {
 			throw new IllegalArgumentException("Game already owned.");
 		}
