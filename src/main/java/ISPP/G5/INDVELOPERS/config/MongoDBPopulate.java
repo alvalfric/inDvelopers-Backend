@@ -101,7 +101,9 @@ public class MongoDBPopulate<E> {
             ================= OWNED-GAMES =================
              */
             
-            OwnedGame ownedGame1 = new OwnedGame(alvaro, new ArrayList<Game>(List.of(game1)));
+            List<Game> gamesOfDeveloperAlvaro = new ArrayList<Game>();
+            gamesOfDeveloperAlvaro.add(game1);
+            OwnedGame ownedGame1 = new OwnedGame(alvaro, gamesOfDeveloperAlvaro);
             
             ownedGameRepository.save(ownedGame1);
         };
