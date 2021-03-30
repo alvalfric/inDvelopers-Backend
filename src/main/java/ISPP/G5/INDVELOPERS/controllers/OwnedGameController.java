@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
+import ISPP.G5.INDVELOPERS.models.OwnedGame;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
+import ISPP.G5.INDVELOPERS.services.GameService;
 import ISPP.G5.INDVELOPERS.services.OwnedGameService;
 
 
@@ -28,17 +31,21 @@ public class OwnedGameController {
 	private OwnedGameService ownedGameService;
 	@Autowired
 	private DeveloperService developerService;
+	@Autowired
+	private GameService gameService;
 	
 	@Autowired
-	public OwnedGameController(final DeveloperService developerService,final OwnedGameService ownedGameService) {
+	public OwnedGameController(final DeveloperService developerService, final GameService gameService, final OwnedGameService ownedGameService) {
 		this.developerService = developerService;
 		this.ownedGameService = ownedGameService;
+		this.gameService = gameService;
 	}
 	
 	@GetMapping("/findOwnedGames")
 	public ResponseEntity<List<Game>> findAll() throws NotFoundException {
 		try {
 			List<Game> ownedGames = this.ownedGameService.findAllMyOwnedGames(this.developerService.findCurrentDeveloper());
+			
 			if(ownedGames == null) {
 				ownedGames = new ArrayList<Game>();
 			}
@@ -52,8 +59,20 @@ public class OwnedGameController {
 	@PostMapping("/buy")
 	public ResponseEntity<String> buyGame(@RequestParam String gameId) throws NotFoundException {
 		try {
+			Developer developer = this.developerService.findCurrentDeveloper();
+			OwnedGame ownedGame = this.ownedGameService.findByDeveloper(developer);
+			Game game = this.gameService.findById(gameId);
+
+			if (game != null) {
+				if (ownedGame.getOwnedGames().contains(game)) {
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+				}
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+			}
+			
 			return ResponseEntity.status(HttpStatus.CREATED).body(
-					this.ownedGameService.buyGameByDeveloperAndGameId(this.developerService.findCurrentDeveloper(), gameId));
+					this.ownedGameService.buyGameByDeveloperAndGameId(developer, gameId));
 		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}

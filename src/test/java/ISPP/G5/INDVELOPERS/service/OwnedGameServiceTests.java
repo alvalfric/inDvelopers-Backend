@@ -52,50 +52,50 @@ public class OwnedGameServiceTests {
 	void shouldFindOwnedGames() {
 		OwnedGame ownedGameAlvaro = this.ownedGameService.findByDeveloper(alvaro);
 		assertThat(ownedGameAlvaro.getBuyer()).isEqualTo(alvaro);
-		assertThat(ownedGameAlvaro.getOwnedGame()).isEqualTo(new ArrayList<Game>(List.of(game1)));
+		assertThat(ownedGameAlvaro.getOwnedGames()).isEqualTo(new ArrayList<Game>(List.of(game1)));
 	}
     
 	@Test
 	void shouldNotFindOwnedGames() {
 		OwnedGame ownedGameDummyDeveloper = this.ownedGameService.findByDeveloper(dummyDeveloper);
 		assertThat(ownedGameDummyDeveloper.getBuyer()).isEqualTo(dummyDeveloper);
-		assertThat(ownedGameDummyDeveloper.getOwnedGame()).isEqualTo(new ArrayList<Game>());
+		assertThat(ownedGameDummyDeveloper.getOwnedGames()).isEqualTo(new ArrayList<Game>());
 	}
 	
 	@Test
 	void shouldBuyAGameForUserWithPurchasedGame() throws NotFoundException {
 		OwnedGame ownedGameAlvaro = this.ownedGameService.findByDeveloper(alvaro);
 		assertThat(ownedGameAlvaro.getBuyer()).isEqualTo(alvaro);
-		assertThat(ownedGameAlvaro.getOwnedGame()).isEqualTo(new ArrayList<Game>(List.of(game1)));
+		assertThat(ownedGameAlvaro.getOwnedGames()).isEqualTo(new ArrayList<Game>(List.of(game1)));
 				
 		assertThat(this.ownedGameService.buyGameByDeveloperAndGameId(alvaro, game2.getId()).equals("Buyed game with title: "+ game2.getTitle()));
 		
 		ownedGameAlvaro = this.ownedGameService.findByDeveloper(alvaro);
-		assertThat(ownedGameAlvaro.getOwnedGame()).isEqualTo(new ArrayList<Game>(List.of(game1,game2)));
+		assertThat(ownedGameAlvaro.getOwnedGames()).isEqualTo(new ArrayList<Game>(List.of(game1,game2)));
 	}
 	
 	@Test
 	void shouldBuyAGameForUserWithoutGames() throws NotFoundException {
 		OwnedGame ownedGameDummyDeveloper = this.ownedGameService.findByDeveloper(dummyDeveloper);
 		assertThat(ownedGameDummyDeveloper.getBuyer()).isEqualTo(dummyDeveloper);
-		assertThat(ownedGameDummyDeveloper.getOwnedGame()).isEqualTo(new ArrayList<Game>());
+		assertThat(ownedGameDummyDeveloper.getOwnedGames()).isEqualTo(new ArrayList<Game>());
 				
 		assertThat(this.ownedGameService.buyGameByDeveloperAndGameId(dummyDeveloper, game1.getId()).equals("Buyed game with title: "+ game1.getTitle()));
 		
 		ownedGameDummyDeveloper = this.ownedGameService.findByDeveloper(dummyDeveloper);
-		assertThat(ownedGameDummyDeveloper.getOwnedGame()).isEqualTo(new ArrayList<Game>(List.of(game1)));
+		assertThat(ownedGameDummyDeveloper.getOwnedGames()).isEqualTo(new ArrayList<Game>(List.of(game1)));
 	}
 	
 	@Test
 	void shouldNotBuyTwoGamesWithSameTitle() throws NotFoundException {
 		OwnedGame ownedGameAlvaro = this.ownedGameService.findByDeveloper(alvaro);
 		assertThat(ownedGameAlvaro.getBuyer()).isEqualTo(alvaro);
-		assertThat(ownedGameAlvaro.getOwnedGame()).isEqualTo(new ArrayList<Game>(List.of(game1)));
+		assertThat(ownedGameAlvaro.getOwnedGames()).isEqualTo(new ArrayList<Game>(List.of(game1)));
 				
 		assertThat(this.ownedGameService.buyGameByDeveloperAndGameId(alvaro, game2.getId()).equals("Buyed game with title: "+ game2.getTitle()));
 		
 		ownedGameAlvaro = this.ownedGameService.findByDeveloper(alvaro);
-		assertThat(ownedGameAlvaro.getOwnedGame()).isEqualTo(new ArrayList<Game>(List.of(game1,game2)));
+		assertThat(ownedGameAlvaro.getOwnedGames()).isEqualTo(new ArrayList<Game>(List.of(game1,game2)));
 		
 		Assertions.assertThrows(IllegalArgumentException.class, () ->{
 			this.ownedGameService.buyGameByDeveloperAndGameId(alvaro, game2.getId());
@@ -106,7 +106,7 @@ public class OwnedGameServiceTests {
 	void shouldThrowExceptionNotExceptionFotNotFoundGame() throws NotFoundException {
 		OwnedGame ownedGameAlvaro = this.ownedGameService.findByDeveloper(alvaro);
 		assertThat(ownedGameAlvaro.getBuyer()).isEqualTo(alvaro);
-		assertThat(ownedGameAlvaro.getOwnedGame()).isEqualTo(new ArrayList<Game>(List.of(game1)));
+		assertThat(ownedGameAlvaro.getOwnedGames()).isEqualTo(new ArrayList<Game>(List.of(game1)));
 		
 		Assertions.assertThrows(NotFoundException.class, () ->{
 			this.ownedGameService.buyGameByDeveloperAndGameId(alvaro, "estejuegonoexiste");

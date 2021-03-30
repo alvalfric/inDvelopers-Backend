@@ -19,39 +19,43 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class OwnedGameService {
-	
+
 	@Autowired
 	private OwnedGameRepository ownedGameRepository;
 	@Autowired
 	private DeveloperService developerService;
 	@Autowired
 	private GameService gameService;
-	
+
 	public OwnedGame findByDeveloper(Developer developer) {
 		OwnedGame result = ownedGameRepository.findByBuyerId(developer.getId());
-		
-		if(result == null) {
+
+		if (result == null) {
 			result = new OwnedGame(developer, new ArrayList<Game>());
 		}
 
 		return result;
 	}
-		
+
 	public List<Game> findAllMyOwnedGames(Developer developer) throws NotFoundException {
-		return new ArrayList<>(this.findByDeveloper(developer).getOwnedGame());
+		return new ArrayList<>(this.findByDeveloper(developer).getOwnedGames());
 	}
-		
+
 	public String buyGameByDeveloperAndGameId(Developer developer, String gameId) throws NotFoundException {
 		OwnedGame ownedGame = this.findByDeveloper(developer);
-		
+
 		Game game = this.gameService.findById(gameId);
 
-		if(ownedGame.getOwnedGame().contains(game)) {
-			throw new IllegalArgumentException("Game already owned.");
+		if (game != null) {
+			if (ownedGame.getOwnedGames().contains(game)) {
+				throw new IllegalArgumentException("Game already owned.");
+			}
+		} else {
+			throw new NotFoundException();
 		}
 		
-		ownedGame.getOwnedGame().add(game);
+		ownedGame.getOwnedGames().add(game);
 		this.ownedGameRepository.save(ownedGame);
-		return "Buyed game with title: "+ game.getTitle();
+		return "Buyed game with title: " + game.getTitle();
 	}
 }

@@ -20,5 +20,5 @@ public class OwnedGame extends BaseEntity{
 	
 	private Developer buyer;
 	
-	private Collection<Game> ownedGame;
+	private Collection<Game> ownedGames;
 }
