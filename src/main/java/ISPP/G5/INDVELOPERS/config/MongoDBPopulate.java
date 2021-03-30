@@ -96,6 +96,15 @@ public class MongoDBPopulate<E> {
             
             gameRepository.save(game2);
             
+            Game game3 = new Game("Almas oscuras",
+                    "Juego super complicado que no podras pasarte",
+                    "Requiere de una grafica de ultima generacion",
+                    39.99,
+                    "no tiene",
+                    true, 
+                    dummyDeveloper);
+            
+            gameRepository.save(game3);
             
             /*
             ================= OWNED-GAMES =================

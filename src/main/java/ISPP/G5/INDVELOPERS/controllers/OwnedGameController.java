@@ -21,7 +21,6 @@ import ISPP.G5.INDVELOPERS.services.DeveloperService;
 import ISPP.G5.INDVELOPERS.services.GameService;
 import ISPP.G5.INDVELOPERS.services.OwnedGameService;
 
-
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/ownedGames")
@@ -33,29 +32,31 @@ public class OwnedGameController {
 	private DeveloperService developerService;
 	@Autowired
 	private GameService gameService;
-	
+
 	@Autowired
-	public OwnedGameController(final DeveloperService developerService, final GameService gameService, final OwnedGameService ownedGameService) {
+	public OwnedGameController(final DeveloperService developerService, final GameService gameService,
+			final OwnedGameService ownedGameService) {
 		this.developerService = developerService;
 		this.ownedGameService = ownedGameService;
 		this.gameService = gameService;
 	}
-	
+
 	@GetMapping("/findOwnedGames")
 	public ResponseEntity<List<Game>> findAll() throws NotFoundException {
 		try {
-			List<Game> ownedGames = this.ownedGameService.findAllMyOwnedGames(this.developerService.findCurrentDeveloper());
-			
-			if(ownedGames == null) {
+			List<Game> ownedGames = this.ownedGameService
+					.findAllMyOwnedGames(this.developerService.findCurrentDeveloper());
+
+			if (ownedGames == null) {
 				ownedGames = new ArrayList<Game>();
 			}
-			
+
 			return ResponseEntity.ok(ownedGames);
-		} catch(IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-	
+
 	@PostMapping("/buy")
 	public ResponseEntity<String> buyGame(@RequestParam String gameId) throws NotFoundException {
 		try {
@@ -70,12 +71,22 @@ public class OwnedGameController {
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 			}
-			
-			return ResponseEntity.status(HttpStatus.CREATED).body(
-					this.ownedGameService.buyGameByDeveloperAndGameId(developer, gameId));
-		} catch(IllegalArgumentException e) {
+
+			return ResponseEntity.status(HttpStatus.CREATED)
+					.body(this.ownedGameService.buyGameByDeveloperAndGameId(developer, gameId));
+		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-	
+
+	@GetMapping("/checkGameOwned")
+	public ResponseEntity<Boolean> checkGameOwned(@RequestParam String gameId) throws NotFoundException {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(
+					this.ownedGameService.checkGameOwned(this.developerService.findCurrentDeveloper(), gameId));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+
 }

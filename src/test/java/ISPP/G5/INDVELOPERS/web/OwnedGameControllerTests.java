@@ -88,6 +88,19 @@ class OwnedGameControllerTests {
     
     @WithMockUser(value = "spring")
 	    @Test
+	void testFindOwnedGamesBadRequest() throws Exception {
+		List<Game> games = new ArrayList<Game>();
+		games.add(dummyGame1);
+		given(this.ownedGameService.findAllMyOwnedGames(dummyDeveloperWithoutGames)).willReturn(games);
+	    
+		mockMvc.perform(post("/ownedGames/findOwnedGames")
+	            .with(csrf())
+	            )
+		        .andExpect(status().is4xxClientError());
+	}
+    
+    @WithMockUser(value = "spring")
+	    @Test
 	void testBuyGame() throws Exception {
     	given(this.ownedGameService.buyGameByDeveloperAndGameId(dummyDeveloperWithoutGames, dummyGame1.getId())).willReturn("Buyed game with title: "+ dummyGame1.getTitle());
 	    given(this.ownedGameService.findByDeveloper(dummyDeveloperWithoutGames)).willReturn(new OwnedGame(dummyDeveloperWithoutGames, new ArrayList<Game>()));
@@ -139,6 +152,45 @@ class OwnedGameControllerTests {
 		given(this.gameService.findById(dummyGame1.getId())).willReturn(dummyGame1);
 		
 		mockMvc.perform(post("/ownedGames/buy")
+	            .with(csrf())
+	            )
+		        .andExpect(status().is4xxClientError());
+	}
+    
+    @WithMockUser(value = "spring")
+	    @Test
+	void testCheckGameOwnedTrue() throws Exception {
+		given(this.ownedGameService.checkGameOwned(this.developerService.findCurrentDeveloper(), dummyGame1.getId())).willReturn(true);
+	    given(this.ownedGameService.findByDeveloper(dummyDeveloperWithoutGames)).willReturn(new OwnedGame(dummyDeveloperWithoutGames, new ArrayList<Game>()));
+		given(this.gameService.findById(dummyGame1.getId())).willReturn(dummyGame1);
+		
+		mockMvc.perform(get("/ownedGames/checkGameOwned?gameId={gameId}", dummyGame1.getId())
+	            .with(csrf())
+	            )
+		        .andExpect(status().is2xxSuccessful());
+	}
+    
+    @WithMockUser(value = "spring")
+	    @Test
+	void testCheckGameOwnedFalse() throws Exception {
+		given(this.ownedGameService.checkGameOwned(this.developerService.findCurrentDeveloper(), dummyGame1.getId())).willReturn(false);
+	    given(this.ownedGameService.findByDeveloper(dummyDeveloperWithoutGames)).willReturn(new OwnedGame(dummyDeveloperWithoutGames, new ArrayList<Game>()));
+		given(this.gameService.findById(dummyGame1.getId())).willReturn(dummyGame1);
+		
+		mockMvc.perform(get("/ownedGames/checkGameOwned?gameId={gameId}", dummyGame1.getId())
+	            .with(csrf())
+	            )
+		        .andExpect(status().is2xxSuccessful());
+	}
+    
+    @WithMockUser(value = "spring")
+	    @Test
+	void testCheckGameOwnedBadRequest() throws Exception {
+		given(this.ownedGameService.checkGameOwned(this.developerService.findCurrentDeveloper(), "badRequestId")).willReturn(true);
+	    given(this.ownedGameService.findByDeveloper(dummyDeveloperWithoutGames)).willReturn(new OwnedGame(dummyDeveloperWithoutGames, new ArrayList<Game>()));
+		given(this.gameService.findById(dummyGame1.getId())).willReturn(dummyGame1);
+		
+		mockMvc.perform(get("/ownedGames/checkGameOwned")
 	            .with(csrf())
 	            )
 		        .andExpect(status().is4xxClientError());

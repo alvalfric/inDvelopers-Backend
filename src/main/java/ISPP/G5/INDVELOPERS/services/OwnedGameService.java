@@ -50,12 +50,31 @@ public class OwnedGameService {
 			if (ownedGame.getOwnedGames().contains(game)) {
 				throw new IllegalArgumentException("Game already owned.");
 			}
-		} else {
-			throw new NotFoundException();
-		}
+		} 
+//		else {
+//			throw new NotFoundException();
+//		}
 		
 		ownedGame.getOwnedGames().add(game);
 		this.ownedGameRepository.save(ownedGame);
 		return "Buyed game with title: " + game.getTitle();
+	}
+	
+	public boolean checkGameOwned(Developer developer, String gameId) throws NotFoundException {
+		boolean result = false;
+		OwnedGame ownedGame = this.findByDeveloper(developer);
+
+		Game game = this.gameService.findById(gameId);
+		
+		if (game != null) {
+			if (ownedGame.getOwnedGames().contains(game)) {
+				result = true;
+			}
+		} 
+//		else {
+//			throw new NotFoundException();
+//		}
+
+		return result;
 	}
 }
