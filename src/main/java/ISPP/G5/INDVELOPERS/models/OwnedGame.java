@@ -1,6 +1,6 @@
 package ISPP.G5.INDVELOPERS.models;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -20,5 +20,5 @@ public class OwnedGame extends BaseEntity{
 	
 	private Developer buyer;
 	
-	private Collection<Game> ownedGames;
+	private List<Game> ownedGames;
 }
