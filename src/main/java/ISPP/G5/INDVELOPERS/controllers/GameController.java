@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
@@ -53,10 +54,19 @@ public class GameController {
 	
 	@PostMapping("/add")
 	public ResponseEntity<String> addGame(@RequestBody Game game) throws NotFoundException {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
+		boolean isPremium = false;
+		if(developer.getIsPremium() != null) {
+			isPremium = developer.getIsPremium();
+		}
 		try {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-			game.setCreator(this.developerService.findByUsername(userDetails.getUsername()));
+			if(isPremium == false && game.getPrice() != 0.0) 
+				throw new IllegalArgumentException("Only premium developers can sell non-free games");
+			if(isPremium == false && (this.gameService.findByMyGames(developer.getId()).size() + 1 == 6))
+				throw new IllegalArgumentException("Non premium developers only can have a maximun of five games published");
+			game.setCreator(developer);
 			return ResponseEntity.status(HttpStatus.CREATED).body(this.gameService.addGame(game));
 		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -65,8 +75,13 @@ public class GameController {
 	
 	@PutMapping("/edit/{id}")
 	public ResponseEntity<String> updateGame(@PathVariable String id, @RequestBody Game game) throws NotFoundException{
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
 		Game gameData = this.gameService.findById(id);
 		try {
+			if (!game.getCreator().getId().equals(developer.getId())) 
+				throw new IllegalArgumentException("Only the creator of the game can edit it");
 			gameData.setTitle(game.getTitle());
 			gameData.setDescription(game.getDescription());
 			gameData.setRequirements(game.getRequirements());
@@ -81,7 +96,14 @@ public class GameController {
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<HttpStatus> deleteGameById(@PathVariable("id") String id) throws NotFoundException{
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
+		Game game = this.gameService.findById(id);
 		try {
+			if (!game.getCreator().getId().equals(developer.getId())) { 
+				throw new IllegalArgumentException("Only the creator of the game can remove it");
+			}
 			this.gameService.deleteGame(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch(IllegalArgumentException e) {
@@ -93,7 +115,7 @@ public class GameController {
 	public ResponseEntity<List<Game>> getGameByTitle(@PathVariable String title) {
 		try {
 			return ResponseEntity.ok(this.gameService.findByTitle(title));
-		} catch(IllegalArgumentException | NotFoundException e) {
+		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
@@ -102,7 +124,7 @@ public class GameController {
 	public ResponseEntity<List<Game>> getGameByDeveloper(@PathVariable String developerUsername) {
 		try {
 			return ResponseEntity.ok(this.gameService.findByDeveloper(developerUsername));
-		} catch(IllegalArgumentException | NotFoundException e) {
+		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
@@ -110,7 +132,10 @@ public class GameController {
 	@GetMapping("/findMyGames")
 	public ResponseEntity<List<Game>> getGameByMyGames() {
 		try {
-			return ResponseEntity.ok(this.gameService.findByMyGames());
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			Developer developer = this.developerService.findByUsername(userDetails.getUsername());
+			return ResponseEntity.ok(this.gameService.findByMyGames(developer.getId()));
 		} catch(IllegalArgumentException | NotFoundException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}

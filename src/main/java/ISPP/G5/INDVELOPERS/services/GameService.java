@@ -23,7 +23,7 @@ public class GameService {
 	
 	@Autowired
 	private GameRepository gameRepository;
-	
+	@Autowired
 	private DeveloperService developerService;
 	
 	
@@ -31,65 +31,32 @@ public class GameService {
 		return gameRepository.findAll();
 	}
 	
-	public String addGame(Game game) throws NotFoundException {
+	public String addGame(Game game){
 		Assert.notNull(game);
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
-		boolean isPremium = false;
-		
-		if(developer.getIsPremium() != null) {
-			isPremium = developer.getIsPremium();
-		}
-
-		if(isPremium == false && game.getPrice() != 0.0) 
-			throw new IllegalArgumentException("Only premium developers can sell non-free games");
-		if(isPremium == false && (findByMyGames().size() + 1 == 6))
-			throw new IllegalArgumentException("Non premium developers only can have a maximun of five games published");
-		
 		this.gameRepository.save(game);
 		return "Added game with title:"+ game.getTitle();
 	}
 
-	public List<Game> findByTitle(String title) throws NotFoundException {
+	public List<Game> findByTitle(String title) {
 		return findAll().stream().filter(g -> g.getTitle().contains(title)).collect(Collectors.toList());
 	}
 	
-	public List<Game> findByDeveloper(String name) throws NotFoundException {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
-		return gameRepository.findByDeveloper(developer.getId());
+	public List<Game> findByDeveloper(String developerId){
+		return gameRepository.findByDeveloper(developerId);
 	}
 	
-	public List<Game> findByMyGames() throws NotFoundException {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
-		return gameRepository.findByMyGames(developer.getId());
+	public List<Game> findByMyGames(String developerId) throws NotFoundException {
+		return gameRepository.findByMyGames(developerId);
 	}
 	
-	public String updateGame(Game game) throws NotFoundException {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
-		if (!game.getCreator().getId().equals(developer.getId())) 
-			throw new IllegalArgumentException("Only the creator of the game can edit it");
-		
+	public String updateGame(Game game){
+		Assert.notNull(game);
 		this.gameRepository.save(game);
 		return "Updated game with title:"+ game.getTitle();
 	}
 	
-	public void deleteGame(String id) throws NotFoundException {
-		Game game = findById(id);
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
-		if (!game.getCreator().getId().equals(developer.getId())) { 
-			throw new IllegalArgumentException("Only the creator of the game can remove it");
-		} else {
-			this.gameRepository.deleteById(id);
-		}
+	public void deleteGame(String id){
+		this.gameRepository.deleteById(id);
 	}
 	
 	public Game findById(String id) throws NotFoundException {
