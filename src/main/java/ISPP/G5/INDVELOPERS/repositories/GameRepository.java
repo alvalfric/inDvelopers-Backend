@@ -13,9 +13,6 @@ import ISPP.G5.INDVELOPERS.models.Game;
 
 @Repository
 public interface GameRepository extends MongoRepository<Game,String>{
-
-	@Query("{ 'title' : ?0 }")
-	Optional<Game> findByTitle(String title);
 	
 	@Query("{ 'creator.id' : ?0 }")
 	List<Game> findByDeveloper(String developerId);

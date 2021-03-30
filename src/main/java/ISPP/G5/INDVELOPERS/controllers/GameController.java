@@ -34,9 +34,6 @@ public class GameController {
 	private GameService gameService;
 	
 	@Autowired
-	private GameRepository gameRepository;
-	
-	@Autowired
 	private DeveloperService developerService;
 	
 	@Autowired
@@ -93,7 +90,7 @@ public class GameController {
 	}
 	
 	@GetMapping("/findByTitle/{title}")
-	public ResponseEntity<Game> getGameByTitle(@PathVariable String title) {
+	public ResponseEntity<List<Game>> getGameByTitle(@PathVariable String title) {
 		try {
 			return ResponseEntity.ok(this.gameService.findByTitle(title));
 		} catch(IllegalArgumentException | NotFoundException e) {
@@ -114,6 +111,15 @@ public class GameController {
 	public ResponseEntity<List<Game>> getGameByMyGames() {
 		try {
 			return ResponseEntity.ok(this.gameService.findByMyGames());
+		} catch(IllegalArgumentException | NotFoundException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<Game> getGameById(@PathVariable String id) {
+		try {
+			return ResponseEntity.ok(this.gameService.findById(id));
 		} catch(IllegalArgumentException | NotFoundException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
