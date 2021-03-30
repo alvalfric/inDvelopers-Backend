@@ -51,8 +51,10 @@ public class OwnedGameServiceTests {
 	@Test
 	void shouldFindOwnedGames() {
 		OwnedGame ownedGameAlvaro = this.ownedGameService.findByDeveloper(alvaro);
+		List<Game> games = new ArrayList<Game>();
+		games.add(game1);
 		assertThat(ownedGameAlvaro.getBuyer()).isEqualTo(alvaro);
-		assertThat(ownedGameAlvaro.getOwnedGames()).isEqualTo(new ArrayList<Game>(List.of(game1)));
+		assertThat(ownedGameAlvaro.getOwnedGames()).isEqualTo(new ArrayList<Game>(games));
 	}
     
 	@Test
