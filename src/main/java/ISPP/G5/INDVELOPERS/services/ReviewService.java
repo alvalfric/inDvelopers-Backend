@@ -32,7 +32,7 @@ public class ReviewService {
 		return repository.findById(id).orElseThrow(NotFoundException::new);
 	}
 
-	public String addReview(final Review review, final Game game, final Developer developer) throws NotFoundException {
+	public String addReview(final Review review, final Game game, final Developer developer) {
 		Assert.notNull(review);
 		review.setDeveloper(developer);
 		review.setGame(game);
@@ -45,7 +45,7 @@ public class ReviewService {
 		return "Added Review with Id: " + review.getId();
 	}
 
-	public String updateReview(final Review review) throws NotFoundException {
+	public String updateReview(final Review review) {
 		if (!repository.findById(review.getId()).isPresent())
 			throw new IllegalArgumentException("Error Id: Review with id " + review.getId() + " do not exist");
 
@@ -53,7 +53,7 @@ public class ReviewService {
 		return "Updated Review with Id: " + review.getId();
 	}
 
-	public String deleteReview(final String id) throws NotFoundException {
+	public String deleteReview(final String id) {
 		if (!repository.findById(id).isPresent())
 			return "Error Id: Review with id " + id + " do not exist";
 

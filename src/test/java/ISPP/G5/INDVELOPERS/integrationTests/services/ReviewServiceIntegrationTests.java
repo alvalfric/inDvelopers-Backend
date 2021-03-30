@@ -1,5 +1,5 @@
 
-package ISPP.G5.INDVELOPERS.services;
+package ISPP.G5.INDVELOPERS.integrationTests.services;
 
 import java.util.List;
 
@@ -18,9 +18,10 @@ import ISPP.G5.INDVELOPERS.models.Review;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
 import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
+import ISPP.G5.INDVELOPERS.services.ReviewService;
 
 @SpringBootTest
-public class ReviewServiceTests {
+public class ReviewServiceIntegrationTests {
 
 	@Autowired
 	protected ReviewRepository		reviewRepository;

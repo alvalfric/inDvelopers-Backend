@@ -79,8 +79,6 @@ public class ReviewController {
 		if (!review.getDeveloper().getId().equals(developer.getId()))
 			throw new IllegalArgumentException("Only the creator of the review can edit it");
 		try {
-			r.setDeveloper(review.getDeveloper());
-			r.setGame(review.getGame());
 			r.setScore(review.getScore());
 			r.setText(review.getText());
 			return new ResponseEntity<>(service.updateReview(r), HttpStatus.OK);
@@ -89,7 +87,7 @@ public class ReviewController {
 		}
 	}
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<HttpStatus> deleteReview(@PathVariable final String id) throws NotFoundException {
+	public ResponseEntity<HttpStatus> deleteReview(@PathVariable("id") final String id) throws NotFoundException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Developer developer = developerService.findByUsername(userDetails.getUsername());
