@@ -76,7 +76,9 @@ class OwnedGameControllerTests {
     @WithMockUser(value = "spring")
 	    @Test
 	void testFindOwnedGamesWithGames() throws Exception {
-		given(this.ownedGameService.findAllMyOwnedGames(dummyDeveloperWithoutGames)).willReturn(new ArrayList<Game>(List.of(dummyGame1)));
+		List<Game> games = new ArrayList<Game>();
+		games.add(dummyGame1);
+		given(this.ownedGameService.findAllMyOwnedGames(dummyDeveloperWithoutGames)).willReturn(games);
 	    
 		mockMvc.perform(get("/ownedGames/findOwnedGames")
 	            .with(csrf())
@@ -100,8 +102,11 @@ class OwnedGameControllerTests {
     @WithMockUser(value = "spring")
 	    @Test
 	void testBuyAlreadyOwnedGame() throws Exception {
+		List<Game> games = new ArrayList<Game>();
+		games.add(dummyGame1);
+    	
 		given(this.ownedGameService.buyGameByDeveloperAndGameId(dummyDeveloperWithoutGames, dummyGame1.getId())).willReturn("Buyed game with title: "+ dummyGame1.getTitle());
-	    given(this.ownedGameService.findByDeveloper(dummyDeveloperWithoutGames)).willReturn(new OwnedGame(dummyDeveloperWithoutGames, new ArrayList<Game>(List.of(dummyGame1))));
+	    given(this.ownedGameService.findByDeveloper(dummyDeveloperWithoutGames)).willReturn(new OwnedGame(dummyDeveloperWithoutGames, games));
 		given(this.gameService.findById(dummyGame1.getId())).willReturn(dummyGame1);
 		
 		mockMvc.perform(post("/ownedGames/buy?gameId={gameId}", dummyGame1.getId())
@@ -113,8 +118,11 @@ class OwnedGameControllerTests {
     @WithMockUser(value = "spring")
     	@Test
 	void testBuyWrongGame() throws Exception {
+		List<Game> games = new ArrayList<Game>();
+		games.add(dummyGame1);
+		
 		given(this.ownedGameService.buyGameByDeveloperAndGameId(dummyDeveloperWithoutGames, dummyGame1.getId())).willReturn("Buyed game with title: "+ dummyGame1.getTitle());
-	    given(this.ownedGameService.findByDeveloper(dummyDeveloperWithoutGames)).willReturn(new OwnedGame(dummyDeveloperWithoutGames, new ArrayList<Game>(List.of(dummyGame1))));
+	    given(this.ownedGameService.findByDeveloper(dummyDeveloperWithoutGames)).willReturn(new OwnedGame(dummyDeveloperWithoutGames, games));
 		given(this.gameService.findById(dummyGame1.getId())).willReturn(null);
 		
 		mockMvc.perform(post("/ownedGames/buy?gameId={gameId}", dummyGame1.getId())

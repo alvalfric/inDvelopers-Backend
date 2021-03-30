@@ -67,37 +67,45 @@ public class OwnedGameServiceTests {
 	@Test
 	void shouldBuyAGameForUserWithPurchasedGame() throws NotFoundException {
 		OwnedGame ownedGameAlvaro = this.ownedGameService.findByDeveloper(alvaro);
+		List<Game> games = new ArrayList<Game>();
+		games.add(game1);
 		assertThat(ownedGameAlvaro.getBuyer()).isEqualTo(alvaro);
-		assertThat(ownedGameAlvaro.getOwnedGames()).isEqualTo(new ArrayList<Game>(List.of(game1)));
+		assertThat(ownedGameAlvaro.getOwnedGames()).isEqualTo(games);
 				
 		assertThat(this.ownedGameService.buyGameByDeveloperAndGameId(alvaro, game2.getId()).equals("Buyed game with title: "+ game2.getTitle()));
 		
 		ownedGameAlvaro = this.ownedGameService.findByDeveloper(alvaro);
-		assertThat(ownedGameAlvaro.getOwnedGames()).isEqualTo(new ArrayList<Game>(List.of(game1,game2)));
+		games.add(game2);
+		assertThat(ownedGameAlvaro.getOwnedGames()).isEqualTo(games);
 	}
 	
 	@Test
 	void shouldBuyAGameForUserWithoutGames() throws NotFoundException {
 		OwnedGame ownedGameDummyDeveloper = this.ownedGameService.findByDeveloper(dummyDeveloper);
+		List<Game> games = new ArrayList<Game>();
+		games.add(game1);
 		assertThat(ownedGameDummyDeveloper.getBuyer()).isEqualTo(dummyDeveloper);
 		assertThat(ownedGameDummyDeveloper.getOwnedGames()).isEqualTo(new ArrayList<Game>());
 				
 		assertThat(this.ownedGameService.buyGameByDeveloperAndGameId(dummyDeveloper, game1.getId()).equals("Buyed game with title: "+ game1.getTitle()));
 		
 		ownedGameDummyDeveloper = this.ownedGameService.findByDeveloper(dummyDeveloper);
-		assertThat(ownedGameDummyDeveloper.getOwnedGames()).isEqualTo(new ArrayList<Game>(List.of(game1)));
+		assertThat(ownedGameDummyDeveloper.getOwnedGames()).isEqualTo(games);
 	}
 	
 	@Test
 	void shouldNotBuyTwoGamesWithSameTitle() throws NotFoundException {
 		OwnedGame ownedGameAlvaro = this.ownedGameService.findByDeveloper(alvaro);
+		List<Game> games = new ArrayList<Game>();
+		games.add(game1);
 		assertThat(ownedGameAlvaro.getBuyer()).isEqualTo(alvaro);
-		assertThat(ownedGameAlvaro.getOwnedGames()).isEqualTo(new ArrayList<Game>(List.of(game1)));
+		assertThat(ownedGameAlvaro.getOwnedGames()).isEqualTo(games);
 				
 		assertThat(this.ownedGameService.buyGameByDeveloperAndGameId(alvaro, game2.getId()).equals("Buyed game with title: "+ game2.getTitle()));
 		
+		games.add(game2);
 		ownedGameAlvaro = this.ownedGameService.findByDeveloper(alvaro);
-		assertThat(ownedGameAlvaro.getOwnedGames()).isEqualTo(new ArrayList<Game>(List.of(game1,game2)));
+		assertThat(ownedGameAlvaro.getOwnedGames()).isEqualTo(games);
 		
 		Assertions.assertThrows(IllegalArgumentException.class, () ->{
 			this.ownedGameService.buyGameByDeveloperAndGameId(alvaro, game2.getId());
@@ -107,8 +115,10 @@ public class OwnedGameServiceTests {
 	@Test
 	void shouldThrowExceptionNotExceptionFotNotFoundGame() throws NotFoundException {
 		OwnedGame ownedGameAlvaro = this.ownedGameService.findByDeveloper(alvaro);
+		List<Game> games = new ArrayList<Game>();
+		games.add(game1);
 		assertThat(ownedGameAlvaro.getBuyer()).isEqualTo(alvaro);
-		assertThat(ownedGameAlvaro.getOwnedGames()).isEqualTo(new ArrayList<Game>(List.of(game1)));
+		assertThat(ownedGameAlvaro.getOwnedGames()).isEqualTo(games);
 		
 		Assertions.assertThrows(NotFoundException.class, () ->{
 			this.ownedGameService.buyGameByDeveloperAndGameId(alvaro, "estejuegonoexiste");
@@ -116,9 +126,11 @@ public class OwnedGameServiceTests {
 	}
 	
 	@Test
-	void shouldFindListOfOwnedGmes() throws NotFoundException {
+	void shouldFindListOfOwnedGames() throws NotFoundException {
 		List<Game> games = this.ownedGameService.findAllMyOwnedGames(alvaro);
-		assertThat(games).isEqualTo(new ArrayList<Game>(List.of(game1)));
+		List<Game> checkListGames = new ArrayList<Game>();
+		checkListGames.add(game1);
+		assertThat(games).isEqualTo(checkListGames);
 	}
 
 }
