@@ -72,4 +72,30 @@ public class OwnedGameControllerIntegration {
 			this.ownedGameController.buyGame("wrongid");
 		});
 	}
+	
+	@WithMockUser(username = "alvaro", authorities = { "USER" })
+	@Test
+	void testCheckOwnedGameTrue() throws Exception {
+		Game game = this.gameService.findByTitle("25 caminos oscuros").get(0);
+		ResponseEntity<Boolean> responseBuyGame = this.ownedGameController.checkGameOwned(game.getId());
+		Assertions.assertEquals(responseBuyGame.getStatusCodeValue(), 200);
+		Assertions.assertEquals(responseBuyGame.getBody(), true);
+	}
+	
+	@WithMockUser(username = "alvaro", authorities = { "USER" })
+	@Test
+	void testCheckOwnedGameFalse() throws Exception {
+		Game game = this.gameService.findByTitle("Almas oscuras").get(0);
+		ResponseEntity<Boolean> responseBuyGame = this.ownedGameController.checkGameOwned(game.getId());
+		Assertions.assertEquals(responseBuyGame.getStatusCodeValue(), 200);
+		Assertions.assertEquals(responseBuyGame.getBody(), false);
+	}
+	
+	@WithMockUser(username = "alvaro", authorities = { "USER" })
+	@Test
+	void testCheckOwnedGameWrongGameId() throws Exception {
+		Assertions.assertThrows(NotFoundException.class, () -> {
+			this.ownedGameController.checkGameOwned("wrongid");
+		});
+	}
 }
