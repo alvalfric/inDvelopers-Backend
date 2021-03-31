@@ -45,17 +45,17 @@ public class ReviewController {
 	@GetMapping("/game/{gameId}")
 	public ResponseEntity<List<Review>> findAllByGame(@PathVariable("gameId") final String gameId) {
 		try {
-			return ResponseEntity.ok(service.findAllByGameId(gameId));
+			return new ResponseEntity<>(service.findAllByGameId(gameId), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	@GetMapping("/{id}")
-	public ResponseEntity<Review> findById(@PathVariable("id") final String id) throws NotFoundException {
+	public ResponseEntity<Review> findById(@PathVariable("id") final String id) {
 		try {
-			return ResponseEntity.ok(service.findById(id));
+			return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	@PostMapping("/game/{gameId}/add")
@@ -65,9 +65,9 @@ public class ReviewController {
 		Developer developer = developerService.findByUsername(userDetails.getUsername());
 		Game game = gameService.findById(gameId);
 		try {
-			return ResponseEntity.status(HttpStatus.CREATED).body(service.addReview(review, game, developer));
+			return new ResponseEntity<>(service.addReview(review, game, developer), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	@PutMapping("/edit/{id}")
@@ -87,17 +87,16 @@ public class ReviewController {
 		}
 	}
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<HttpStatus> deleteReview(@PathVariable("id") final String id) throws NotFoundException {
+	public ResponseEntity<String> deleteReview(@PathVariable("id") final String id) throws NotFoundException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Developer developer = developerService.findByUsername(userDetails.getUsername());
 		if (!service.findById(id).getDeveloper().getId().equals(developer.getId()))
 			throw new IllegalArgumentException("Only the creator of the review can remove it");
 		try {
-			service.deleteReview(id);
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(service.deleteReview(id), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 }

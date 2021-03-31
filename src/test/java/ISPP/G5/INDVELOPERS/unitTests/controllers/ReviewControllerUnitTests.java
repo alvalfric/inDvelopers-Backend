@@ -1,12 +1,14 @@
 
 package ISPP.G5.INDVELOPERS.unitTests.controllers;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
@@ -16,15 +18,19 @@ import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import ISPP.G5.INDVELOPERS.controllers.ReviewController;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.Review;
@@ -40,16 +46,13 @@ public class ReviewControllerUnitTests {
 	@Autowired
 	private MockMvc		mvc;
 
-	@InjectMocks
-	ReviewController	controller;
-
-	@Mock
+	@MockBean
 	ReviewService		service;
 
-	@Mock
+	@MockBean
 	DeveloperService	devService;
 
-	@Mock
+	@MockBean
 	GameService			gameService;
 
 	Developer			developer;
@@ -75,17 +78,15 @@ public class ReviewControllerUnitTests {
 	void showReviewListByGameTest() throws Exception {
 		when(service.findAllByGameId("ID")).thenReturn(Lists.list(r1, r2));
 
-		mvc.perform(get("/reviews/game/ID")).andExpect(status().isOk()).andExpect(content().json("[]"));
+		mvc.perform(get("/reviews/game/ID")).andExpect(status().isOk()).andExpect(jsonPath("$[0].id").value("rev1ID"));
 	}
 
-	
-	/*
 	@Test
 	@DisplayName("Show review by id test")
 	void showReviewByIdTest() throws Exception {
 		when(service.findById("ID")).thenReturn(r1);
 
-		mvc.perform(get("/reviews/ID")).andExpect(status().isOk()).andExpect(content().json("{}"));
+		mvc.perform(get("/reviews/ID")).andExpect(status().isOk()).andExpect(jsonPath("$.id").value("rev1ID"));
 	}
 
 	@Test
@@ -93,24 +94,26 @@ public class ReviewControllerUnitTests {
 	@WithMockUser(value = "spring")
 	void createReviewForAGame() throws Exception {
 		Review rev = new Review("Text1", 1., null, null);
+		String bodyContent = objectToJsonStringContent(rev);
 
-		when(service.addReview(rev, game, developer)).thenReturn("Added Review");
+		when(service.addReview(any(Review.class), any(Game.class), any(Developer.class))).thenReturn("Added Review");
 		when(gameService.findById("ID")).thenReturn(game);
 		when(devService.findByUsername("spring")).thenReturn(developer);
 
-		mvc.perform(post("/reviews/game/ID/add", rev)).andExpect(status().isOk()).andExpect(content().string("Added Review"));
+		mvc.perform(post("/reviews/game/ID/add").contentType(MediaType.APPLICATION_JSON).content(bodyContent)).andExpect(status().isOk()).andExpect(content().string("Added Review"));
 	}
 
 	@Test
 	@DisplayName("Edit review test")
 	@WithMockUser(value = "spring")
 	void editReview() throws Exception {
-		Review rev = new Review("Text1", 1., null, null);
+		String bodyContent = objectToJsonStringContent(r1);
 
-		when(service.updateReview(rev)).thenReturn("Edited Review");
+		when(service.updateReview(any(Review.class))).thenReturn("Edited Review");
+		when(service.findById("ID")).thenReturn(r1);
 		when(devService.findByUsername("spring")).thenReturn(developer);
 
-		mvc.perform(put("/reviews/edit/ID", rev)).andExpect(status().isOk()).andExpect(content().string("Edited Review"));
+		mvc.perform(put("/reviews/edit/ID").contentType(MediaType.APPLICATION_JSON).content(bodyContent)).andExpect(status().isOk()).andExpect(content().string("Edited Review"));
 	}
 
 	@Test
@@ -123,5 +126,13 @@ public class ReviewControllerUnitTests {
 		when(devService.findByUsername("spring")).thenReturn(developer);
 
 		mvc.perform(delete("/reviews/delete/ID")).andExpect(status().isOk()).andExpect(content().string("Deleted Review"));
-	}*/
+	}
+
+	private String objectToJsonStringContent(final Object o) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+		ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+		String requestJson = ow.writeValueAsString(o);
+		return requestJson;
+	}
 }

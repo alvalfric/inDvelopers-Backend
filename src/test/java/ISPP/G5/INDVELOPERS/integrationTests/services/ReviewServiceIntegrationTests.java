@@ -105,10 +105,8 @@ public class ReviewServiceIntegrationTests {
 	@Test
 	@DisplayName("Finding review by wrong id test")
 	public void testingFindByWrongIdReturnNull() throws NotFoundException {
-		String wrongId = "WrongID";
-		Assertions.assertThatThrownBy(() -> {
-			reviewService.findById(wrongId);
-		}).isInstanceOf(NotFoundException.class);
+		Review review = reviewService.findById("WrongID");
+		Assertions.assertThat(review).isNull();
 	}
 
 	@Test

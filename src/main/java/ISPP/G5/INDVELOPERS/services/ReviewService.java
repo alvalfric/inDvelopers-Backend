@@ -4,7 +4,6 @@ package ISPP.G5.INDVELOPERS.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
@@ -28,8 +27,8 @@ public class ReviewService {
 		return repository.findAllByGameId(gameId);
 	}
 
-	public Review findById(final String id) throws NotFoundException {
-		return repository.findById(id).orElseThrow(NotFoundException::new);
+	public Review findById(final String id) {
+		return repository.findById(id).orElse(null);
 	}
 
 	public String addReview(final Review review, final Game game, final Developer developer) {
@@ -55,7 +54,7 @@ public class ReviewService {
 
 	public String deleteReview(final String id) {
 		if (!repository.findById(id).isPresent())
-			return "Error Id: Review with id " + id + " do not exist";
+			throw new IllegalArgumentException("Error Id: Review with id " + id + " do not exist");
 
 		repository.deleteById(id);
 		return "Deleted Review with Id: " + id;
