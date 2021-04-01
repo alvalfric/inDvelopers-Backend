@@ -43,8 +43,10 @@ public class ReviewServiceUnitTests {
 	@DisplayName("Finding all reviews test")
 	void testFindAll() {
 		List<Review> res;
-
-		when(repository.findAll()).thenReturn(Lists.list(r1, r2));
+		List<Review> revs = new ArrayList<>();
+		revs.add(r1);
+		revs.add(r2);
+		when(repository.findAll()).thenReturn(revs);
 
 		res = service.findAll();
 
