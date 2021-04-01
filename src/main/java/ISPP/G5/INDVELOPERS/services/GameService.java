@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,7 +28,7 @@ public class GameService {
 		return gameRepository.findAll();
 	}
 
-	public String addGame(Game game) throws NotFoundException {
+	public String addGame(Game game) {
 		Assert.notNull(game);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -53,25 +52,25 @@ public class GameService {
 		return "Added game with title:" + game.getTitle();
 	}
 
-	public List<Game> findByTitle(String title) throws NotFoundException {
+	public List<Game> findByTitle(String title) {
 		return findAll().stream().filter(g -> g.getTitle().contains(title)).collect(Collectors.toList());
 	}
 
-	public List<Game> findByDeveloper(String name) throws NotFoundException {
+	public List<Game> findByDeveloper(String name) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
 		return gameRepository.findByDeveloper(developer.getId());
 	}
 
-	public List<Game> findByMyGames() throws NotFoundException {
+	public List<Game> findByMyGames() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
 		return gameRepository.findByMyGames(developer.getId());
 	}
 
-	public String updateGame(Game game) throws NotFoundException {
+	public String updateGame(Game game) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
@@ -83,7 +82,7 @@ public class GameService {
 		return "Updated game with title:" + game.getTitle();
 	}
 
-	public void deleteGame(String id) throws NotFoundException {
+	public void deleteGame(String id) {
 		Game game = findById(id);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -95,8 +94,8 @@ public class GameService {
 		}
 	}
 
-	public Game findById(String id) throws NotFoundException {
-		return this.gameRepository.findById(id).orElseThrow(NotFoundException::new);
+	public Game findById(String id) {
+		return this.gameRepository.findById(id).orElse(null);
 	}
 
 	public boolean checkGameTitle(String gameTitle) {

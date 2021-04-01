@@ -60,11 +60,12 @@ public class ReviewController {
 	}
 	@PostMapping("/game/{gameId}/add")
 	public ResponseEntity<String> addReview(@RequestBody final Review review, @PathVariable("gameId") final String gameId) throws NotFoundException {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		Developer developer = developerService.findByUsername(userDetails.getUsername());
-		Game game = gameService.findById(gameId);
 		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			Developer developer = developerService.findByUsername(userDetails.getUsername());
+			Game game = gameService.findById(gameId);
+
 			return new ResponseEntity<>(service.addReview(review, game, developer), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
@@ -72,13 +73,14 @@ public class ReviewController {
 	}
 	@PutMapping("/edit/{id}")
 	public ResponseEntity<String> editReview(@RequestBody final Review review, @PathVariable("id") final String id) throws NotFoundException {
-		Review r = service.findById(id);
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		Developer developer = developerService.findByUsername(userDetails.getUsername());
-		if (!review.getDeveloper().getId().equals(developer.getId()))
-			throw new IllegalArgumentException("Only the creator of the review can edit it");
 		try {
+			Review r = service.findById(id);
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			Developer developer = developerService.findByUsername(userDetails.getUsername());
+			if (!review.getDeveloper().getId().equals(developer.getId()))
+				throw new IllegalArgumentException("Only the creator of the review can edit it");
+
 			r.setScore(review.getScore());
 			r.setText(review.getText());
 			return new ResponseEntity<>(service.updateReview(r), HttpStatus.OK);
@@ -88,12 +90,13 @@ public class ReviewController {
 	}
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<String> deleteReview(@PathVariable("id") final String id) throws NotFoundException {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		Developer developer = developerService.findByUsername(userDetails.getUsername());
-		if (!service.findById(id).getDeveloper().getId().equals(developer.getId()))
-			throw new IllegalArgumentException("Only the creator of the review can remove it");
 		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			Developer developer = developerService.findByUsername(userDetails.getUsername());
+			if (!service.findById(id).getDeveloper().getId().equals(developer.getId()))
+				throw new IllegalArgumentException("Only the creator of the review can remove it");
+
 			return new ResponseEntity<>(service.deleteReview(id), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);

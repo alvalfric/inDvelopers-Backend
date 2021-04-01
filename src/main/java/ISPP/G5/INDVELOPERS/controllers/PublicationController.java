@@ -1,10 +1,8 @@
 package ISPP.G5.INDVELOPERS.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
@@ -32,20 +29,23 @@ public class PublicationController {
 
 	@Autowired
 	private PublicationService publicationService;
-	
+
 	@Autowired
 	private DeveloperService developService;
 
 	@GetMapping("/findAll")
-	public List<Publication> getPublications() {
-		return this.publicationService.findAll();
-
+	public ResponseEntity<List<Publication>> getPublications() {
+		try {
+			return ResponseEntity.ok(publicationService.findAll());
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
 	}
 
 	@GetMapping("/findByName")
 	public ResponseEntity<List<Publication>> getPublicationsByUsername() {
 		try {
-			return ResponseEntity.ok(this.publicationService.findByUSername());
+			return ResponseEntity.ok(publicationService.findByUSername());
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
@@ -54,35 +54,35 @@ public class PublicationController {
 	@GetMapping("/findById/{id}")
 	public ResponseEntity<Publication> getPublicationById(@PathVariable String id) {
 		try {
-			return ResponseEntity.ok(this.publicationService.findById(id));
+			return ResponseEntity.ok(publicationService.findById(id));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
 
 	@PostMapping("/add")
-	public String addPrueba(@RequestBody Publication publication) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) auth.getPrincipal();
-		String user = userDetails.getUsername();
+	public ResponseEntity<String> addPrueba(@RequestBody Publication publication) {
 		try {
-			Developer developer = this.developService.findByUsername(user);
-			return this.publicationService.addPublication(publication, developer);
-		}catch(NotFoundException e) {
-			throw new IllegalArgumentException("Publication couldn't be created correctly.");
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) auth.getPrincipal();
+			String user = userDetails.getUsername();
+			Developer developer = developService.findByUsername(user);
+			return new ResponseEntity<>(publicationService.addPublication(publication, developer),HttpStatus.OK);
+		}catch(IllegalArgumentException e) {
+			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
 		}
-		
-		
+
+
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Void> deletePublicationById(@PathVariable String id) {
+	public ResponseEntity<String> deletePublicationById(@PathVariable String id) {
 		try {
-			Publication p = this.publicationService.findById(id);
-			this.publicationService.deletePublication(p);
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			Publication p = publicationService.findById(id);
+
+			return new ResponseEntity<>(publicationService.deletePublication(p),HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
-			throw new IllegalArgumentException("You don't have permissions to perform this action.");
+			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
 		}
 
 	}

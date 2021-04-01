@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ISPP.G5.INDVELOPERS.models.Game;
-import ISPP.G5.INDVELOPERS.repositories.GameRepository;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
 import ISPP.G5.INDVELOPERS.services.GameService;
 
@@ -32,97 +31,97 @@ public class GameController {
 
 	@Autowired
 	private GameService gameService;
-	
+
 	@Autowired
 	private DeveloperService developerService;
-	
+
 	@Autowired
 	public GameController(final GameService gameService, final DeveloperService developerService) {
 		this.gameService = gameService;
 		this.developerService = developerService;
 	}
-	
+
 	@GetMapping("/findAll")
 	public ResponseEntity<List<Game>> findAll() {
 		try {
-			return ResponseEntity.ok(this.gameService.findAll());
+			return ResponseEntity.ok(gameService.findAll());
 		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-	
+
 	@PostMapping("/add")
 	public ResponseEntity<String> addGame(@RequestBody Game game) throws NotFoundException {
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-			game.setCreator(this.developerService.findByUsername(userDetails.getUsername()));
-			return ResponseEntity.status(HttpStatus.CREATED).body(this.gameService.addGame(game));
+			game.setCreator(developerService.findByUsername(userDetails.getUsername()));
+			return ResponseEntity.status(HttpStatus.CREATED).body(gameService.addGame(game));
 		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-	
+
 	@PutMapping("/edit/{id}")
-	public ResponseEntity<String> updateGame(@PathVariable String id, @RequestBody Game game) throws NotFoundException{
-		Game gameData = this.gameService.findById(id);
+	public ResponseEntity<String> updateGame(@PathVariable String id, @RequestBody Game game) {
 		try {
+			Game gameData = gameService.findById(id);
 			gameData.setTitle(game.getTitle());
 			gameData.setDescription(game.getDescription());
 			gameData.setRequirements(game.getRequirements());
 			gameData.setPrice(game.getPrice());
 			gameData.setIsNotMalware(game.getIsNotMalware());
 			gameData.setIdCloud(game.getIdCloud());
-			 return new ResponseEntity<>(this.gameService.updateGame(gameData), HttpStatus.OK);
+			return new ResponseEntity<>(gameService.updateGame(gameData), HttpStatus.OK);
 		} catch(IllegalArgumentException e){
-			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<HttpStatus> deleteGameById(@PathVariable("id") String id) throws NotFoundException{
 		try {
-			this.gameService.deleteGame(id);
+			gameService.deleteGame(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch(IllegalArgumentException e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
 	@GetMapping("/findByTitle/{title}")
 	public ResponseEntity<List<Game>> getGameByTitle(@PathVariable String title) {
 		try {
-			return ResponseEntity.ok(this.gameService.findByTitle(title));
-		} catch(IllegalArgumentException | NotFoundException e) {
+			return ResponseEntity.ok(gameService.findByTitle(title));
+		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-	
+
 	@GetMapping("/findByDeveloper/{developerUsername}")
 	public ResponseEntity<List<Game>> getGameByDeveloper(@PathVariable String developerUsername) {
 		try {
-			return ResponseEntity.ok(this.gameService.findByDeveloper(developerUsername));
-		} catch(IllegalArgumentException | NotFoundException e) {
+			return ResponseEntity.ok(gameService.findByDeveloper(developerUsername));
+		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-	
+
 	@GetMapping("/findMyGames")
 	public ResponseEntity<List<Game>> getGameByMyGames() {
 		try {
-			return ResponseEntity.ok(this.gameService.findByMyGames());
-		} catch(IllegalArgumentException | NotFoundException e) {
+			return ResponseEntity.ok(gameService.findByMyGames());
+		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Game> getGameById(@PathVariable String id) {
 		try {
-			return ResponseEntity.ok(this.gameService.findById(id));
-		} catch(IllegalArgumentException | NotFoundException e) {
+			return ResponseEntity.ok(gameService.findById(id));
+		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-	
+
 }
