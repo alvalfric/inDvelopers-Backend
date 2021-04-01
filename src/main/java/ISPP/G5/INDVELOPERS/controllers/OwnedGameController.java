@@ -80,8 +80,8 @@ public class OwnedGameController {
 		}
 	}
 
-	@GetMapping("/checkGameOwned")
-	public ResponseEntity<Boolean> checkGameOwned(@RequestParam String gameId) throws NotFoundException {
+	@GetMapping("/checkGameOwned/{gameId}")
+	public ResponseEntity<Boolean> checkGameOwned(@PathVariable String gameId) throws NotFoundException {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(
 					this.ownedGameService.checkGameOwned(this.developerService.findCurrentDeveloper(), gameId));
