@@ -31,8 +31,9 @@ public class GameService {
 		return gameRepository.findAll();
 	}
 	
-	public String addGame(Game game){
+	public String addGame(Game game, Developer developer){
 		Assert.notNull(game);
+		game.setCreator(developer);
 		this.gameRepository.save(game);
 		return "Added game with title:"+ game.getTitle();
 	}

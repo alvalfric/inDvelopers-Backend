@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -72,24 +73,27 @@ public class GameServiceTests {
 	}
 	
 	@AfterEach
-	void end() {
+	void endAll() {
 		developerRepository.deleteAll();
 		gameRepository.deleteAll();
 	}
 
 
 	@Test
+	@DisplayName("Show game by id test")
 	void shouldFindGameById() throws NotFoundException {
 		Game testGame = this.gameService.findById(game1.getId());
 		assertThat(testGame).isEqualTo(game1);
 	}
 
 	@Test
+	@DisplayName("Fail show game by inexistent id test")
 	void shouldNotFindGameByInexistentId() throws NotFoundException {
 		assertThatThrownBy(() -> this.gameService.findById("unidinexistente")).isInstanceOf(NotFoundException.class);
 	}
 
 	@Test
+	@DisplayName("Show all games test")
 	void shouldFindAll() {
 		List<Game> testGames = this.gameService.findAll();
 		assertThat(testGames).contains(game1);
@@ -97,54 +101,63 @@ public class GameServiceTests {
 	}
 
 	@Test
+	@DisplayName("Add game test")
 	void shouldAddGame() throws NotFoundException {
 		Game testGame = new Game("testGame", "testGameDescription", "testGameRequirements", 0.0, "testGameIdCloud",
-				true, developer1);
-		this.gameService.addGame(testGame);
+				true, null);
+		this.gameService.addGame(testGame, developer1);
 		assertThat(this.gameService.findAll().contains(testGame)).isNotNull();
 	}
 
 	@Test
+	@DisplayName("Fail add game by null game test")
 	void shouldNotAddGameNullGame() {
 		Game testGame = null;
-		assertThatThrownBy(() -> this.gameService.addGame(testGame)).isInstanceOf(IllegalArgumentException.class);
+		assertThatThrownBy(() -> this.gameService.addGame(testGame, developer1)).isInstanceOf(IllegalArgumentException.class);
 	}
 
 	@Test
+	@DisplayName("Show games by title test")
 	void shouldFindGameByTitle() {
 		Game testGame = new Game("testGame", "testGameDescription", "testGameRequirements", 0.0, "testGameIdCloud",
-				true, developer1);
-		this.gameService.addGame(testGame);
+				true, null);
+		this.gameService.addGame(testGame, developer1);
 		assertThat(this.gameService.findByTitle("testGame").get(0)).isEqualTo(testGame);
 	}
 	
 	@Test
+	@DisplayName("Fail show games by inexistent title test")
 	void shouldNotFindGameByTitle(){
 		assertThat(this.gameService.findByTitle("untituloinexistente").size() == 0);
 	}
 	
 	@Test
+	@DisplayName("Show games by developer test")
 	void shouldFindGameByDeveloper(){
 		assertThat(this.gameService.findByDeveloper(developer1.getId())).contains(game1);
 	}
 	
 	@Test
+	@DisplayName("Fail show games by developer inexistent developer test")
 	void shouldNotFindGameByDeveloper(){
 		assertThat(this.gameService.findByDeveloper("unidinexistente")).isEmpty();
 		Assertions.assertFalse(this.gameService.findByDeveloper(developer1.getId()).contains(game2));
 	}
 
 	@Test
+	@DisplayName("Show games by my games test")
 	void shouldFindGameByMyGames(){
 		assertThat(this.gameService.findByDeveloper(developer1.getId())).contains(game1);
 	}
 	
 	@Test
+	@DisplayName("Fail show games by my games test")
 	void shouldNotFindGameByMyGames(){
 		Assertions.assertFalse(this.gameService.findByDeveloper(developer1.getId()).contains(game2));
 	}
 	
 	@Test
+	@DisplayName("Update game test")
 	void shouldUpdateGame(){
 		Game testGame = new Game("testGame", "testGameDescription", "testGameRequirements", 0.0, "testGameIdCloud",
 				true, developer1);
@@ -153,18 +166,21 @@ public class GameServiceTests {
 	}
 	
 	@Test
+	@DisplayName("Fail update game by null game test")
 	void shouldNotUpdateGameNullGame() {
 		Game testGame = null;
 		assertThatThrownBy(() -> this.gameService.updateGame(testGame)).isInstanceOf(IllegalArgumentException.class);
 	}
 	
 	@Test
+	@DisplayName("Delete game test")
 	void shouldDeleteGame(){
 		this.gameService.deleteGame(game1.getId());
 		Assertions.assertFalse(this.gameService.findAll().contains(game1));
 	}
 	
 	@Test
+	@DisplayName("Delete game by null game test")
 	void shouldNotDeleteGameNotFoundException(){
 		assertThatThrownBy(() -> this.gameService.deleteGame(null)).isInstanceOf(IllegalArgumentException.class);
 	}

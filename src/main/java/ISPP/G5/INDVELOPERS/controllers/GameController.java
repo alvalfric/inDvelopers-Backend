@@ -66,8 +66,7 @@ public class GameController {
 				throw new IllegalArgumentException("Only premium developers can sell non-free games");
 			if(isPremium == false && (this.gameService.findByMyGames(developer.getId()).size() + 1 == 6))
 				throw new IllegalArgumentException("Non premium developers only can have a maximun of five games published");
-			game.setCreator(developer);
-			return ResponseEntity.status(HttpStatus.CREATED).body(this.gameService.addGame(game));
+			return ResponseEntity.status(HttpStatus.CREATED).body(this.gameService.addGame(game, developer));
 		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
@@ -77,8 +76,8 @@ public class GameController {
 	public ResponseEntity<String> updateGame(@PathVariable String id, @RequestBody Game game) throws NotFoundException{
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
-		Game gameData = this.gameService.findById(id);
+		Developer developer = developerService.findByUsername(userDetails.getUsername());
+		Game gameData = gameService.findById(id);
 		try {
 			if (!game.getCreator().getId().equals(developer.getId())) 
 				throw new IllegalArgumentException("Only the creator of the game can edit it");
@@ -107,7 +106,7 @@ public class GameController {
 			this.gameService.deleteGame(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch(IllegalArgumentException e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	
