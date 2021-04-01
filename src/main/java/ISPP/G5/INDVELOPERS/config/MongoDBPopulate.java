@@ -1,4 +1,3 @@
-
 package ISPP.G5.INDVELOPERS.config;
 
 import java.util.ArrayList;
@@ -32,11 +31,12 @@ public class MongoDBPopulate<E> {
     @Bean
     CommandLineRunner commandLineRunner(
             UserEntityRepository userEntityRepository, DeveloperRepository developerRepository,
-            GameRepository gameRepository, OwnedGameRepository ownedGameRepository) {
+            GameRepository gameRepository, ReviewRepository reviewRepository, OwnedGameRepository ownedGameRepository) {
         return strings -> {
         	userEntityRepository.deleteAll();
             developerRepository.deleteAll();
             gameRepository.deleteAll();
+            reviewRepository.deleteAll();
             ownedGameRepository.deleteAll();
 
             /*
@@ -114,7 +114,7 @@ public class MongoDBPopulate<E> {
             */
           
           	Review r1 = new Review("text", 2., game1, master2);
-			      reviewRepository.save(r1);
+			reviewRepository.save(r1);
           
             /*
             ================= OWNED-GAMES =================
