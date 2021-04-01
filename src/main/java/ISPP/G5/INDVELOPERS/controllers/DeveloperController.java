@@ -72,6 +72,7 @@ public class DeveloperController {
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<HttpStatus> deleteDeveloperById(@PathVariable("id") String id) throws NotFoundException{
 		try {
+			developerService.deleteDeveloper(id);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch(IllegalArgumentException e) {
 			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
