@@ -60,7 +60,7 @@ public class GameService {
 		this.gameRepository.deleteById(id);
 	}
 	
-	public Game findById(String id) throws NotFoundException {
-		return this.gameRepository.findById(id).orElseThrow(NotFoundException::new);
+	public Game findById(String id) {
+		return this.gameRepository.findById(id).orElse(null);
 	}
 }

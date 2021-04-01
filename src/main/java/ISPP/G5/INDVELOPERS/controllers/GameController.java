@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
-import ISPP.G5.INDVELOPERS.repositories.GameRepository;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
 import ISPP.G5.INDVELOPERS.services.GameService;
 
@@ -120,9 +119,10 @@ public class GameController {
 	}
 	
 	@GetMapping("/findByDeveloper/{developerUsername}")
-	public ResponseEntity<List<Game>> getGameByDeveloper(@PathVariable String developerUsername) {
+	public ResponseEntity<List<Game>> getGameByDeveloper(@PathVariable String developerUsername) throws NotFoundException {
 		try {
-			return ResponseEntity.ok(this.gameService.findByDeveloper(developerUsername));
+			Developer developer = this.developerService.findByUsername(developerUsername);
+			return ResponseEntity.ok(this.gameService.findByDeveloper(developer.getId()));
 		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
@@ -144,7 +144,7 @@ public class GameController {
 	public ResponseEntity<Game> getGameById(@PathVariable String id) {
 		try {
 			return ResponseEntity.ok(this.gameService.findById(id));
-		} catch(IllegalArgumentException | NotFoundException e) {
+		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}

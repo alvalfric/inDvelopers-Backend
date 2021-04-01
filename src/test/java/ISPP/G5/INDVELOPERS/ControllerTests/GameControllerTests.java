@@ -96,7 +96,7 @@ public class GameControllerTests {
 	@DisplayName("Add game test")
 	@WithMockUser(value = "spring")
 	void testAddGame() throws Exception {
-		Game res = new Game("GameRes", "DescriptionRes", "RequirementsRes", 0.0, "idCloudRes", true, null);
+		Game res = new Game("GameRes", "DescriptionRes", "RequirementsRes", 0.0, "idCloudRes", true, developer1);
 		String bodyContent = objectToJsonStringContent(res);
 		
 		when(gameService.addGame(any(Game.class), any(Developer.class))).thenReturn("Added Game");
