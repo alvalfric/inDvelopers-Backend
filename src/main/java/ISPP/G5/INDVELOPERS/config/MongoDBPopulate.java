@@ -13,11 +13,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
+import ISPP.G5.INDVELOPERS.models.Review;
 import ISPP.G5.INDVELOPERS.models.OwnedGame;
 import ISPP.G5.INDVELOPERS.models.UserEntity;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
+import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
 import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
 import ISPP.G5.INDVELOPERS.repositories.UserEntityRepository;
 
@@ -29,11 +31,12 @@ public class MongoDBPopulate<E> {
     @Bean
     CommandLineRunner commandLineRunner(
             UserEntityRepository userEntityRepository, DeveloperRepository developerRepository,
-            GameRepository gameRepository, OwnedGameRepository ownedGameRepository) {
+            GameRepository gameRepository, ReviewRepository reviewRepository, OwnedGameRepository ownedGameRepository) {
         return strings -> {
         	userEntityRepository.deleteAll();
             developerRepository.deleteAll();
             gameRepository.deleteAll();
+            reviewRepository.deleteAll();
             ownedGameRepository.deleteAll();
 
             /*
@@ -105,7 +108,14 @@ public class MongoDBPopulate<E> {
                     dummyDeveloper);
             
             gameRepository.save(game3);
-            
+
+            /*
+            ================= REVIEWS =================
+            */
+          
+          	Review r1 = new Review("text", 2., game1, master2);
+			reviewRepository.save(r1);
+          
             /*
             ================= OWNED-GAMES =================
              */
