@@ -43,7 +43,12 @@ public class PublicationController {
 	}
 
 	@GetMapping("/findByName")
-	public ResponseEntity<List<Publication>> getPublicationsByUsername() {
+	public ResponseEntity<List<Publication>> getPublicationsByUsername() throws NotFoundException {
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userDetails = (UserDetails) auth.getPrincipal();
+		String username = userDetails.getUsername();
+
 		try {
 			return ResponseEntity.ok(publicationService.findByUSername());
 		} catch (IllegalArgumentException e) {
@@ -61,26 +66,29 @@ public class PublicationController {
 	}
 
 	@PostMapping("/add")
-	public ResponseEntity<String> addPrueba(@RequestBody Publication publication) {
+	public ResponseEntity<String> addPublication(@RequestBody Publication publication) throws NotFoundException {
 		try {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) auth.getPrincipal();
 			String user = userDetails.getUsername();
-			Developer developer = developService.findByUsername(user);
+			Developer developer = this.developService.findByUsername(user);
 			return new ResponseEntity<>(publicationService.addPublication(publication, developer),HttpStatus.OK);
-		}catch(IllegalArgumentException e) {
-			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+		} catch (NotFoundException e) {
+			throw new IllegalArgumentException("Publication couldn't be created correctly.");
 		}
-
 
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<String> deletePublicationById(@PathVariable String id) {
+	public ResponseEntity<Void> deletePublicationById(@PathVariable String id) throws NotFoundException {
 		try {
-			Publication p = publicationService.findById(id);
-
-			return new ResponseEntity<>(publicationService.deletePublication(p),HttpStatus.OK);
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) auth.getPrincipal();
+			String user = userDetails.getUsername();
+			Developer developer = this.developService.findByUsername(user);
+			Publication p = this.publicationService.findById(id);
+			this.publicationService.deletePublication(p, developer);
+			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
 		}

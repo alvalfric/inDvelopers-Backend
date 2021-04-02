@@ -9,20 +9,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import ISPP.G5.INDVELOPERS.models.Developer;
-import ISPP.G5.INDVELOPERS.models.Game;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 import ISPP.G5.INDVELOPERS.models.Review;
-import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
-import ISPP.G5.INDVELOPERS.repositories.GameRepository;
 import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
 
 @SpringBootTest
@@ -30,64 +31,69 @@ import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
 public class ReviewControllerIntegrationTests {
 
 	@Autowired
-	private MockMvc					mvc;
+	private MockMvc		mvc;
 
 	@Autowired
-	protected GameRepository		gameRepository;
+	ReviewRepository	repository;
 
-	@Autowired
-	protected DeveloperRepository	developerRepository;
-
-	@Autowired
-	protected ReviewRepository		reviewRepository;
-
-	Developer						developer;
-	Game							game;
-	Review							r1;
-
-
-	@BeforeEach
-	void setUp() {
-		developer = developerRepository.findAll().get(0);
-		game = gameRepository.findAll().get(0);
-		r1 = reviewRepository.findAll().get(0);
-	}
 
 	@Test
 	@DisplayName("Show reviews by game id test")
 	void showReviewListByGameTest() throws Exception {
+		Review r = repository.findAll().get(0);
+		String id = r.getGame().getId();
 
-		mvc.perform(get("/reviews/game/" + r1.getGame().getId())).andExpect(status().isOk()).andExpect(jsonPath("$[0].id").value(r1.getId()));
+		mvc.perform(get("/reviews/game/" + id)).andExpect(status().isOk()).andExpect(jsonPath("$[0].id").value(r.getId()));
 	}
 
 	@Test
 	@DisplayName("Show review by id test")
 	void showReviewByIdTest() throws Exception {
-		mvc.perform(get("/reviews/" + r1.getId())).andExpect(status().isOk()).andExpect(jsonPath("$.id").value(r1.getId()));
+		Review r = repository.findAll().get(0);
+		String id = r.getId();
+
+		mvc.perform(get("/reviews/" + id)).andExpect(status().isOk()).andExpect(jsonPath("$.id").value(id));
 	}
 
-//	@Test
-//	@DisplayName("Create review for a game test")
-//	@WithMockUser(value = "master")
-//	void createReviewForAGame() throws Exception {
-//		Review rev = new Review("Text1", 1., null, null);
-//
-//		mvc.perform(post("/reviews/game/" + game.getId() + "/add", rev)).andExpect(status().isOk()).andExpect(content().string("Added Review"));
-//	}
+	@Test
+	@DisplayName("Create review for a game test")
+	@WithMockUser(value = "spring")
+	void createReviewForAGame() throws Exception {
+		Review rev = new Review("Text1", 1., null, null);
+		String bodyContent = objectToJsonStringContent(rev);
+		Review r = repository.findAll().get(0);
+		String id = r.getGame().getId();
 
-//	@Test
-//	@DisplayName("Edit review test")
-//	@WithMockUser(value = "spring")
-//	void editReview() throws Exception {
-//		Review rev = new Review("Text1", 1., null, null);
-//
-//		mvc.perform(put("/reviews/edit/ID", rev)).andExpect(status().isOk()).andExpect(content().string("Edited Review"));
-//	}
+		mvc.perform(post("/reviews/game/" + id + "/add").contentType(MediaType.APPLICATION_JSON).content(bodyContent)).andExpect(status().isOk()).andExpect(content().string("Added Review"));
+	}
 
-//	@Test
-//	@DisplayName("Delete review test")
-//	@WithMockUser(value = "spring")
-//	void deleteReview() throws Exception {
-//		mvc.perform(delete("/reviews/delete/{reviewId}",r1.getId())).andExpect(status().isOk()).andExpect(content().string("Deleted Review"));
-//	}
+	@Test
+	@DisplayName("Edit review test")
+	@WithMockUser(value = "spring")
+	void editReview() throws Exception {
+		Review rev = new Review("Text1", 1., null, null);
+		String bodyContent = objectToJsonStringContent(rev);
+		Review r = repository.findAll().get(0);
+		String id = r.getGame().getId();
+
+		mvc.perform(put("/reviews/edit/" + id).contentType(MediaType.APPLICATION_JSON).content(bodyContent)).andExpect(status().isOk()).andExpect(content().string("Edited Review"));
+	}
+
+	@Test
+	@DisplayName("Delete review test")
+	@WithMockUser(value = "spring")
+	void deleteReview() throws Exception {
+		Review r = repository.findAll().get(0);
+		String id = r.getGame().getId();
+
+		mvc.perform(delete("/reviews/delete/" + id)).andExpect(status().isOk()).andExpect(content().string("Deleted Review"));
+	}
+
+	private String objectToJsonStringContent(final Object o) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+		ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+		String requestJson = ow.writeValueAsString(o);
+		return requestJson;
+	}
 }

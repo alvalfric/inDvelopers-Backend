@@ -27,10 +27,18 @@ import lombok.AllArgsConstructor;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/developers")
-@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class DeveloperController {
 
+	@Autowired
 	private DeveloperService developerService;
+	
+	
+	@Autowired
+	public DeveloperController(DeveloperService developerService) {
+		super();
+		this.developerService = developerService;
+	}
+
 
 	@PostMapping("/sign-up")
 	public ResponseEntity<Developer> newDeveloper(@RequestBody Developer developer) {

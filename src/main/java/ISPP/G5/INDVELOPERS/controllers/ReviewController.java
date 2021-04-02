@@ -47,7 +47,7 @@ public class ReviewController {
 		try {
 			return new ResponseEntity<>(service.findAllByGameId(gameId), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
 	@GetMapping("/{id}")
@@ -55,7 +55,7 @@ public class ReviewController {
 		try {
 			return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
 	@PostMapping("/game/{gameId}/add")
@@ -68,24 +68,24 @@ public class ReviewController {
 
 			return new ResponseEntity<>(service.addReview(review, game, developer), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
 	@PutMapping("/edit/{id}")
 	public ResponseEntity<String> editReview(@RequestBody final Review review, @PathVariable("id") final String id) throws NotFoundException {
 		try {
-			Review r = service.findById(id);
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-			Developer developer = developerService.findByUsername(userDetails.getUsername());
-			if (!review.getDeveloper().getId().equals(developer.getId()))
-				throw new IllegalArgumentException("Only the creator of the review can edit it");
-
+      Review r = service.findById(id);
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+      Developer developer = developerService.findByUsername(userDetails.getUsername());
+      if (!r.getDeveloper().getId().equals(developer.getId()))
+        throw new IllegalArgumentException("Only the creator of the review can edit it");
+		
 			r.setScore(review.getScore());
 			r.setText(review.getText());
 			return new ResponseEntity<>(service.updateReview(r), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
 	@DeleteMapping("/delete/{id}")
@@ -99,7 +99,7 @@ public class ReviewController {
 
 			return new ResponseEntity<>(service.deleteReview(id), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
 }
