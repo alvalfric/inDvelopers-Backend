@@ -49,9 +49,6 @@ public class PublicationController {
 		UserDetails userDetails = (UserDetails) auth.getPrincipal();
 		String username = userDetails.getUsername();
 
-		if (this.developService.findByUsername(username) == null) {
-			throw new IllegalArgumentException("You have to log in.");
-		}
 		try {
 			return ResponseEntity.ok(this.publicationService.findByUSername(username));
 		} catch (IllegalArgumentException e) {
@@ -69,13 +66,11 @@ public class PublicationController {
 	}
 
 	@PostMapping("/add")
-	public String addPrueba(@RequestBody Publication publication) throws NotFoundException {
+	public String addPublication(@RequestBody Publication publication) throws NotFoundException {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) auth.getPrincipal();
 		String user = userDetails.getUsername();
-		if (this.developService.findByUsername(user) == null) {
-			throw new IllegalArgumentException("You have to log in.");
-		}
+
 		try {
 			Developer developer = this.developService.findByUsername(user);
 			return this.publicationService.addPublication(publication, developer);
@@ -91,9 +86,6 @@ public class PublicationController {
 		UserDetails userDetails = (UserDetails) auth.getPrincipal();
 		String user = userDetails.getUsername();
 
-		if (this.developService.findByUsername(user) == null) {
-			throw new IllegalArgumentException("This developer doesn't exist.");
-		}
 		try {
 			Developer developer = this.developService.findByUsername(user);
 			Publication p = this.publicationService.findById(id);
