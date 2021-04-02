@@ -77,17 +77,16 @@ public class DeveloperController {
 	}
 	
 	@PutMapping("/edit/{id}")
-	public ResponseEntity<GetDeveloperDTO> updateDeveloper(@PathVariable String id, @RequestBody GetDeveloperDTO developerDTO) throws NotFoundException{
+	public ResponseEntity<Developer> updateDeveloper(@PathVariable String id, @RequestBody Developer developer) throws NotFoundException{
 		Developer developer2 = this.developerService.findById(id);
 		try {
-			developer2.setUsername(developerDTO.getUsername());
-			developer2.setUserImage(developerDTO.getUserImage());
-			developer2.setTechnologies(developerDTO.getTechnologies());
-			developer2.setDescription(developerDTO.getDescription());
-			developer2.setEmail(developerDTO.getEmail());
-			 return new ResponseEntity<GetDeveloperDTO>(DeveloperDTOConverter.DevelopertoGetDeveloperDTO(this.developerService.updateDeveloper(developer2)), HttpStatus.OK);
+			developer2.setUsername(developer.getUsername());
+			developer2.setUserImage(developer.getUserImage());
+			developer2.setTechnologies(developer.getTechnologies());
+			developer2.setDescription(developer.getDescription());
+			 return new ResponseEntity<>(this.developerService.updateDeveloper(developer2), HttpStatus.OK);
 		} catch(IllegalArgumentException e){
-			return new ResponseEntity<GetDeveloperDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 

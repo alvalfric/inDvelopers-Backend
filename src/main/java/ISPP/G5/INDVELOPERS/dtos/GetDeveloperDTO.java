@@ -15,7 +15,6 @@ import lombok.Setter;
 @AllArgsConstructor @NoArgsConstructor @Builder
 public class GetDeveloperDTO {
 
-	private String id;
 
 	private String username;
 	
