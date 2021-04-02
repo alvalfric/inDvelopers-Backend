@@ -1,3 +1,4 @@
+
 package ISPP.G5.INDVELOPERS.controllers;
 
 import java.util.List;
@@ -28,10 +29,11 @@ import ISPP.G5.INDVELOPERS.services.PublicationService;
 public class PublicationController {
 
 	@Autowired
-	private PublicationService publicationService;
+	private PublicationService	publicationService;
 
 	@Autowired
-	private DeveloperService developService;
+	private DeveloperService	developService;
+
 
 	@GetMapping("/findAll")
 	public ResponseEntity<List<Publication>> getPublications() {
@@ -43,21 +45,20 @@ public class PublicationController {
 	}
 
 	@GetMapping("/findByName")
-	public ResponseEntity<List<Publication>> getPublicationsByUsername() throws NotFoundException {
-
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) auth.getPrincipal();
-		String username = userDetails.getUsername();
-
+	public ResponseEntity<List<Publication>> getPublicationsByUsername() {
 		try {
-			return ResponseEntity.ok(publicationService.findByUSername());
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) auth.getPrincipal();
+			String username = userDetails.getUsername();
+
+			return ResponseEntity.ok(publicationService.findByUSername(username));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
 
 	@GetMapping("/findById/{id}")
-	public ResponseEntity<Publication> getPublicationById(@PathVariable String id) {
+	public ResponseEntity<Publication> getPublicationById(@PathVariable final String id) {
 		try {
 			return ResponseEntity.ok(publicationService.findById(id));
 		} catch (IllegalArgumentException e) {
@@ -66,31 +67,31 @@ public class PublicationController {
 	}
 
 	@PostMapping("/add")
-	public ResponseEntity<String> addPublication(@RequestBody Publication publication) throws NotFoundException {
+	public ResponseEntity<String> addPublication(@RequestBody final Publication publication) {
 		try {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) auth.getPrincipal();
 			String user = userDetails.getUsername();
-			Developer developer = this.developService.findByUsername(user);
-			return new ResponseEntity<>(publicationService.addPublication(publication, developer),HttpStatus.OK);
-		} catch (NotFoundException e) {
-			throw new IllegalArgumentException("Publication couldn't be created correctly.");
+			Developer developer = developService.findByUsername(user);
+			return new ResponseEntity<>(publicationService.addPublication(publication, developer), HttpStatus.OK);
+		} catch (IllegalArgumentException e) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Void> deletePublicationById(@PathVariable String id) throws NotFoundException {
+	public ResponseEntity<Void> deletePublicationById(@PathVariable final String id) {
 		try {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) auth.getPrincipal();
 			String user = userDetails.getUsername();
-			Developer developer = this.developService.findByUsername(user);
-			Publication p = this.publicationService.findById(id);
-			this.publicationService.deletePublication(p, developer);
+			Developer developer = developService.findByUsername(user);
+			Publication p = publicationService.findById(id);
+			publicationService.deletePublication(p, developer);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 
 	}
