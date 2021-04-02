@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
@@ -42,7 +41,7 @@ public class GameService {
 		return gameRepository.findByDeveloper(developerId);
 	}
 	
-	public List<Game> findByMyGames(String developerId) throws NotFoundException {
+	public List<Game> findByMyGames(String developerId)  {
 		return gameRepository.findByMyGames(developerId);
 	}
 	

@@ -32,35 +32,35 @@ public class GameController {
 
 	@Autowired
 	private GameService gameService;
-	
+
 	@Autowired
 	private DeveloperService developerService;
-	
+
 	@Autowired
 	public GameController(final GameService gameService, final DeveloperService developerService) {
 		this.gameService = gameService;
 		this.developerService = developerService;
 	}
-	
+
 	@GetMapping("/findAll")
 	public ResponseEntity<List<Game>> findAll() {
 		try {
-			return ResponseEntity.ok(this.gameService.findAll());
+			return ResponseEntity.ok(gameService.findAll());
 		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-	
+
 	@PostMapping("/add")
 	public ResponseEntity<String> addGame(@RequestBody Game game) throws NotFoundException {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
-		boolean isPremium = false;
-		if(developer.getIsPremium() != null) {
-			isPremium = developer.getIsPremium();
-		}
 		try {
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+      Developer developer = this.developerService.findByUsername(userDetails.getUsername());
+      boolean isPremium = false;
+      if(developer.getIsPremium() != null) {
+        isPremium = developer.getIsPremium();
+      }
 			if(this.gameService.findAll().stream().anyMatch(g -> g.getTitle().equals(game.getTitle())))
 				throw new IllegalArgumentException("There's alredy a game with that title");
 			if(isPremium == false && game.getPrice() != 0.0) 
@@ -72,16 +72,17 @@ public class GameController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-	
+
 	@PutMapping("/edit/{id}")
 	public ResponseEntity<String> updateGame(@PathVariable String id, @RequestBody Game game) throws NotFoundException{
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		Developer developer = developerService.findByUsername(userDetails.getUsername());
-		Game gameData = this.gameService.findById(id);
-		List<Game> allGames = this.gameService.findAll();
-		allGames.remove(gameData);
 		try {
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+      Developer developer = developerService.findByUsername(userDetails.getUsername());
+      Game gameData = this.gameService.findById(id);
+      List<Game> allGames = this.gameService.findAll();
+      allGames.remove(gameData);
+		
 			if(allGames.stream().anyMatch(g -> g.getTitle().equals(game.getTitle())))
 				throw new IllegalArgumentException("There's alredy a game with that title");
 			if (!gameData.getCreator().getId().equals(developer.getId())) 
@@ -92,38 +93,38 @@ public class GameController {
 			gameData.setPrice(game.getPrice());
 			gameData.setIsNotMalware(game.getIsNotMalware());
 			gameData.setIdCloud(game.getIdCloud());
-			return new ResponseEntity<>(this.gameService.updateGame(gameData), HttpStatus.OK);
+			return new ResponseEntity<>(gameService.updateGame(gameData), HttpStatus.OK);
 		} catch(IllegalArgumentException e){
-			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<HttpStatus> deleteGameById(@PathVariable("id") String id) throws NotFoundException{
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
-		Game game = this.gameService.findById(id);
 		try {
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+      Developer developer = this.developerService.findByUsername(userDetails.getUsername());
+      Game game = this.gameService.findById(id);
 			if (!game.getCreator().getId().equals(developer.getId())) { 
 				throw new IllegalArgumentException("Only the creator of the game can remove it");
 			}
 			this.gameService.deleteGame(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} catch(IllegalArgumentException e) {
+		  } catch(IllegalArgumentException e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
 	@GetMapping("/findByTitle/{title}")
 	public ResponseEntity<List<Game>> getGameByTitle(@PathVariable String title) {
 		try {
-			return ResponseEntity.ok(this.gameService.findByTitle(title));
+			return ResponseEntity.ok(gameService.findByTitle(title));
 		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-	
+
 	@GetMapping("/findByDeveloper/{developerUsername}")
 	public ResponseEntity<List<Game>> getGameByDeveloper(@PathVariable String developerUsername) throws NotFoundException {
 		try {
@@ -133,7 +134,7 @@ public class GameController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-	
+
 	@GetMapping("/findMyGames")
 	public ResponseEntity<List<Game>> getGameByMyGames() {
 		try {
@@ -145,7 +146,7 @@ public class GameController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Game> getGameById(@PathVariable String id) throws NotFoundException {
 		try {
@@ -154,5 +155,5 @@ public class GameController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-	
+
 }

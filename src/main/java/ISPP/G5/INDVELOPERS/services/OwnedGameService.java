@@ -37,11 +37,11 @@ public class OwnedGameService {
 		return result;
 	}
 
-	public List<Game> findAllMyOwnedGames(Developer developer) throws NotFoundException {
+	public List<Game> findAllMyOwnedGames(Developer developer) {
 		return new ArrayList<>(this.findByDeveloper(developer).getOwnedGames());
 	}
 
-	public String buyGameByDeveloperAndGameId(Developer developer, String gameId) throws NotFoundException {
+	public String buyGameByDeveloperAndGameId(Developer developer, String gameId) {
 		OwnedGame ownedGame = this.findByDeveloper(developer);
 
 		Game game = this.gameService.findById(gameId);
@@ -59,7 +59,7 @@ public class OwnedGameService {
 		return "Buyed game with title: " + game.getTitle();
 	}
 	
-	public boolean checkGameOwned(Developer developer, String gameId) throws NotFoundException {
+	public boolean checkGameOwned(Developer developer, String gameId) {
 		boolean result = false;
 		OwnedGame ownedGame = this.findByDeveloper(developer);
 
