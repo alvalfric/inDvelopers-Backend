@@ -21,23 +21,26 @@ import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
 import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
 import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
+import ISPP.G5.INDVELOPERS.repositories.PublicationRepository;
 import ISPP.G5.INDVELOPERS.repositories.UserEntityRepository;
 
 @Configuration
 public class MongoDBPopulate<E> {
+
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
     @Bean
     CommandLineRunner commandLineRunner(
             UserEntityRepository userEntityRepository, DeveloperRepository developerRepository,
-            GameRepository gameRepository, ReviewRepository reviewRepository, OwnedGameRepository ownedGameRepository) {
+            GameRepository gameRepository, ReviewRepository reviewRepository, OwnedGameRepository ownedGameRepository, PublicationRepository publicationRepository) {
         return strings -> {
         	userEntityRepository.deleteAll();
             developerRepository.deleteAll();
             gameRepository.deleteAll();
             reviewRepository.deleteAll();
             ownedGameRepository.deleteAll();
+          publicationRepository.deleteAll();
 
             /*
                 ================= USERS =================
@@ -114,7 +117,7 @@ public class MongoDBPopulate<E> {
             */
           
           	Review r1 = new Review("text", 2., game1, master2);
-			reviewRepository.save(r1);
+			      reviewRepository.save(r1);
           
             /*
             ================= OWNED-GAMES =================
@@ -129,3 +132,4 @@ public class MongoDBPopulate<E> {
 
     }
 }
+
