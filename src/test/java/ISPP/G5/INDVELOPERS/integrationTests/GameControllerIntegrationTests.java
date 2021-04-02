@@ -28,7 +28,6 @@ import ISPP.G5.INDVELOPERS.services.GameService;
 @SpringBootTest
 public class GameControllerIntegrationTests {
 	
-
 	@Autowired
 	protected DeveloperService developerService;
 
