@@ -11,7 +11,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
-import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
 
 import java.util.List;
@@ -19,10 +18,18 @@ import java.util.List;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/developers")
-@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class DeveloperController {
 
+	@Autowired
 	private DeveloperService developerService;
+	
+	
+	@Autowired
+	public DeveloperController(DeveloperService developerService) {
+		super();
+		this.developerService = developerService;
+	}
+
 
 	@PostMapping("/sign-up")
 	public ResponseEntity<Developer> newDeveloper(@RequestBody Developer developer) {

@@ -2,6 +2,7 @@ package ISPP.G5.INDVELOPERS.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -151,8 +152,6 @@ public class OwnedGameServiceTests {
 
 	@Test
 	void shouldCheckOwnedGameWrongGameId() throws NotFoundException {
-		Assertions.assertThrows(NotFoundException.class, () -> {
-			this.ownedGameService.checkGameOwned(alvaro, "estejuegonoexiste");
-		});
+		assertTrue(this.ownedGameService.checkGameOwned(alvaro, "estejuegonoexiste"));
 	}
 }

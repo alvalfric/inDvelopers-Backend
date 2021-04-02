@@ -1,5 +1,9 @@
 package ISPP.G5.INDVELOPERS.web.integration;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -8,9 +12,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import ISPP.G5.INDVELOPERS.controllers.OwnedGameController;
 import ISPP.G5.INDVELOPERS.models.Game;
@@ -68,9 +74,8 @@ public class OwnedGameControllerIntegration {
 	@WithMockUser(username = "alvaro", authorities = { "USER" })
 	@Test
 	void testBuyGameWithWorngId() throws Exception {
-		Assertions.assertThrows(NotFoundException.class, () -> {
-			this.ownedGameController.buyGame("wrongid");
-		});
+		ResponseEntity<String> responseBuyGame = this.ownedGameController.buyGame("wrongid");
+		assertEquals(responseBuyGame.getStatusCode(), HttpStatus.BAD_REQUEST);
 	}
 	
 	@WithMockUser(username = "alvaro", authorities = { "USER" })
@@ -94,8 +99,11 @@ public class OwnedGameControllerIntegration {
 	@WithMockUser(username = "alvaro", authorities = { "USER" })
 	@Test
 	void testCheckOwnedGameWrongGameId() throws Exception {
-		Assertions.assertThrows(NotFoundException.class, () -> {
-			this.ownedGameController.checkGameOwned("wrongid");
-		});
+		ResponseEntity<Boolean> responseBuyGame = this.ownedGameController.checkGameOwned("wrongid");
+		assertEquals(responseBuyGame.getStatusCode(), HttpStatus.OK);
+
+//		Assertions.assertThrows(NotFoundException.class, () -> {
+//			this.ownedGameController.checkGameOwned("wrongid");
+//		});
 	}
 }

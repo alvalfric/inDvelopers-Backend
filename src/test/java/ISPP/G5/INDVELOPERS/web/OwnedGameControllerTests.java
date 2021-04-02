@@ -106,7 +106,7 @@ class OwnedGameControllerTests {
 	    given(this.ownedGameService.findByDeveloper(dummyDeveloperWithoutGames)).willReturn(new OwnedGame(dummyDeveloperWithoutGames, new ArrayList<Game>()));
     	given(this.gameService.findById(dummyGame1.getId())).willReturn(dummyGame1);
     	
-		mockMvc.perform(post("/ownedGames/buy?gameId={gameId}", dummyGame1.getId())
+		mockMvc.perform(post("/ownedGames/buy/{gameId}", dummyGame1.getId())
 	            .with(csrf())
 	            )
 		        .andExpect(status().is2xxSuccessful());
@@ -164,7 +164,7 @@ class OwnedGameControllerTests {
 	    given(this.ownedGameService.findByDeveloper(dummyDeveloperWithoutGames)).willReturn(new OwnedGame(dummyDeveloperWithoutGames, new ArrayList<Game>()));
 		given(this.gameService.findById(dummyGame1.getId())).willReturn(dummyGame1);
 		
-		mockMvc.perform(get("/ownedGames/checkGameOwned?gameId={gameId}", dummyGame1.getId())
+		mockMvc.perform(get("/ownedGames/checkGameOwned/{gameId}", dummyGame1.getId())
 	            .with(csrf())
 	            )
 		        .andExpect(status().is2xxSuccessful());
@@ -177,7 +177,7 @@ class OwnedGameControllerTests {
 	    given(this.ownedGameService.findByDeveloper(dummyDeveloperWithoutGames)).willReturn(new OwnedGame(dummyDeveloperWithoutGames, new ArrayList<Game>()));
 		given(this.gameService.findById(dummyGame1.getId())).willReturn(dummyGame1);
 		
-		mockMvc.perform(get("/ownedGames/checkGameOwned?gameId={gameId}", dummyGame1.getId())
+		mockMvc.perform(get("/ownedGames/checkGameOwned/{gameId}", dummyGame1.getId())
 	            .with(csrf())
 	            )
 		        .andExpect(status().is2xxSuccessful());
