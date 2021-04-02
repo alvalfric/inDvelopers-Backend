@@ -13,8 +13,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -76,7 +76,10 @@ public class ReviewControllerUnitTests {
 	@Test
 	@DisplayName("Show reviews by game id test")
 	void showReviewListByGameTest() throws Exception {
-		when(service.findAllByGameId("ID")).thenReturn(Lists.list(r1, r2));
+		List<Review> revs = new ArrayList<>();
+		revs.add(r1);
+		revs.add(r2);
+		when(service.findAllByGameId("ID")).thenReturn(revs);
 
 		mvc.perform(get("/reviews/game/ID")).andExpect(status().isOk()).andExpect(jsonPath("$[0].id").value("rev1ID"));
 	}
