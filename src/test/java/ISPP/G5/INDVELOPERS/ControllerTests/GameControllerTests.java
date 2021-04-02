@@ -196,7 +196,7 @@ public class GameControllerTests {
 		games.add(game1);
 		
 		when(developerService.findByUsername("developer1")).thenReturn(developer1);
-		when(gameService.findByDeveloper("developer1")).thenReturn(games);
+		when(gameService.findByDeveloper(developer1.getId())).thenReturn(games);
 
 		mvc.perform(get("/games/findByDeveloper/developer1")).andExpect(status().isOk()).andExpect(jsonPath("$[0].id").value("game1Id"));
 	}

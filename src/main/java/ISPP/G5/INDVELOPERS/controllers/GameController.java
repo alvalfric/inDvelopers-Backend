@@ -61,6 +61,8 @@ public class GameController {
 			isPremium = developer.getIsPremium();
 		}
 		try {
+			if(this.gameService.findAll().stream().anyMatch(g -> g.getTitle().equals(game.getTitle())))
+				throw new IllegalArgumentException("There's alredy a game with that title");
 			if(isPremium == false && game.getPrice() != 0.0) 
 				throw new IllegalArgumentException("Only premium developers can sell non-free games");
 			if(isPremium == false && (this.gameService.findByMyGames(developer.getId()).size() + 1 == 6))
@@ -76,9 +78,13 @@ public class GameController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Developer developer = developerService.findByUsername(userDetails.getUsername());
-		Game gameData = gameService.findById(id);
+		Game gameData = this.gameService.findById(id);
+		List<Game> allGames = this.gameService.findAll();
+		allGames.remove(gameData);
 		try {
-			if (!game.getCreator().getId().equals(developer.getId())) 
+			if(allGames.stream().anyMatch(g -> g.getTitle().equals(game.getTitle())))
+				throw new IllegalArgumentException("There's alredy a game with that title");
+			if (!gameData.getCreator().getId().equals(developer.getId())) 
 				throw new IllegalArgumentException("Only the creator of the game can edit it");
 			gameData.setTitle(game.getTitle());
 			gameData.setDescription(game.getDescription());
@@ -86,7 +92,7 @@ public class GameController {
 			gameData.setPrice(game.getPrice());
 			gameData.setIsNotMalware(game.getIsNotMalware());
 			gameData.setIdCloud(game.getIdCloud());
-			 return new ResponseEntity<>(this.gameService.updateGame(gameData), HttpStatus.OK);
+			return new ResponseEntity<>(this.gameService.updateGame(gameData), HttpStatus.OK);
 		} catch(IllegalArgumentException e){
 			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
@@ -141,7 +147,7 @@ public class GameController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Game> getGameById(@PathVariable String id) {
+	public ResponseEntity<Game> getGameById(@PathVariable String id) throws NotFoundException {
 		try {
 			return ResponseEntity.ok(this.gameService.findById(id));
 		} catch(IllegalArgumentException e) {
