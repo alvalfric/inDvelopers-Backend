@@ -11,8 +11,7 @@ public class DeveloperDTOConverter {
 	
 	public static GetDeveloperDTO DevelopertoGetDeveloperDTO(Developer developer) {
 		
-		return GetDeveloperDTO.builder().id(developer.getId())
-				.username(developer.getUsername())
+		return GetDeveloperDTO.builder().username(developer.getUsername())
 				.email(developer.getEmail())
 				.gameList(developer.getGameList())
 				.userImage(developer.getUserImage())
@@ -21,5 +20,4 @@ public class DeveloperDTOConverter {
 				.technologies(developer.getTechnologies())
 				.isPremium(developer.getIsPremium()).build();
 	}
-
 }
