@@ -15,14 +15,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import ISPP.G5.INDVELOPERS.Utils.CustomAuthorityDeserializer;
 import ISPP.G5.INDVELOPERS.models.UserEntity.UserEntityBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -31,7 +27,6 @@ import lombok.ToString;
 @ToString
 @Document(collection="Developer")
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class Developer extends BaseEntity implements UserDetails{
 
@@ -62,7 +57,6 @@ public class Developer extends BaseEntity implements UserDetails{
 	private Boolean isPremium;
 
 	@Override
-	@JsonDeserialize(using = CustomAuthorityDeserializer.class)
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
 		 return roles.stream().map(ur -> new SimpleGrantedAuthority("ROLE_"+ur.name())).collect(Collectors.toList());

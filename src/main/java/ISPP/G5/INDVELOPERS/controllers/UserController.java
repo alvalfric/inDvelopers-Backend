@@ -1,14 +1,10 @@
 package ISPP.G5.INDVELOPERS.controllers;
 
-import ISPP.G5.INDVELOPERS.dtos.GetDeveloperDTO;
-import ISPP.G5.INDVELOPERS.mappers.DeveloperDTOConverter;
-import ISPP.G5.INDVELOPERS.models.Developer;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import ISPP.G5.INDVELOPERS.models.UserEntity;
@@ -16,7 +12,6 @@ import ISPP.G5.INDVELOPERS.services.UserEntityService;
 
 import java.util.List;
 
-@CrossOrigin("*")
 @RestController
 @RequestMapping("users")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
