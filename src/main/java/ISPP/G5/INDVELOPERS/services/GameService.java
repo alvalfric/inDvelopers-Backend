@@ -1,14 +1,10 @@
 package ISPP.G5.INDVELOPERS.services;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
@@ -62,5 +58,17 @@ public class GameService {
 	
 	public Game findById(String id) {
 		return this.gameRepository.findById(id).orElse(null);
+	}
+
+	public boolean checkGameTitle(String gameTitle) {
+		boolean result = false;
+
+		for (Game game : this.gameRepository.findAll()) {
+			if (game.getTitle().equals(gameTitle)) {
+				result = true;
+			}
+		}
+
+		return result;
 	}
 }
