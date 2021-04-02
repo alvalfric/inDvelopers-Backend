@@ -1,10 +1,8 @@
 package ISPP.G5.INDVELOPERS.services;
 
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+import io.jsonwebtoken.lang.Assert;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,10 +16,13 @@ import org.springframework.stereotype.Service;
 
 import ISPP.G5.INDVELOPERS.Security.JwtTokenProvider;
 import ISPP.G5.INDVELOPERS.models.Developer;
+import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
-import io.jsonwebtoken.lang.Assert;
-import lombok.AllArgsConstructor;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -47,6 +48,8 @@ public class DeveloperService {
 
 		developer.setPassword(new BCryptPasswordEncoder(12).encode(developer.getPassword()));
 		developer.setRoles(Stream.of(UserRole.USER).collect(Collectors.toSet()));
+		
+
 		
 		this.developerRepository.save(developer);
 
@@ -99,10 +102,5 @@ public class DeveloperService {
 		}
 	}
 	
-	public Developer findCurrentDeveloper() throws NotFoundException {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		Developer developer = findByUsername(userDetails.getUsername());
-		return developer;
-	}
+	
 }

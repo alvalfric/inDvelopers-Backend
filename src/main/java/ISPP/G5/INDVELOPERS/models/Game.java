@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -17,10 +16,10 @@ import lombok.ToString;
 @ToString
 @Document(collection="Game")
 @AllArgsConstructor
-@NoArgsConstructor
 public class Game extends BaseEntity{
 
 	@NotBlank
+	@Indexed(unique=true)
 	private String title;
 	
 	@NotBlank
