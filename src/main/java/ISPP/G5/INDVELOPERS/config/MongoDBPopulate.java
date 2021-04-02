@@ -78,6 +78,14 @@ public class MongoDBPopulate<E> {
 
             developerRepository.save(dummyDeveloper);
             
+            Developer dummyDeveloper2 = new Developer("dummyDeveloper2",
+                    passwordEncoder.encode("dummyDeveloper2"),
+                    "dummyDeveloper2@gmail.com",
+                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true);
+
+            developerRepository.save(dummyDeveloper2);
+            
             /*
             ================= GAMES =================
              */
