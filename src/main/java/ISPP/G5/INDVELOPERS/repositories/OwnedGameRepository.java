@@ -1,18 +1,15 @@
-
 package ISPP.G5.INDVELOPERS.repositories;
-
-import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import ISPP.G5.INDVELOPERS.models.Review;
+import ISPP.G5.INDVELOPERS.models.OwnedGame;
 
 @Repository
-public interface ReviewRepository extends MongoRepository<Review, String> {
-
-	@Query("{ 'game.id' : ?0 }")
-	List<Review> findAllByGameId(String gameId);
+public interface OwnedGameRepository extends MongoRepository<OwnedGame,String>{
+	
+	@Query("{ 'buyer.id' : ?0 }")
+	OwnedGame findByBuyerId(String buyerId);
 
 }

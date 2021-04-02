@@ -1,10 +1,13 @@
 package ISPP.G5.INDVELOPERS.controllers;
 
+import ISPP.G5.INDVELOPERS.dtos.GetDeveloperDTO;
+import ISPP.G5.INDVELOPERS.mappers.DeveloperDTOConverter;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
@@ -13,6 +16,7 @@ import ISPP.G5.INDVELOPERS.services.DeveloperService;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/developers")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -73,19 +77,28 @@ public class DeveloperController {
 	}
 	
 	@PutMapping("/edit/{id}")
-	public ResponseEntity<Developer> updateDeveloper(@PathVariable String id, @RequestBody Developer developer) throws NotFoundException{
+	public ResponseEntity<GetDeveloperDTO> updateDeveloper(@PathVariable String id, @RequestBody GetDeveloperDTO developerDTO) throws NotFoundException{
 		Developer developer2 = this.developerService.findById(id);
 		try {
-			developer2.setUsername(developer.getUsername());
-			developer2.setUserImage(developer.getUserImage());
-			developer2.setTechnologies(developer.getTechnologies());
-			developer2.setDescription(developer.getDescription());
-			 return new ResponseEntity<>(this.developerService.updateDeveloper(developer2), HttpStatus.OK);
+			developer2.setUsername(developerDTO.getUsername());
+			developer2.setUserImage(developerDTO.getUserImage());
+			developer2.setTechnologies(developerDTO.getTechnologies());
+			developer2.setDescription(developerDTO.getDescription());
+			developer2.setEmail(developerDTO.getEmail());
+			 return new ResponseEntity<GetDeveloperDTO>(DeveloperDTOConverter.DevelopertoGetDeveloperDTO(this.developerService.updateDeveloper(developer2)), HttpStatus.OK);
 		} catch(IllegalArgumentException e){
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<GetDeveloperDTO>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
 
+	@GetMapping("/me")
+	public ResponseEntity<GetDeveloperDTO> whoIAm(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal) {
+		try {
+			return ResponseEntity.ok((DeveloperDTOConverter.DevelopertoGetDeveloperDTO(
+					developerService.findByUsername(principal.getUsername()))));
+		} catch(IllegalArgumentException | NotFoundException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
 
 }
