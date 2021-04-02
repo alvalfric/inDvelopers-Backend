@@ -57,10 +57,20 @@ public class GameController {
 	@PostMapping("/add")
 	public ResponseEntity<String> addGame(@RequestBody Game game) throws NotFoundException {
 		try {
+<<<<<<< HEAD
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			game.setCreator(this.developerService.findByUsername(userDetails.getUsername()));
 			return ResponseEntity.status(HttpStatus.CREATED).body(this.gameService.addGame(game));
+=======
+			if(this.gameService.findAll().stream().anyMatch(g -> g.getTitle().equals(game.getTitle())))
+				throw new IllegalArgumentException("There's alredy a game with that title");
+			if(isPremium == false && game.getPrice() != 0.0) 
+				throw new IllegalArgumentException("Only premium developers can sell non-free games");
+			if(isPremium == false && (this.gameService.findByMyGames(developer.getId()).size() + 1 == 6))
+				throw new IllegalArgumentException("Non premium developers only can have a maximun of five games published");
+			return ResponseEntity.status(HttpStatus.CREATED).body(this.gameService.addGame(game, developer));
+>>>>>>> origin/develop
 		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
@@ -68,15 +78,29 @@ public class GameController {
 	
 	@PutMapping("/edit/{id}")
 	public ResponseEntity<String> updateGame(@PathVariable String id, @RequestBody Game game) throws NotFoundException{
+<<<<<<< HEAD
 		Game gameData = this.gameService.findById(id);
 		try {
+=======
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		Developer developer = developerService.findByUsername(userDetails.getUsername());
+		Game gameData = this.gameService.findById(id);
+		List<Game> allGames = this.gameService.findAll();
+		allGames.remove(gameData);
+		try {
+			if(allGames.stream().anyMatch(g -> g.getTitle().equals(game.getTitle())))
+				throw new IllegalArgumentException("There's alredy a game with that title");
+			if (!gameData.getCreator().getId().equals(developer.getId())) 
+				throw new IllegalArgumentException("Only the creator of the game can edit it");
+>>>>>>> origin/develop
 			gameData.setTitle(game.getTitle());
 			gameData.setDescription(game.getDescription());
 			gameData.setRequirements(game.getRequirements());
 			gameData.setPrice(game.getPrice());
 			gameData.setIsNotMalware(game.getIsNotMalware());
 			gameData.setIdCloud(game.getIdCloud());
-			 return new ResponseEntity<>(this.gameService.updateGame(gameData), HttpStatus.OK);
+			return new ResponseEntity<>(this.gameService.updateGame(gameData), HttpStatus.OK);
 		} catch(IllegalArgumentException e){
 			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
@@ -119,4 +143,16 @@ public class GameController {
 		}
 	}
 	
+<<<<<<< HEAD
+=======
+	@GetMapping("/{id}")
+	public ResponseEntity<Game> getGameById(@PathVariable String id) throws NotFoundException {
+		try {
+			return ResponseEntity.ok(this.gameService.findById(id));
+		} catch(IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+	
+>>>>>>> origin/develop
 }
