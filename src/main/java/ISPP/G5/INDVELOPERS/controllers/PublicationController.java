@@ -66,14 +66,13 @@ public class PublicationController {
 	}
 
 	@PostMapping("/add")
-	public String addPublication(@RequestBody Publication publication) throws NotFoundException {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) auth.getPrincipal();
-		String user = userDetails.getUsername();
-
+	public ResponseEntity<String> addPublication(@RequestBody Publication publication) throws NotFoundException {
 		try {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) auth.getPrincipal();
+			String user = userDetails.getUsername();
 			Developer developer = this.developService.findByUsername(user);
-			return this.publicationService.addPublication(publication, developer);
+			return new ResponseEntity<>(publicationService.addPublication(publication, developer),HttpStatus.OK);
 		} catch (NotFoundException e) {
 			throw new IllegalArgumentException("Publication couldn't be created correctly.");
 		}
@@ -82,11 +81,10 @@ public class PublicationController {
 
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Void> deletePublicationById(@PathVariable String id) throws NotFoundException {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) auth.getPrincipal();
-		String user = userDetails.getUsername();
-
 		try {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) auth.getPrincipal();
+			String user = userDetails.getUsername();
 			Developer developer = this.developService.findByUsername(user);
 			Publication p = this.publicationService.findById(id);
 			this.publicationService.deletePublication(p, developer);
