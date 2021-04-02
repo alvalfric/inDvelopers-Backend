@@ -84,6 +84,7 @@ public class DeveloperController {
 			developer2.setUserImage(developerDTO.getUserImage());
 			developer2.setTechnologies(developerDTO.getTechnologies());
 			developer2.setDescription(developerDTO.getDescription());
+			developer2.setEmail(developerDTO.getEmail());
 			 return new ResponseEntity<GetDeveloperDTO>(DeveloperDTOConverter.DevelopertoGetDeveloperDTO(this.developerService.updateDeveloper(developer2)), HttpStatus.OK);
 		} catch(IllegalArgumentException e){
 			return new ResponseEntity<GetDeveloperDTO>(HttpStatus.BAD_REQUEST);
