@@ -2,6 +2,7 @@ package ISPP.G5.INDVELOPERS.ServiceTests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -89,7 +90,7 @@ public class GameServiceTests {
 	@Test
 	@DisplayName("Fail show game by inexistent id test")
 	void shouldNotFindGameByInexistentId() throws NotFoundException {
-		assertThatThrownBy(() -> this.gameService.findById("unidinexistente")).isInstanceOf(NotFoundException.class);
+		assertNull(this.gameService.findById("unidinexistente"));
 	}
 
 	@Test

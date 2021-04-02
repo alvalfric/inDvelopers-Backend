@@ -50,10 +50,9 @@ public class OwnedGameService {
 			if (ownedGame.getOwnedGames().contains(game)) {
 				throw new IllegalArgumentException("Game already owned.");
 			}
-		} 
-//		else {
-//			throw new NotFoundException();
-//		}
+		} else {
+			throw new NotFoundException();
+		}
 		
 		ownedGame.getOwnedGames().add(game);
 		this.ownedGameRepository.save(ownedGame);
@@ -71,9 +70,10 @@ public class OwnedGameService {
 				result = true;
 			}
 		} 
-//		else {
-//			throw new NotFoundException();
-//		}
+		else {
+			//Result true para redirigir en la compra de un juego
+			result = true;
+		}
 
 		return result;
 	}
