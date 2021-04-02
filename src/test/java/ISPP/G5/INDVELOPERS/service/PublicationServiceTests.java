@@ -50,7 +50,7 @@ public class PublicationServiceTests {
 				"I'm developer", "technologies", true);
 		this.developerService.createDeveloper(developer1);
 		this.developerService.createDeveloper(developer2);
-		Publication publication = new Publication("martaad", null, "description of publication", null, developer1);
+		Publication publication = new Publication("martaad", null, "description of publication", null, developer1, null);
 		this.publicationService.addPublication(publication, developer1);
 	}
 
@@ -118,7 +118,7 @@ public class PublicationServiceTests {
 	@Test
 	void addPublication() throws NotFoundException {
 		Developer martaad = this.developerService.findByUsername("martaad");
-		Publication publication = new Publication("martaad", null, "description of publication", null, martaad);
+		Publication publication = new Publication("martaad", null, "description of publication", null, martaad, null);
 		this.publicationService.addPublication(publication, martaad);
 		Assertions.assertTrue(this.publicationService.findAll().contains(publication));
 	}

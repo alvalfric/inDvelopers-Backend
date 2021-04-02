@@ -1,5 +1,9 @@
 package ISPP.G5.INDVELOPERS.controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +22,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartFile.*;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Publication;
@@ -66,11 +73,26 @@ public class PublicationController {
 	}
 
 	@PostMapping("/add")
-	public String addPublication(@RequestBody Publication publication) throws NotFoundException {
+	public String addPublication(@RequestBody Publication publication, @RequestParam("file") MultipartFile imagen) throws NotFoundException, IOException {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) auth.getPrincipal();
 		String user = userDetails.getUsername();
 
+		if(!imagen.isEmpty()) {
+			Path directorio = Paths.get("src//main//resources//static/images");
+			String rutaAbsoluta = directorio.toFile().getAbsolutePath();
+			try {
+				byte[] bytesImg = imagen.getBytes();
+				Path rutaCompleta = Paths.get(rutaAbsoluta + "//"+ imagen.getOriginalFilename());
+				Files.write(rutaCompleta, bytesImg);
+				publication.setImagen2(imagen.getOriginalFilename());
+			}catch(IOException e) {
+				e.printStackTrace();
+			}
+			
+			
+		
+		}
 		try {
 			Developer developer = this.developService.findByUsername(user);
 			return this.publicationService.addPublication(publication, developer);

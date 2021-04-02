@@ -84,8 +84,8 @@ public class PublicationControllerTests {
 				"I'm developer", "technologies", true);
 		this.developerService.createDeveloper(developer1);
 		this.developerService.createDeveloper(developer2);
-		publication1 = new Publication("martaad", null, "description of publication", null, developer1);
-		publication2 = new Publication("miguel001", null, "description of publication", null, developer2);
+		publication1 = new Publication("martaad", null, "description of publication", null, developer1, null);
+		publication2 = new Publication("miguel001", null, "description of publication", null, developer2, null);
 		publication1.setId("TEST_PUBLICATION1_ID");
 		this.publicationService.addPublication(publication1, developer1);
 		this.publicationService.addPublication(publication2, developer2);
@@ -136,7 +136,7 @@ public class PublicationControllerTests {
 	@Test
 	void testProcessCreationFormPublicationSuccess() throws Exception {
 		Developer d = this.developerService.findByUsername("martaad");
-		Publication p = new Publication("martaad", null, "text of the publication 2", null, d);
+		Publication p = new Publication("martaad", null, "text of the publication 2", null, d, null);
 		String bodyContent = objectToJsonStringContent(p);
 		when(this.publicationService.addPublication(any(Publication.class), any(Developer.class))).thenReturn("Successfully added");
 		mockMvc.perform(post("/publications/add").contentType(MediaType.APPLICATION_JSON).content(bodyContent)).andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
