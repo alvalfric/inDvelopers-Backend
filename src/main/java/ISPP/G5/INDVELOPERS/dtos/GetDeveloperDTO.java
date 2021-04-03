@@ -11,24 +11,28 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter
-@AllArgsConstructor @NoArgsConstructor @Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class GetDeveloperDTO {
 
+	private String id;
 
 	private String username;
-	
+
 	private String email;
-	
+
 	private List<String> gameList;
-	
+
 	private Image userImage;
-	
+
 	private Set<UserRole> roles;
-	
+
 	private String description;
-	
+
 	private String technologies;
-	
+
 	private Boolean isPremium;
 }
