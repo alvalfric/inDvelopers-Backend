@@ -1,20 +1,23 @@
 package ISPP.G5.INDVELOPERS.controllers;
 
-import ISPP.G5.INDVELOPERS.dtos.GetDeveloperDTO;
-import ISPP.G5.INDVELOPERS.mappers.DeveloperDTOConverter;
-import ISPP.G5.INDVELOPERS.models.Developer;
-import lombok.AllArgsConstructor;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import ISPP.G5.INDVELOPERS.models.UserEntity;
 import ISPP.G5.INDVELOPERS.services.UserEntityService;
-
-import java.util.List;
+import lombok.AllArgsConstructor;
 
 @CrossOrigin("*")
 @RestController
@@ -28,20 +31,20 @@ public class UserController {
 	public ResponseEntity<UserEntity> newUser(@RequestBody UserEntity user) {
 		try {
 
-			return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.createUser(user));
+			return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(user));
 
 		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
 
-	
+
 	@PostMapping("/login")
 	public ResponseEntity<String> login(@RequestParam String username,
-										@RequestParam String password) {
+		@RequestParam String password) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK)
-					.body(this.userService.login(username,password));
+				.body(userService.login(username,password));
 
 		} catch (NotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -51,7 +54,7 @@ public class UserController {
 	@GetMapping
 	public ResponseEntity<List<UserEntity>> getAll() {
 		try {
-			return ResponseEntity.ok(this.userService.getAll());
+			return ResponseEntity.ok(userService.getAll());
 		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
@@ -60,8 +63,8 @@ public class UserController {
 	@GetMapping("/{username}")
 	public ResponseEntity<UserEntity> getProfileByUserName(@PathVariable String username) {
 		try {
-			return ResponseEntity.ok(this.userService.findByUsername(username));
-		} catch(IllegalArgumentException | NotFoundException e) {
+			return ResponseEntity.ok(userService.findByUsername(username));
+		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
