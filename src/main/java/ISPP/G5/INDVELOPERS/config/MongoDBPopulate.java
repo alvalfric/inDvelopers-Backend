@@ -47,7 +47,7 @@ public class MongoDBPopulate<E> {
              */
 
             UserEntity master = new UserEntity("master",
-                    passwordEncoder.encode("master"),
+                    passwordEncoder.encode("master123"),
                     "https://dummyimage.com/300",
                     Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
                     true);
@@ -55,7 +55,7 @@ public class MongoDBPopulate<E> {
             userEntityRepository.save(master);
 
             Developer master2 = new Developer("master2",
-                    passwordEncoder.encode("master2"),
+                    passwordEncoder.encode("master212"),
                     "https://dummyimage.com/300",
                     null, null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
                     null, null, true);
@@ -63,7 +63,7 @@ public class MongoDBPopulate<E> {
             developerRepository.save(master2);
             
             Developer alvaro = new Developer("alvaro",
-                    passwordEncoder.encode("alvaro"),
+                    passwordEncoder.encode("alvaro123"),
                     "alvaro@gmail.com",
                     null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
                     null, null, true);
@@ -86,6 +86,59 @@ public class MongoDBPopulate<E> {
 
             developerRepository.save(dummyDeveloper2);
             
+            Developer fernando = new Developer("fernando",
+                    passwordEncoder.encode("fernando"),
+                    "fernando@gmail.com",
+                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true);
+
+            developerRepository.save(fernando);
+            
+            /* Credenciales de los profesores */
+            
+            Developer carlos = new Developer("Carlos Müller",
+                    passwordEncoder.encode("carlosmuller"),
+                    "cmuller@us.es",
+                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true);
+
+            Developer bedilia = new Developer("Bedilia Estrada",
+                    passwordEncoder.encode("bediliaestrada"),
+                    "iestrada@us.es",
+                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true);
+            
+            Developer pablo = new Developer("Pablo Fernández",
+                    passwordEncoder.encode("pablofernandez"),
+                    "pablofm@us.es",
+                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true);
+            
+            Developer cristina = new Developer("Cristina Cabanillas",
+                    passwordEncoder.encode("cristinacabanillas"),
+                    "cristinacabanillas@us.es",
+                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true);
+            
+            Developer antonio = new Developer("Antonio Ruiz",
+                    passwordEncoder.encode("antonioruiz"),
+                    "aruiz@us.es",
+                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true);
+            
+            Developer rafael = new Developer("Rafael Fresno",
+                    passwordEncoder.encode("pablofernandez"),
+                    "rfrenos@us.es",
+                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true);
+            
+            developerRepository.save(carlos);
+            developerRepository.save(bedilia);
+            developerRepository.save(pablo);
+            developerRepository.save(cristina);
+            developerRepository.save(antonio);
+            developerRepository.save(rafael);
+
             /*
             ================= GAMES =================
              */
