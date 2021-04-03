@@ -96,38 +96,38 @@ public class MongoDBPopulate<E> {
             
             /* Credenciales de los profesores */
             
-            Developer carlos = new Developer("Carlos Müller",
+            Developer carlos = new Developer("carlosmuller",
                     passwordEncoder.encode("carlosmuller"),
                     "cmuller@us.es",
                     null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
                     null, null, true);
 
-            Developer bedilia = new Developer("Bedilia Estrada",
+            Developer bedilia = new Developer("bediliaestrada",
                     passwordEncoder.encode("bediliaestrada"),
                     "iestrada@us.es",
                     null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
                     null, null, true);
             
-            Developer pablo = new Developer("Pablo Fernández",
+            Developer pablo = new Developer("pablofernandez",
                     passwordEncoder.encode("pablofernandez"),
                     "pablofm@us.es",
                     null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
                     null, null, true);
             
-            Developer cristina = new Developer("Cristina Cabanillas",
+            Developer cristina = new Developer("cristinacabanillas",
                     passwordEncoder.encode("cristinacabanillas"),
                     "cristinacabanillas@us.es",
                     null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
                     null, null, true);
             
-            Developer antonio = new Developer("Antonio Ruiz",
+            Developer antonio = new Developer("antonioruiz",
                     passwordEncoder.encode("antonioruiz"),
                     "aruiz@us.es",
                     null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
                     null, null, true);
             
-            Developer rafael = new Developer("Rafael Fresno",
-                    passwordEncoder.encode("pablofernandez"),
+            Developer rafael = new Developer("rafaelfresno",
+                    passwordEncoder.encode("rafaelfresno"),
                     "rfrenos@us.es",
                     null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
                     null, null, true);
