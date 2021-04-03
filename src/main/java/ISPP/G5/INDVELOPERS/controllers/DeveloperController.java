@@ -1,19 +1,27 @@
 package ISPP.G5.INDVELOPERS.controllers;
 
-import ISPP.G5.INDVELOPERS.dtos.GetDeveloperDTO;
-import ISPP.G5.INDVELOPERS.mappers.DeveloperDTOConverter;
-import lombok.AllArgsConstructor;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import ISPP.G5.INDVELOPERS.dtos.GetDeveloperDTO;
+import ISPP.G5.INDVELOPERS.mappers.DeveloperDTOConverter;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
-
-import java.util.List;
 
 @CrossOrigin("*")
 @RestController
@@ -40,23 +48,18 @@ public class DeveloperController {
 		}
 	}
 
-	
+
 	@PostMapping("/login")
 	public ResponseEntity<String> login(@RequestParam String username,
-										@RequestParam String password) {
-		try {
-			return ResponseEntity.status(HttpStatus.OK)
-					.body(this.developerService.login(username,password));
-
-		} catch (NotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-		}
+		@RequestParam String password) {
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(developerService.login(username,password));
 	}
 
 	@GetMapping
 	public ResponseEntity<List<Developer>> getAll() {
 		try {
-			return ResponseEntity.ok(this.developerService.getAll());
+			return ResponseEntity.ok(developerService.getAll());
 		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
@@ -65,22 +68,22 @@ public class DeveloperController {
 	@GetMapping("/{username}")
 	public ResponseEntity<Developer> getProfileByUserName(@PathVariable String username) {
 		try {
-			return ResponseEntity.ok(this.developerService.findByUsername(username));
-		} catch(IllegalArgumentException | NotFoundException e) {
+			return ResponseEntity.ok(developerService.findByUsername(username));
+		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-	
+
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<HttpStatus> deleteDeveloperById(@PathVariable("id") String id) throws NotFoundException{
 		try {
-			this.developerService.deleteDeveloper(id);
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			developerService.deleteDeveloper(id);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch(IllegalArgumentException e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
 	@PutMapping("/edit/{id}")
 	public ResponseEntity<GetDeveloperDTO> updateDeveloper(@PathVariable String id, @RequestBody GetDeveloperDTO developerDTO) throws NotFoundException{
 		Developer developer2 = this.developerService.findById(id);
@@ -100,9 +103,9 @@ public class DeveloperController {
 	@GetMapping("/me")
 	public ResponseEntity<GetDeveloperDTO> whoIAm(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal) {
 		try {
-			return ResponseEntity.ok((DeveloperDTOConverter.DevelopertoGetDeveloperDTO(
-					developerService.findByUsername(principal.getUsername()))));
-		} catch(IllegalArgumentException | NotFoundException e) {
+			return ResponseEntity.ok(DeveloperDTOConverter.DevelopertoGetDeveloperDTO(
+				developerService.findByUsername(principal.getUsername())));
+		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}

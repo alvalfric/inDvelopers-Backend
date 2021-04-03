@@ -4,7 +4,6 @@ package ISPP.G5.INDVELOPERS.integrationTests.services;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,25 +44,18 @@ public class ReviewServiceIntegrationTests {
 
 
 	@BeforeEach
-	void init() throws NotFoundException {
+	void init() {
 		developer = developerRepository.findAll().get(0);
 		game = gameRepository.findAll().get(0);
-		Review review = new Review("Text", 1.5, game, developer);
-		reviewRepository.save(review);
 		reviewDefault = reviewRepository.findAll().get(0);
-	}
-
-	@AfterEach
-	void clear() {
-		reviewRepository.deleteAll();
 	}
 
 	@Test
 	@DisplayName("Adding review test")
-	public void testingAddReview() throws NotFoundException {
-		//Eliminate review to prevent Exception
-		reviewRepository.deleteAll();
-		//Adding review
+	public void testingAddReview() {
+		//Eliminamos la review por si ya existe
+		reviewService.deleteReview(reviewDefault.getId());
+
 		Review review = new Review("Text", 1.5, null, null);
 		int reviewsCountBefore = reviewService.findAll().size();
 		reviewService.addReview(review, game, developer);
@@ -73,7 +65,7 @@ public class ReviewServiceIntegrationTests {
 
 	@Test
 	@DisplayName("Trying to Add 2 reviews with same Game and Developer test")
-	public void testingAddTooMuchReviews() throws NotFoundException {
+	public void testingAddTooMuchReviews() {
 		Assertions.assertThatThrownBy(() -> {
 			Review review = new Review("Text", 1.5, null, null);
 			reviewService.addReview(review, game, developer);
@@ -134,6 +126,8 @@ public class ReviewServiceIntegrationTests {
 		reviewService.deleteReview(r.getId());
 		int reviewsCountAfter = reviewService.findAll().size();
 		Assertions.assertThat(reviewsCountBefore).isEqualTo(reviewsCountAfter + 1);
+		//Restore review
+		reviewService.addReview(r, game, developer);
 	}
 
 }
