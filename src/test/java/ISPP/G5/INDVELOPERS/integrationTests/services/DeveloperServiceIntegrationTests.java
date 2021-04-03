@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,11 @@ class DeveloperServiceIntegrationTests {
 		sizeBefore = developerService.getAll().size();
 		d1 = new Developer("developer1", "password1", "email1@gmail.com", null, null, null, "description1", null, null);
 		repo.save(d1);
+	}
+
+	@AfterEach
+	void end() {
+		repo.deleteAll();
 	}
 
 	// Casos positivos
