@@ -5,16 +5,24 @@ import java.awt.Image;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import ISPP.G5.INDVELOPERS.Utils.CustomAuthorityDeserializer;
+import ISPP.G5.INDVELOPERS.models.UserEntity.UserEntityBuilder;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -23,9 +31,11 @@ import lombok.ToString;
 @ToString
 @Document(collection="Developer")
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Developer extends BaseEntity implements UserDetails{
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 88749523013034397L;
 
 	@NotBlank
 	private String username;
@@ -52,9 +62,10 @@ public class Developer extends BaseEntity implements UserDetails{
 	private Boolean isPremium;
 
 	@Override
+	@JsonDeserialize(using = CustomAuthorityDeserializer.class)
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
-		return null;
+		 return roles.stream().map(ur -> new SimpleGrantedAuthority("ROLE_"+ur.name())).collect(Collectors.toList());
 	}
 
 	@Override
@@ -79,6 +90,9 @@ public class Developer extends BaseEntity implements UserDetails{
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+	public Boolean hasAuthority(String aut) {
+		return this.getAuthorities().stream().anyMatch(a -> a.equals(new SimpleGrantedAuthority(aut)));
 	}
 	
 }

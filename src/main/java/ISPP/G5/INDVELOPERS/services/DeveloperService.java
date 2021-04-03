@@ -1,13 +1,17 @@
 package ISPP.G5.INDVELOPERS.services;
 
 
-import io.jsonwebtoken.lang.Assert;
-import lombok.AllArgsConstructor;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +19,8 @@ import ISPP.G5.INDVELOPERS.Security.JwtTokenProvider;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import io.jsonwebtoken.lang.Assert;
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -33,7 +35,7 @@ public class DeveloperService {
 		
 	}
 
-	public Developer createDeveloper(Developer developer) throws IllegalArgumentException{
+	public Developer createDeveloper(Developer developer) {
 
 		Assert.notNull(developer);
 		if(this.developerRepository.findByUsername(developer.getUsername()).isPresent())
@@ -54,7 +56,7 @@ public class DeveloperService {
 		return this.developerRepository.save(developerToUpdate);
 	}
 
-	public String login(String username, String password) throws NotFoundException{
+	public String login(String username, String password) {
 
 		Developer developer;
 
@@ -62,24 +64,44 @@ public class DeveloperService {
 			authenticationManager
 			.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
-			developer = this.developerRepository.findByUsername(username).orElseThrow(NotFoundException::new);
+			developer = this.developerRepository.findByUsername(username).orElse(null);
 			return jwtTokenProvider.createToken(username, developer.getId(), developer.getRoles());
 		} catch (AuthenticationException e) {
-			throw new NotFoundException();
+			throw new IllegalArgumentException();
 		}
 
 	}
 
-	public Developer findByUsername(String username) throws NotFoundException {
+	public Developer findByUsername(String username) {
 		
-		return developerRepository.findByUsername(username).orElseThrow(NotFoundException::new);
+		return developerRepository.findByUsername(username).orElse(null);
 	}
 
 
-	public Developer findByEmail(String email) throws IllegalArgumentException, NotFoundException{
+	public Developer findByEmail(String email){
 		Assert.hasLength(email);
-		return this.developerRepository.findByEmail(email).orElseThrow(NotFoundException::new);
+		return this.developerRepository.findByEmail(email).orElse(null);
 	}
 	
+	public Developer findById(String id)  {
+		return this.developerRepository.findById(id).orElse(null);
+	}
 	
+	public void deleteDeveloper(String id) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		Developer admin = this.developerRepository.findByUsername(userDetails.getUsername()).orElse(null);
+		if (!admin.getRoles().contains(UserRole.ADMIN)) { 
+			throw new IllegalArgumentException("Only the admin can remove a developer");
+		} else {
+			this.developerRepository.deleteById(id);
+		}
+	}
+	
+	public Developer findCurrentDeveloper() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		Developer developer = findByUsername(userDetails.getUsername());
+		return developer;
+	}
 }
