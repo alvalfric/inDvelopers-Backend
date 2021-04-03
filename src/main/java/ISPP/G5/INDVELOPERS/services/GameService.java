@@ -1,11 +1,15 @@
 package ISPP.G5.INDVELOPERS.services;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.bson.BsonBinarySubType;
+import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
@@ -27,9 +31,10 @@ public class GameService {
 		return gameRepository.findAll();
 	}
 	
-	public String addGame(Game game, Developer developer){
+	public String addGame(Game game, Developer developer, MultipartFile file) throws IOException{
 		Assert.notNull(game);
 		game.setCreator(developer);
+		game.setImage(new Binary(BsonBinarySubType.BINARY, file.getBytes())); 
 		this.gameRepository.save(game);
 		return "Added game with title:"+ game.getTitle();
 	}

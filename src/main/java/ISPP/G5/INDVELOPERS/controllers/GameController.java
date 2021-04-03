@@ -1,5 +1,6 @@
 package ISPP.G5.INDVELOPERS.controllers;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
@@ -52,7 +55,7 @@ public class GameController {
 	}
 	
 	@PostMapping("/add")
-	public ResponseEntity<String> addGame(@RequestBody Game game) throws NotFoundException {
+	public ResponseEntity<String> addGame(@RequestBody Game game,  @RequestBody MultipartFile image) throws NotFoundException, IOException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Developer developer = this.developerService.findByUsername(userDetails.getUsername());
@@ -67,7 +70,7 @@ public class GameController {
 				throw new IllegalArgumentException("Only premium developers can sell non-free games");
 			if(isPremium == false && (this.gameService.findByMyGames(developer.getId()).size() + 1 == 6))
 				throw new IllegalArgumentException("Non premium developers only can have a maximun of five games published");
-			return ResponseEntity.status(HttpStatus.CREATED).body(this.gameService.addGame(game, developer));
+			return ResponseEntity.status(HttpStatus.CREATED).body(this.gameService.addGame(game, developer, image));
 		} catch(IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}

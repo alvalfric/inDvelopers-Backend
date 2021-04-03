@@ -82,7 +82,7 @@ public class MongoDBPopulate<E> {
             ================= GAMES =================
              */
             
-            Game game1 = new Game("25 caminos oscuros",
+            /*Game game1 = new Game("25 caminos oscuros",
                     "Es un juego en el que elijas el camino que elijas pierdes",
                     "No tiene grandes requisitos, 20 gigas de ram",
                     25.65,
@@ -110,24 +110,25 @@ public class MongoDBPopulate<E> {
                     true, 
                     dummyDeveloper);
             
-            gameRepository.save(game3);
+            gameRepository.save(game3);*/
 
             /*
             ================= REVIEWS =================
             */
           
-          	Review r1 = new Review("text", 2., game1, master2);
-			      reviewRepository.save(r1);
+          /*	Review r1 = new Review("text", 2., game1, master2);
+			      reviewRepository.save(r1);*/
           
             /*
             ================= OWNED-GAMES =================
              */
             
-            List<Game> gamesOfDeveloperAlvaro = new ArrayList<Game>();
+           /* List<Game> gamesOfDeveloperAlvaro = new ArrayList<Game>();
             gamesOfDeveloperAlvaro.add(game1);
             OwnedGame ownedGame1 = new OwnedGame(alvaro, gamesOfDeveloperAlvaro);
             
-            ownedGameRepository.save(ownedGame1);
+            ownedGameRepository.save(ownedGame1);*/
+            
         };
 
     }

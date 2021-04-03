@@ -3,6 +3,7 @@ package ISPP.G5.INDVELOPERS.models;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.bson.types.Binary;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -38,4 +39,5 @@ public class Game extends BaseEntity{
 	
 	private Developer creator;
 	
+    private Binary image;
 }
