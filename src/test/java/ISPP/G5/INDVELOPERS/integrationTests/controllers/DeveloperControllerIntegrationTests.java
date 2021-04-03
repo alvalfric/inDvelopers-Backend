@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,8 +21,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-
-import com.google.gson.Gson;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.UserRole;
@@ -74,8 +73,8 @@ class DeveloperControllerIntegrationTests {
 	@Test
 	@DisplayName("Create developer")
 	void createDeveloper() throws Exception {
-		Gson gson = new Gson();
-		String json = gson.toJson(developer2);
+		ObjectMapper om = new ObjectMapper();
+		String json = om.writeValueAsString(developer2);
 		mockMvc.perform(post("/developers/sign-up").contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().isCreated());
 		repo.delete(developer1);
 
@@ -99,8 +98,8 @@ class DeveloperControllerIntegrationTests {
 	void editDeveloper() throws Exception {
 		developer1.setUsername("developerNumber1");
 		repo.save(developer1);
-		Gson gson = new Gson();
-		String json = gson.toJson(developer1);
+		ObjectMapper om = new ObjectMapper();
+		String json = om.writeValueAsString(developer1);
 		mockMvc.perform(put("/developers" + "/edit/" + developer1.getId()).contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().isOk());
 		repo.delete(developer1);
 

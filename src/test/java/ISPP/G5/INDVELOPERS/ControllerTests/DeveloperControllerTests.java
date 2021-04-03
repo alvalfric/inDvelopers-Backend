@@ -8,10 +8,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.ArgumentMatchers.any;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +26,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.google.gson.Gson;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.UserRole;
@@ -75,8 +76,8 @@ class DeveloperControllerTests {
 	@DisplayName("Create developer")
 	@WithMockUser(value = "spring")
 	void createDeveloper() throws Exception {
-		Gson gson = new Gson();
-		String json = gson.toJson(developer1);
+		ObjectMapper om = new ObjectMapper();
+		String json = om.writeValueAsString(developer1);
 		mockMvc.perform(post("/developers/sign-up").contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().isCreated());
 	}
 
@@ -89,17 +90,18 @@ class DeveloperControllerTests {
 	}
 
 	/*Error test al cambiar a GetDTO*/
-//	@Test
-//	@DisplayName("Edit developer test")
-//	@WithMockUser(value = "spring")
-//	void editDeveloper() throws Exception {
-//		when(this.developerService.findById("id1")).thenReturn(developer1);
-//		developer1.setUsername("developerNumber1");
-//		Gson gson = new Gson();
-//        String json = gson.toJson(developer1);
-//		mockMvc.perform(put("/developers"+"/edit/"+ developer1.getId()).contentType(MediaType.APPLICATION_JSON)
-//			    .content(json)).andExpect(status().isOk());
-//	}
+	@Test
+	@DisplayName("Edit developer test")
+	@WithMockUser(value = "spring")
+	void editDeveloper() throws Exception {
+		when(this.developerService.findById("id1")).thenReturn(developer1);
+		when(this.developerService.updateDeveloper(any())).thenReturn(developer1);
+		developer1.setUsername("developerNumber1");
+		ObjectMapper om = new ObjectMapper();
+		String json = om.writeValueAsString(developer1);
+		mockMvc.perform(put("/developers"+"/edit/"+ developer1.getId()).contentType(MediaType.APPLICATION_JSON)
+			    .content(json)).andExpect(status().isOk());
+	}
 
 	@Test
 	@DisplayName("Delete developer test")
