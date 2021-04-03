@@ -100,16 +100,6 @@ class DeveloperControllerTests {
 //		mockMvc.perform(put("/developers"+"/edit/"+ developer1.getId()).contentType(MediaType.APPLICATION_JSON)
 //			    .content(json)).andExpect(status().isOk());
 //	}
-	@Test
-	@DisplayName("Edit developer test")
-	@WithMockUser(value = "spring")
-	void editDeveloper() throws Exception {
-		when(developerService.findById("id1")).thenReturn(developer1);
-		developer1.setUsername("developerNumber1");
-		Gson gson = new Gson();
-		String json = gson.toJson(developer1);
-		mockMvc.perform(put("/developers" + "/edit/" + developer1.getId()).contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().isOk());
-	}
 
 	@Test
 	@DisplayName("Delete developer test")
