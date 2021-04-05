@@ -82,7 +82,7 @@ public class MongoDBPopulate<E> {
                     passwordEncoder.encode("dummyDeveloper2"),
                     "dummyDeveloper2@gmail.com",
                     null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true);
+                    null, null, false);
 
             developerRepository.save(dummyDeveloper2);
             
@@ -93,6 +93,22 @@ public class MongoDBPopulate<E> {
                     null, null, true);
 
             developerRepository.save(fernando);
+
+            Developer asdf = new Developer("asdf",
+                    passwordEncoder.encode("asdfasdf"),
+                    "asdf@asdf.com",
+                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true);
+
+            developerRepository.save(asdf);
+
+            Developer asdfasdf = new Developer("asdfasdf",
+                    passwordEncoder.encode("asdfasdf"),
+                    "asdf@asdf.com",
+                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, false);
+
+            developerRepository.save(asdfasdf);
             
             /* Credenciales de los profesores */
             
