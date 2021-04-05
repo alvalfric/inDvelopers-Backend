@@ -1,6 +1,8 @@
 dist: xenial
 
-services: mongodb
+services: 
+  - mongodb
+  - mysql
 addons:
   chrome: stable
   firefox: latest
@@ -14,8 +16,10 @@ cache:
   directories:
   - "$HOME/.m2"
 before_install:
+
   - sudo apt-get install jq
   - wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r .assets[0].browser_download_url)
+  - mysql -e 'CREATE DATABASE InDvelopers';
 install:
   - pip install codacy-coverage
   - pip install selenium
@@ -25,15 +29,25 @@ install:
   - rm chromedriver_linux64.zip
   - sudo mv -f chromedriver /usr/bin
   - sudo chmod +x /usr/bin/chromedriver
+before_script:
+  - bash <(curl -Ls https://coverage.codacy.com/get.sh) download
 script: 
   - mvn clean package -DskipTests=true
+  - mvn test -Dspring.profiles.active=mysql-travis
+  - sudo apt-get install jq
+  - wget -O ~/codacy-coverage-reporter-assembly-latest.jar https://oss.sonatype.org/service/local/repositories/releases/content/com/codacy/codacy-coverage-reporter/2.0.2/codacy-coverage-reporter-2.0.2-assembly.jar
+  - mvn clean package -Pcoverage-report
 after_success:
-  - java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r target/jacoco/jacoco.xml
+  - bash <(curl -Ls https://coverage.codacy.com/get.sh)
+
+  - chmod +x mvnw
+
 branches:
   only:
   - main
   - develop
   - "#13"
+
 notifications:
   email: false
 warnings_are_errors: false
