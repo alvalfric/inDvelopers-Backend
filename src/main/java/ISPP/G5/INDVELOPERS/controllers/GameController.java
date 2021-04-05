@@ -53,7 +53,7 @@ public class GameController {
 	}
 
 	@PostMapping("/add")
-	public ResponseEntity<String> addGame(@RequestBody final Game game) throws NotFoundException {
+	public ResponseEntity<String> addGame(@RequestBody final Game game) throws IllegalArgumentException {
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -62,11 +62,11 @@ public class GameController {
 			if (developer.getIsPremium() != null)
 				isPremium = developer.getIsPremium();
 			if (gameService.findAll().stream().anyMatch(g -> g.getTitle().equals(game.getTitle())))
-				throw new IllegalArgumentException("There's alredy a game with that title");
+				throw new IllegalArgumentException("There's already a game with that title");
 			if (isPremium == false && game.getPrice() != 0.0)
 				throw new IllegalArgumentException("Only premium developers can sell non-free games");
-			if (isPremium == false && gameService.findByMyGames(developer.getId()).size() + 1 == 6)
-				throw new IllegalArgumentException("Non premium developers only can have a maximun of five games published");
+			if (isPremium == false && (gameService.findByMyGames(developer.getId()).size() + 1 > 5))
+				throw new IllegalArgumentException("Non premium developers only can have a maximum of five games published");
 			return ResponseEntity.status(HttpStatus.CREATED).body(gameService.addGame(game, developer));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
