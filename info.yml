@@ -5,8 +5,6 @@ project:
   identities:
     github:
       url: 'https://github.com/alvalfric/indvelopers-backend'
-    pivotal:
-      url: 'https://github.com/alvalfric/indvelopers-backend'
     heroku:
       url: 'https://continuous-indvelopers-backend.herokuapp.com/'
     travis:
