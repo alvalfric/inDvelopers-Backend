@@ -42,6 +42,15 @@ public class GameController {
 		this.gameService = gameService;
 		this.developerService = developerService;
 	}
+	
+	@GetMapping("/findVerified")
+	public ResponseEntity<List<Game>> findVerified(){
+		try {
+			return ResponseEntity.ok(gameService.findVerified());
+		}catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
 
 	@GetMapping("/findAll")
 	public ResponseEntity<List<Game>> findAll() {

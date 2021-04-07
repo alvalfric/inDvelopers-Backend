@@ -20,4 +20,7 @@ public interface GameRepository extends MongoRepository<Game,String>{
 	
 	@Override
 	List<Game> findAll() throws DataAccessException;
+	
+	@Query("{'isNotMalware':true}")
+	List<Game>findVerified();
 }

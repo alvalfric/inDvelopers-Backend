@@ -25,6 +25,9 @@ public class GameService {
 	public List<Game> findAll(){
 		return gameRepository.findAll();
 	}
+	public List<Game> findVerified(){
+		return gameRepository.findVerified();
+	}
 	
 	public String addGame(Game game, Developer developer){
 		Assert.notNull(game);
