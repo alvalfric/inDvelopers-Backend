@@ -9,8 +9,6 @@ project:
       url: 'https://continuous-indvelopers-backend.herokuapp.com/'
     travis:
       url: 'https://travis-ci.com/github/alvalfric/inDvelopers-Backend'
-    codacy:
-      url: 'https://app.codacy.com/gh/alvalfric/inDvelopers-Backend/dashboard'
   members:
     member1:
       name: 'Álvaro Jesús'
