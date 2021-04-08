@@ -74,11 +74,10 @@ public class DeveloperController {
 		}
 	}
 
-	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<HttpStatus> deleteDeveloperById(@PathVariable("id") String id) throws NotFoundException{
+	@DeleteMapping("/delete/{developerId}")
+	public ResponseEntity<String> deleteDeveloperById(@PathVariable("developerId") String developerId) throws NotFoundException{
 		try {
-			developerService.deleteDeveloper(id);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return ResponseEntity.status(HttpStatus.OK).body(developerService.deleteDeveloper(developerId));
 		} catch(IllegalArgumentException e) {
 			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
 		}
