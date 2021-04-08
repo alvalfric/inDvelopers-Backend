@@ -42,12 +42,21 @@ public class GameController {
 		this.gameService = gameService;
 		this.developerService = developerService;
 	}
-	
+
 	@GetMapping("/findVerified")
-	public ResponseEntity<List<Game>> findVerified(){
+	public ResponseEntity<List<Game>> findVerified() {
 		try {
 			return ResponseEntity.ok(gameService.findVerified());
-		}catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+
+	@GetMapping("/findNotRevised")
+	public ResponseEntity<List<Game>> findNotRevised() {
+		try {
+			return ResponseEntity.ok(gameService.findNotRevised());
+		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
@@ -74,7 +83,7 @@ public class GameController {
 				throw new IllegalArgumentException("There's already a game with that title");
 			if (isPremium == false && game.getPrice() != 0.0)
 				throw new IllegalArgumentException("Only premium developers can sell non-free games");
-			if (isPremium == false && (gameService.findByMyGames(developer.getId()).size() + 1 > 5))
+			if (isPremium == false && gameService.findByMyGames(developer.getId()).size() + 1 > 5)
 				throw new IllegalArgumentException("Non premium developers only can have a maximum of five games published");
 			return ResponseEntity.status(HttpStatus.CREATED).body(gameService.addGame(game, developer));
 		} catch (IllegalArgumentException e) {

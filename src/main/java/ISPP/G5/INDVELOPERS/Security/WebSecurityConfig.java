@@ -1,6 +1,8 @@
 package ISPP.G5.INDVELOPERS.Security;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,8 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -58,6 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/publications/**").permitAll()
             .antMatchers("/developers/findAll").permitAll()
             .antMatchers("/developers/add").authenticated()
+            //.antMatchers("/games/findNotRevised").hasRole("admin")
             //.antMatchers("/games/findAll").permitAll()
             //.antMatchers("/games/findByDeveloper/**").permitAll()
             //.antMatchers("/games/findByTitle/**").permitAll()
