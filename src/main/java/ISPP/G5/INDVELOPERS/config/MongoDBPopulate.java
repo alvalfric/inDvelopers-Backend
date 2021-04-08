@@ -13,15 +13,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
-import ISPP.G5.INDVELOPERS.models.Review;
 import ISPP.G5.INDVELOPERS.models.OwnedGame;
+import ISPP.G5.INDVELOPERS.models.Review;
 import ISPP.G5.INDVELOPERS.models.UserEntity;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
+import ISPP.G5.INDVELOPERS.repositories.DeveloperSubscriptionRepository;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
-import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
 import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
 import ISPP.G5.INDVELOPERS.repositories.PublicationRepository;
+import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
 import ISPP.G5.INDVELOPERS.repositories.UserEntityRepository;
 
 @Configuration
@@ -33,7 +34,8 @@ public class MongoDBPopulate<E> {
     @Bean
     CommandLineRunner commandLineRunner(
             UserEntityRepository userEntityRepository, DeveloperRepository developerRepository,
-            GameRepository gameRepository, ReviewRepository reviewRepository, OwnedGameRepository ownedGameRepository, PublicationRepository publicationRepository) {
+            GameRepository gameRepository, ReviewRepository reviewRepository, OwnedGameRepository ownedGameRepository, PublicationRepository publicationRepository,
+            DeveloperSubscriptionRepository developerSubscriptionRepository) {
         return strings -> {
         	userEntityRepository.deleteAll();
             developerRepository.deleteAll();
@@ -41,6 +43,8 @@ public class MongoDBPopulate<E> {
             reviewRepository.deleteAll();
             ownedGameRepository.deleteAll();
             publicationRepository.deleteAll();
+            developerSubscriptionRepository.deleteAll();
+
 
             /*
                 ================= USERS =================
