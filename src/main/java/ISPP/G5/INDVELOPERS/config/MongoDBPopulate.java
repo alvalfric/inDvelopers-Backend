@@ -40,7 +40,7 @@ public class MongoDBPopulate<E> {
             gameRepository.deleteAll();
             reviewRepository.deleteAll();
             ownedGameRepository.deleteAll();
-          publicationRepository.deleteAll();
+            publicationRepository.deleteAll();
 
             /*
                 ================= USERS =================
@@ -48,7 +48,7 @@ public class MongoDBPopulate<E> {
 
             UserEntity master = new UserEntity("master",
                     passwordEncoder.encode("master123"),
-                    "https://dummyimage.com/300",
+                    "master@indvelopers.com",
                     Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
                     true);
 
@@ -56,7 +56,7 @@ public class MongoDBPopulate<E> {
 
             Developer master2 = new Developer("master2",
                     passwordEncoder.encode("master212"),
-                    "https://dummyimage.com/300",
+                    "master2@indvelopers.com",
                     null, null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
                     null, null, true);
 
