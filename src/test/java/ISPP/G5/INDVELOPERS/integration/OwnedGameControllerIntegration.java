@@ -1,4 +1,4 @@
-package ISPP.G5.INDVELOPERS.web.integration;
+package ISPP.G5.INDVELOPERS.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;

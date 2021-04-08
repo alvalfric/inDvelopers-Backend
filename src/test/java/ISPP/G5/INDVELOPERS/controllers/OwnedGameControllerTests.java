@@ -1,4 +1,4 @@
-package ISPP.G5.INDVELOPERS.web;
+package ISPP.G5.INDVELOPERS.controllers;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;

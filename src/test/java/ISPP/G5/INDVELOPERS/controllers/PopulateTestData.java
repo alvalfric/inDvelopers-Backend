@@ -1,4 +1,4 @@
-package ISPP.G5.INDVELOPERS.web;
+package ISPP.G5.INDVELOPERS.controllers;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

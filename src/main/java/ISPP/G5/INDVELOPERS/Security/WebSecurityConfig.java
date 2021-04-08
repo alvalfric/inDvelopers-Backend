@@ -71,6 +71,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             //.antMatchers("/reviews**").permitAll()
             //.antMatchers("/swagger-ui.html").permitAll()
             // Disallow everything else..
+            .antMatchers("/subscription/isPremium").authenticated()
+            .antMatchers("/subscription/buy").authenticated()
+            .antMatchers("/subscription/checkSubscription/**").permitAll()
+            .antMatchers("/subscription/get/**").permitAll()
             .anyRequest().authenticated();
 
     // If a user try to access a resource without having enough permissions
