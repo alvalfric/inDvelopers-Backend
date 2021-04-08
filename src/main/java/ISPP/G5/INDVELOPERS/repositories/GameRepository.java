@@ -11,16 +11,19 @@ import ISPP.G5.INDVELOPERS.models.Game;
 
 @Repository
 public interface GameRepository extends MongoRepository<Game,String>{
-	
+
 	@Query("{ 'creator.id' : ?0 }")
 	List<Game> findByDeveloper(String developerId);
-	
+
 	@Query("{ 'creator.id' : ?0 }")
 	List<Game> findByMyGames(String developerId);
-	
+
 	@Override
 	List<Game> findAll() throws DataAccessException;
-	
+
 	@Query("{'isNotMalware':true}")
 	List<Game>findVerified();
+
+	@Query("{'isNotMalware':null}")
+	List<Game> findNotRevised();
 }
