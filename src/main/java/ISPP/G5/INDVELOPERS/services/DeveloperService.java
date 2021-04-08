@@ -53,7 +53,7 @@ public class DeveloperService {
 
 	public Developer changeToAdmin(String id) {
 		Developer developer = this.developerRepository.findById(id).orElse(null);
-		if (developer.equals(null)) {
+		if (developer == null) {
 			throw new IllegalArgumentException("Developer does not exist");
 		}
 		if (developer.getRoles().contains(UserRole.ADMIN)) {
@@ -65,10 +65,10 @@ public class DeveloperService {
 		this.developerRepository.save(developer);
 		return developer;
 	}
-	
+
 	public Developer changeToUser(String id) {
 		Developer developer = this.developerRepository.findById(id).orElse(null);
-		if (developer.equals(null)) {
+		if (developer == null) {
 			throw new IllegalArgumentException("Developer does not exist");
 		}
 		if (!developer.getRoles().contains(UserRole.ADMIN)) {
