@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/publications/**").permitAll()
 		.antMatchers("/developers/findAll").permitAll()
 		.antMatchers("/developers/add").authenticated()
-		.antMatchers("/games/findNotRevised").hasRole("admin")
+		//.antMatchers("/games/findNotRevised").hasRole("admin")
 		//.antMatchers("/games/findAll").permitAll()
 		//.antMatchers("/games/findByDeveloper/**").permitAll()
 		//.antMatchers("/games/findByTitle/**").permitAll()

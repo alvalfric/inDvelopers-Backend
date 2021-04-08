@@ -1,3 +1,4 @@
+
 package ISPP.G5.INDVELOPERS.repositories;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import ISPP.G5.INDVELOPERS.models.Game;
 
 @Repository
-public interface GameRepository extends MongoRepository<Game,String>{
+public interface GameRepository extends MongoRepository<Game, String> {
 
 	@Query("{ 'creator.id' : ?0 }")
 	List<Game> findByDeveloper(String developerId);
@@ -22,8 +23,8 @@ public interface GameRepository extends MongoRepository<Game,String>{
 	List<Game> findAll() throws DataAccessException;
 
 	@Query("{'isNotMalware':true}")
-	List<Game>findVerified();
+	List<Game> findVerified();
 
-	@Query("{'isNotMalware':null}")
+	@Query("{'isNotMalware':{'$ne':true}}")
 	List<Game> findNotRevised();
 }

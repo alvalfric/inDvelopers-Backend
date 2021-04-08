@@ -44,19 +44,19 @@ public class GameController {
 	}
 
 	@GetMapping("/findVerified")
-	public ResponseEntity<List<Game>> findVerified(){
+	public ResponseEntity<List<Game>> findVerified() {
 		try {
 			return ResponseEntity.ok(gameService.findVerified());
-		}catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
 
 	@GetMapping("/findNotRevised")
-	public ResponseEntity<List<Game>> findNotRevised(){
+	public ResponseEntity<List<Game>> findNotRevised() {
 		try {
-			return ResponseEntity.ok(gameService.findVerified());
-		}catch (IllegalArgumentException e) {
+			return ResponseEntity.ok(gameService.findNotRevised());
+		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
@@ -77,9 +77,8 @@ public class GameController {
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			Developer developer = developerService.findByUsername(userDetails.getUsername());
 			boolean isPremium = false;
-			if (developer.getIsPremium() != null) {
+			if (developer.getIsPremium() != null)
 				isPremium = developer.getIsPremium();
-			}
 			if (gameService.findAll().stream().anyMatch(g -> g.getTitle().equals(game.getTitle())))
 				throw new IllegalArgumentException("There's already a game with that title");
 			if (isPremium == false && game.getPrice() != 0.0)
