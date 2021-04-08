@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
+import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
 import ISPP.G5.INDVELOPERS.services.GameService;
 
@@ -35,8 +36,7 @@ public class GameController {
 
 	@Autowired
 	private DeveloperService	developerService;
-
-
+	
 	@Autowired
 	public GameController(final GameService gameService, final DeveloperService developerService) {
 		this.gameService = gameService;
@@ -115,9 +115,11 @@ public class GameController {
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			Developer developer = developerService.findByUsername(userDetails.getUsername());
 			Game game = gameService.findById(id);
-			if (!game.getCreator().getId().equals(developer.getId()))
-				throw new IllegalArgumentException("Only the creator of the game can remove it");
-			gameService.deleteGame(id);
+			if (game.getCreator().getId().equals(developer.getId()) || developer.getRoles().contains(UserRole.ADMIN)) {
+				gameService.deleteGame(id);
+			}else {
+				throw new IllegalArgumentException("Only the creator of the game or an admin can remove it");
+			}
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
