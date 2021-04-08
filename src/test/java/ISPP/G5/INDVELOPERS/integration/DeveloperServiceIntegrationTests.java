@@ -1,5 +1,5 @@
 
-package ISPP.G5.INDVELOPERS.integrationTests.services;
+package ISPP.G5.INDVELOPERS.integration;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;

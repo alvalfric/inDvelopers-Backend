@@ -1,4 +1,4 @@
-package ISPP.G5.INDVELOPERS.ServiceTests;
+package ISPP.G5.INDVELOPERS.service;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;

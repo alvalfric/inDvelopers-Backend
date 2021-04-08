@@ -1,4 +1,4 @@
-package ISPP.G5.INDVELOPERS.ControllerTests;
+package ISPP.G5.INDVELOPERS.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;

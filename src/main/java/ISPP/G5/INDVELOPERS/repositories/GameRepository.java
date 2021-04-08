@@ -2,6 +2,7 @@
 package ISPP.G5.INDVELOPERS.repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -23,8 +24,12 @@ public interface GameRepository extends MongoRepository<Game, String> {
 	List<Game> findAll() throws DataAccessException;
 
 	@Query("{'isNotMalware':true}")
-	List<Game> findVerified();
+
+	List<Game>findVerified();
+	
+	Optional<Game> findById(String id) throws DataAccessException;
 
 	@Query("{'isNotMalware':{'$ne':true}}")
 	List<Game> findNotRevised();
+
 }

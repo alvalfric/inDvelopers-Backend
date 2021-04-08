@@ -1,5 +1,5 @@
 
-package ISPP.G5.INDVELOPERS.integrationTests.services;
+package ISPP.G5.INDVELOPERS.integration;
 
 import java.util.List;
 

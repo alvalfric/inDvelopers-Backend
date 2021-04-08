@@ -1,5 +1,5 @@
 
-package ISPP.G5.INDVELOPERS.unitTests.services;
+package ISPP.G5.INDVELOPERS.service;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -25,7 +25,7 @@ import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
 import ISPP.G5.INDVELOPERS.services.ReviewService;
 
 @SpringBootTest
-public class ReviewServiceUnitTests {
+public class ReviewServiceTests {
 
 	@InjectMocks
 	ReviewService		service;

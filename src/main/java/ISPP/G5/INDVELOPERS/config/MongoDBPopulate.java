@@ -13,15 +13,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
-import ISPP.G5.INDVELOPERS.models.Review;
 import ISPP.G5.INDVELOPERS.models.OwnedGame;
+import ISPP.G5.INDVELOPERS.models.Review;
 import ISPP.G5.INDVELOPERS.models.UserEntity;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
+import ISPP.G5.INDVELOPERS.repositories.DeveloperSubscriptionRepository;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
-import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
 import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
 import ISPP.G5.INDVELOPERS.repositories.PublicationRepository;
+import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
 import ISPP.G5.INDVELOPERS.repositories.UserEntityRepository;
 
 @Configuration
@@ -33,14 +34,17 @@ public class MongoDBPopulate<E> {
     @Bean
     CommandLineRunner commandLineRunner(
             UserEntityRepository userEntityRepository, DeveloperRepository developerRepository,
-            GameRepository gameRepository, ReviewRepository reviewRepository, OwnedGameRepository ownedGameRepository, PublicationRepository publicationRepository) {
+            GameRepository gameRepository, ReviewRepository reviewRepository, OwnedGameRepository ownedGameRepository, PublicationRepository publicationRepository,
+            DeveloperSubscriptionRepository developerSubscriptionRepository) {
         return strings -> {
         	userEntityRepository.deleteAll();
             developerRepository.deleteAll();
             gameRepository.deleteAll();
             reviewRepository.deleteAll();
             ownedGameRepository.deleteAll();
-          publicationRepository.deleteAll();
+            publicationRepository.deleteAll();
+            developerSubscriptionRepository.deleteAll();
+
 
             /*
                 ================= USERS =================
@@ -48,7 +52,7 @@ public class MongoDBPopulate<E> {
 
             UserEntity master = new UserEntity("master",
                     passwordEncoder.encode("master123"),
-                    "https://dummyimage.com/300",
+                    "master@indvelopers.com",
                     Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
                     true);
 
@@ -56,7 +60,7 @@ public class MongoDBPopulate<E> {
 
             Developer master2 = new Developer("master2",
                     passwordEncoder.encode("master212"),
-                    "https://dummyimage.com/300",
+                    "master2@indvelopers.com",
                     null, null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
                     null, null, true);
 
