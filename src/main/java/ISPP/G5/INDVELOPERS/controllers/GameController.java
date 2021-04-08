@@ -94,15 +94,19 @@ public class GameController {
 
 			if (allGames.stream().anyMatch(g -> g.getTitle().equals(game.getTitle())))
 				throw new IllegalArgumentException("There's alredy a game with that title");
-			if (!gameData.getCreator().getId().equals(developer.getId()))
-				throw new IllegalArgumentException("Only the creator of the game can edit it");
-			gameData.setTitle(game.getTitle());
-			gameData.setDescription(game.getDescription());
-			gameData.setRequirements(game.getRequirements());
-			gameData.setPrice(game.getPrice());
-			gameData.setIsNotMalware(game.getIsNotMalware());
-			gameData.setIdCloud(game.getIdCloud());
-			return new ResponseEntity<>(gameService.updateGame(gameData), HttpStatus.OK);
+			
+			if (game.getCreator().getId().equals(developer.getId()) || developer.getRoles().contains(UserRole.ADMIN)) {
+				gameData.setTitle(game.getTitle());
+				gameData.setDescription(game.getDescription());
+				gameData.setRequirements(game.getRequirements());
+				gameData.setPrice(game.getPrice());
+				gameData.setIsNotMalware(game.getIsNotMalware());
+				gameData.setIdCloud(game.getIdCloud());
+				return new ResponseEntity<>(gameService.updateGame(gameData), HttpStatus.OK);
+			}else {
+				throw new IllegalArgumentException("Only the creator of the game or an admin can remove it");
+			}
+			
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
