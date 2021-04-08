@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ISPP.G5.INDVELOPERS.Security.JwtTokenProvider;
+import ISPP.G5.INDVELOPERS.controllers.DeveloperSubscriptionController;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
@@ -29,7 +30,7 @@ public class DeveloperService {
 	private JwtTokenProvider jwtTokenProvider;
 	private AuthenticationManager authenticationManager;
 	private DeveloperRepository developerRepository;
-
+	
 	public List<Developer> getAll() {
 		return this.developerRepository.findAll();
 		
@@ -47,7 +48,7 @@ public class DeveloperService {
 		developer.setPassword(new BCryptPasswordEncoder(12).encode(developer.getPassword()));
 		developer.setRoles(Stream.of(UserRole.USER).collect(Collectors.toSet()));
 		
-		this.developerRepository.save(developer);
+		this.updateDeveloper(developer);
 
 		return developer;
 	}
@@ -65,6 +66,8 @@ public class DeveloperService {
 			.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
 			developer = this.developerRepository.findByUsername(username).orElse(null);
+			this.updateDeveloper(developer);
+			
 			return jwtTokenProvider.createToken(username, developer.getId(), developer.getRoles());
 		} catch (AuthenticationException e) {
 			throw new IllegalArgumentException();

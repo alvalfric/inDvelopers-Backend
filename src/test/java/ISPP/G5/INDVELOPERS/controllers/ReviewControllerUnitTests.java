@@ -1,5 +1,5 @@
 
-package ISPP.G5.INDVELOPERS.unitTests.controllers;
+package ISPP.G5.INDVELOPERS.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;

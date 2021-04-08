@@ -1,4 +1,4 @@
-package ISPP.G5.INDVELOPERS.ServiceTests;
+package ISPP.G5.INDVELOPERS.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

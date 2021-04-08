@@ -1,5 +1,5 @@
 
-package ISPP.G5.INDVELOPERS.integrationTests.controllers;
+package ISPP.G5.INDVELOPERS.integration;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
