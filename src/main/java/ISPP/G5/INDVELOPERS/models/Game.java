@@ -37,5 +37,7 @@ public class Game extends BaseEntity{
 	private Boolean isNotMalware;
 	
 	private Developer creator;
+
+	private String imagen;
 	
 }
