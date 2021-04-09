@@ -90,7 +90,6 @@ public class GameController {
 			Developer developer = developerService.findByUsername(userDetails.getUsername());
 			Game gameData = gameService.findById(id);
 			List<Game> allGames = gameService.findAll();
-			allGames.remove(gameData);
 
 			if (allGames.stream().anyMatch(g -> g.getTitle().equals(game.getTitle())))
 				throw new IllegalArgumentException("There's alredy a game with that title");
@@ -100,7 +99,9 @@ public class GameController {
 			gameData.setDescription(game.getDescription());
 			gameData.setRequirements(game.getRequirements());
 			gameData.setPrice(game.getPrice());
-			gameData.setIsNotMalware(game.getIsNotMalware());
+			if (developer.getRoles().contains(UserRole.ADMIN)) {
+				gameData.setIsNotMalware(game.getIsNotMalware());
+				}			
 			gameData.setIdCloud(game.getIdCloud());
 			return new ResponseEntity<>(gameService.updateGame(gameData), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
@@ -165,5 +166,4 @@ public class GameController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-
 }
