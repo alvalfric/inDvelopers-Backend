@@ -124,7 +124,7 @@ public class GameController {
 				gameData.setIdCloud(game.getIdCloud());
 				return new ResponseEntity<>(gameService.updateGame(gameData), HttpStatus.OK);
 			} else {
-				throw new IllegalArgumentException("Only the creator of the game or an admin can remove it");
+				throw new IllegalArgumentException("Only the creator of the game or an admin can update it");
 			}
 
 		} catch (IllegalArgumentException e) {
@@ -246,4 +246,3 @@ public class GameController {
 	}
 
 }
-
