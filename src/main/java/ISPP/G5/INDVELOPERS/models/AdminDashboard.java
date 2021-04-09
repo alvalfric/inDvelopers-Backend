@@ -14,12 +14,12 @@ import lombok.ToString;
 @AllArgsConstructor
 public class AdminDashboard extends BaseEntity {
 	
-    private Float numGamesDone;
+    private Integer numGamesDone;
 	
-	private Float numReviews;
+	private Integer numReviews;
 	
-	private Float numPublications;
+	private Integer numPublications;
 	
-	private Float numGamesOwned;
+	private Integer numGamesOwned;
 
 }
