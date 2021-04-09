@@ -38,17 +38,12 @@ public class GameController {
 
 	@Autowired
 	private GameService gameService;
-  @Autowired
+	@Autowired
 	private DeveloperService developerService;
-  @Autowired
+  	@Autowired
 	private OwnedGameRepository ownedGameRepository;
-  @Autowired
-  private DeveloperSubscriptionService developerSubscriptionService;
-  @Autowired
-	private DeveloperService developerService;
 	@Autowired
 	private DeveloperSubscriptionService developerSubscriptionService;
-
 	@Autowired
 	public GameController(final GameService gameService, final DeveloperService developerService,
 			final OwnedGameRepository ownedGameRepository, final DeveloperSubscriptionService developerSubscriptionService) {
