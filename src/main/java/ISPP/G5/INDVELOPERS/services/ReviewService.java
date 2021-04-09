@@ -1,6 +1,8 @@
 
 package ISPP.G5.INDVELOPERS.services;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +20,18 @@ public class ReviewService {
 	@Autowired
 	private ReviewRepository repository;
 
-
 	public List<Review> findAll() {
-		return repository.findAll();
+		List<Review> res = new ArrayList<>();
+		res = repository.findAll();
+		Collections.reverse(res);
+		return res;
 	}
 
 	public List<Review> findAllByGameId(final String gameId) {
-		return repository.findAllByGameId(gameId);
+		List<Review> res = new ArrayList<>();
+		res = repository.findAllByGameId(gameId);
+		Collections.reverse(res);
+		return res;
 	}
 
 	public Review findById(final String id) {
@@ -38,7 +45,9 @@ public class ReviewService {
 		List<Review> allReviews = findAllByGameId(game.getId());
 		for (Review re : allReviews)
 			if (re.getDeveloper().getId().equals(developer.getId()))
-				throw new IllegalArgumentException("Not saved Review because Developer with Id: " + review.getDeveloper().getId() + " already had reviewed the Game with Id: " + review.getGame().getId());
+				throw new IllegalArgumentException(
+						"Not saved Review because Developer with Id: " + review.getDeveloper().getId()
+								+ " already had reviewed the Game with Id: " + review.getGame().getId());
 
 		repository.save(review);
 		return "Added Review with Id: " + review.getId();
