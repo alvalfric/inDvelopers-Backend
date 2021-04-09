@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
+import ISPP.G5.INDVELOPERS.models.OwnedGame;
+import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
 import ISPP.G5.INDVELOPERS.services.GameService;
 
@@ -40,9 +42,14 @@ public class GameController {
 	private DeveloperService developerService;
 
 	@Autowired
-	public GameController(final GameService gameService, final DeveloperService developerService) {
+	private OwnedGameRepository ownedGameRepository;
+
+	@Autowired
+	public GameController(final GameService gameService, final DeveloperService developerService,
+			final OwnedGameRepository ownedGameRepository) {
 		this.gameService = gameService;
 		this.developerService = developerService;
+		this.ownedGameRepository = ownedGameRepository;
 	}
 
 	@GetMapping("/findVerified")
@@ -187,17 +194,18 @@ public class GameController {
 		Integer res = 0;
 		Boolean first = true;
 		List<Game> topSellersGames = new ArrayList<Game>();
+		List<OwnedGame> allOwnedGames = this.ownedGameRepository.findAll();
 		List<Game> allGames = this.gameService.findAll();
 		Integer size = allGames.size();
-		List<Developer> allDevelopers = this.developerService.getAll();
 		for (int i = 0; i < size; i++) {
 			actual = 0;
+			first = true;
 			for (Game g : allGames) {
 				res = 0;
-				first = true;
+
 				if (!topSellersGames.contains(g)) {
-					for (Developer d : allDevelopers) {
-						if (d.getGameList() != null && d.getGameList().contains(g.getTitle())) {
+					for (OwnedGame o: allOwnedGames) {
+						if (o.getOwnedGames() != null && o.getOwnedGames().contains(g)) {
 							res += 1;
 						}
 						if (res >= actual) {
