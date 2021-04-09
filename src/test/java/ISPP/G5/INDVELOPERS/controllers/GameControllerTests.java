@@ -72,11 +72,11 @@ public class GameControllerTests {
 
 		developer2.setId("dev2Id");
 
-		game1 = new Game("Game1", "Description1", "Requirements1", 0.0, "idCloud1", true, developer1);
+		game1 = new Game("Game1", "Description1", "Requirements1", 0.0, "idCloud1", true, developer1, null);
 
 		game1.setId("game1Id");
 
-		game2 = new Game("Game2", "description2", "requirements2", 10.0, "idCloud2", true, developer2);
+		game2 = new Game("Game2", "description2", "requirements2", 10.0, "idCloud2", true, developer2, null);
 
 		game2.setId("game2Id");
 	}
@@ -96,7 +96,7 @@ public class GameControllerTests {
 	@DisplayName("Add game test")
 	@WithMockUser(value = "spring")
 	void testAddGame() throws Exception {
-		Game res = new Game("GameRes", "DescriptionRes", "RequirementsRes", 0.0, "idCloudRes", true, developer1);
+		Game res = new Game("GameRes", "DescriptionRes", "RequirementsRes", 0.0, "idCloudRes", true, developer1, null);
 		String bodyContent = objectToJsonStringContent(res);
 		
 		when(gameService.addGame(any(Game.class), any(Developer.class))).thenReturn("Added Game");
@@ -109,7 +109,7 @@ public class GameControllerTests {
 	@DisplayName("Fail add game not free by developer not premium test")
 	@WithMockUser(value = "spring")
 	void testAddGameNotFree() throws Exception {
-		Game res = new Game("GameRes", "DescriptionRes", "RequirementsRes", 10.0, "idCloudRes", true, null);
+		Game res = new Game("GameRes", "DescriptionRes", "RequirementsRes", 10.0, "idCloudRes", true, null, null);
 		String bodyContent = objectToJsonStringContent(res);
 		
 		when(gameService.addGame(any(Game.class), any(Developer.class))).thenReturn("Added Game");

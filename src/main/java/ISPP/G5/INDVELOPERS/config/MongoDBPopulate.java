@@ -47,13 +47,14 @@ public class MongoDBPopulate<E> {
             publicationRepository.deleteAll();
             developerSubscriptionRepository.deleteAll();
 
+
             /*
                 ================= USERS =================
              */
 
             UserEntity master = new UserEntity("master",
                     passwordEncoder.encode("master123"),
-                    "https://dummyimage.com/300",
+                    "master@indvelopers.com",
                     Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
                     true);
 
@@ -61,7 +62,7 @@ public class MongoDBPopulate<E> {
 
             Developer master2 = new Developer("master2",
                     passwordEncoder.encode("master212"),
-                    "https://dummyimage.com/300",
+                    "master2@indvelopers.com",
                     null, null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
                     null, null, true);
 
@@ -102,7 +103,7 @@ public class MongoDBPopulate<E> {
             Developer asdf = new Developer("asdf",
                     passwordEncoder.encode("asdfasdf"),
                     "asdf@asdf.com",
-                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
                     null, null, true);
 
             developerRepository.save(asdf);
@@ -170,7 +171,8 @@ public class MongoDBPopulate<E> {
                     25.65,
                     "25.icloud.",
                     true, 
-                    dummyDeveloper);
+                    dummyDeveloper,
+                    null);
             
             gameRepository.save(game1);
             
@@ -180,7 +182,8 @@ public class MongoDBPopulate<E> {
                     21.43,
                     "no tiene",
                     true, 
-                    dummyDeveloper);
+                    dummyDeveloper,
+                    null);
             
             gameRepository.save(game2);
             
@@ -190,7 +193,8 @@ public class MongoDBPopulate<E> {
                     39.99,
                     "no tiene",
                     true, 
-                    dummyDeveloper);
+                    dummyDeveloper,
+                    null);
             
             gameRepository.save(game3);
 

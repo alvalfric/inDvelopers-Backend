@@ -59,11 +59,11 @@ public class GameServiceTests {
 
 		developerRepository.save(dev2);
 
-		Game firstGame = new Game("Game1", "Description1", "Requirements1", 0.0, "idCloud1", true, dev1);
+		Game firstGame = new Game("Game1", "Description1", "Requirements1", 0.0, "idCloud1", true, dev1, null);
 
 		gameRepository.save(firstGame);
 
-		Game secondGame = new Game("Game2", "description2", "requirements2", 10.0, "idCloud2", true, dev2);
+		Game secondGame = new Game("Game2", "description2", "requirements2", 10.0, "idCloud2", true, dev2, null);
 
 		gameRepository.save(secondGame);
 		
@@ -105,7 +105,7 @@ public class GameServiceTests {
 	@DisplayName("Add game test")
 	void shouldAddGame() throws NotFoundException {
 		Game testGame = new Game("testGame", "testGameDescription", "testGameRequirements", 0.0, "testGameIdCloud",
-				true, null);
+				true, null, null);
 		this.gameService.addGame(testGame, developer1);
 		assertThat(this.gameService.findAll().contains(testGame)).isNotNull();
 	}
@@ -121,7 +121,7 @@ public class GameServiceTests {
 	@DisplayName("Show games by title test")
 	void shouldFindGameByTitle() {
 		Game testGame = new Game("testGame", "testGameDescription", "testGameRequirements", 0.0, "testGameIdCloud",
-				true, null);
+				true, null, null);
 		this.gameService.addGame(testGame, developer1);
 		assertThat(this.gameService.findByTitle("testGame").get(0)).isEqualTo(testGame);
 	}
@@ -161,7 +161,7 @@ public class GameServiceTests {
 	@DisplayName("Update game test")
 	void shouldUpdateGame(){
 		Game testGame = new Game("testGame", "testGameDescription", "testGameRequirements", 0.0, "testGameIdCloud",
-				true, developer1);
+				true, developer1, null);
 		this.gameService.updateGame(testGame);
 		assertThat(this.gameService.findAll().contains(testGame)).isNotNull();
 	}

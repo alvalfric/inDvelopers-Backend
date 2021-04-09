@@ -1,6 +1,8 @@
 package ISPP.G5.INDVELOPERS.Security;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,8 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -50,14 +50,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             //.antMatchers("/**").permitAll()
             .antMatchers("/users/sign-up").permitAll()
             .antMatchers("/users/login").permitAll()
-            .antMatchers("/developers/sign-up").permitAll()
-            .antMatchers("/developers/login").permitAll()
-            .antMatchers("/developers/me").permitAll()
-            .antMatchers("/developers/edit/**").permitAll()
-            .antMatchers("/developers").permitAll()
+            //.antMatchers("/developers/sign-up").permitAll()
+            //.antMatchers("/developers/login").permitAll()
+            //.antMatchers("/developers/me").permitAll()
+            //.antMatchers("/developers/edit/**").permitAll()
+            //.antMatchers("/developers").permitAll()
             .antMatchers("/publications/**").permitAll()
-            .antMatchers("/developers/findAll").permitAll()
-            .antMatchers("/developers/add").authenticated()
+            //.antMatchers("/developers/findAll").permitAll()
+            //.antMatchers("/developers/add").authenticated()
+            .antMatchers("/developers/**").permitAll()
+            .antMatchers("/developers/changeToAdmin/**").permitAll()
+            //.antMatchers("/games/findNotRevised").hasRole("admin")
             //.antMatchers("/games/findAll").permitAll()
             //.antMatchers("/games/findByDeveloper/**").permitAll()
             //.antMatchers("/games/findByTitle/**").permitAll()
@@ -71,10 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             //.antMatchers("/reviews**").permitAll()
             //.antMatchers("/swagger-ui.html").permitAll()
             // Disallow everything else..
-            .antMatchers("/subscription/isPremium").authenticated()
-            .antMatchers("/subscription/buy").authenticated()
-            .antMatchers("/subscription/checkSubscription/**").permitAll()
-            .antMatchers("/subscription/get/**").permitAll()
+            .antMatchers("/subscription/**").permitAll()
             .anyRequest().authenticated();
 
     // If a user try to access a resource without having enough permissions

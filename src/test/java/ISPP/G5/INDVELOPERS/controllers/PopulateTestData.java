@@ -33,7 +33,8 @@ public class PopulateTestData {
                 25.65,
                 "25.icloud.",
                 true, 
-                dummyDeveloper);
+                dummyDeveloper,
+				null);
         
         dummyGame.setId(gameID);
         
