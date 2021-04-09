@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ISPP.G5.INDVELOPERS.Security.JwtTokenProvider;
+import ISPP.G5.INDVELOPERS.cloud.CloudStorageService;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
@@ -29,7 +30,7 @@ public class DeveloperService {
 	private JwtTokenProvider jwtTokenProvider;
 	private AuthenticationManager authenticationManager;
 	private DeveloperRepository developerRepository;
-
+	
 	public List<Developer> getAll() {
 		return this.developerRepository.findAll();
 
