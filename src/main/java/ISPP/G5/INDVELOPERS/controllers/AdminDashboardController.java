@@ -3,6 +3,7 @@ package ISPP.G5.INDVELOPERS.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,7 +33,7 @@ public class AdminDashboardController {
 	}
 	
 	@GetMapping("/showOne")
-	public ResponseEntity<AdminDashboard> showOne() {
+	public ResponseEntity<AdminDashboard> showOne() throws NotFoundException {
 		try {
 			return ResponseEntity.ok(adminDashboardService.showOne());
 		} catch (IllegalArgumentException e) {

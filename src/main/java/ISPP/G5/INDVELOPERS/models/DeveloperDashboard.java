@@ -4,6 +4,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -12,15 +13,16 @@ import lombok.ToString;
 @ToString
 @Document(collection="DeveloperDashboard")
 @AllArgsConstructor
+@NoArgsConstructor
 public class DeveloperDashboard extends BaseEntity {
 	
-	private Float numGamesDone;
+	private Integer numGamesDone;
 	
-	private Float numReviews;
+	private Integer numReviews;
 	
-	private Float numPublications;
+	private Integer numPublications;
 	
-	private Float numGamesOwned;
+	private Integer numGamesOwned;
 	
 	
 
