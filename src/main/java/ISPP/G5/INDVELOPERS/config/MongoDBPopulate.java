@@ -1,5 +1,6 @@
 package ISPP.G5.INDVELOPERS.config;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
+import ISPP.G5.INDVELOPERS.models.DeveloperSubscription;
 import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.OwnedGame;
 import ISPP.G5.INDVELOPERS.models.Review;
@@ -208,6 +210,43 @@ public class MongoDBPopulate<E> {
             OwnedGame ownedGame1 = new OwnedGame(alvaro, gamesOfDeveloperAlvaro);
             
             ownedGameRepository.save(ownedGame1);
+            
+            /*
+            ================= SUBSCRIPTIONS =================
+             */
+            
+            DeveloperSubscription devSub1 = new DeveloperSubscription(master2,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            developerSubscriptionRepository.save(devSub1);
+            
+            DeveloperSubscription devSub2 = new DeveloperSubscription(dummyDeveloper,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            developerSubscriptionRepository.save(devSub2);
+            
+            DeveloperSubscription devSub3 = new DeveloperSubscription(dummyDeveloper2,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            developerSubscriptionRepository.save(devSub3);
+            
+            DeveloperSubscription devSub4 = new DeveloperSubscription(alvaro,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            developerSubscriptionRepository.save(devSub4);
+            
+            /* Subscripciones de los profesores */
+            
+            DeveloperSubscription subCarlos = new DeveloperSubscription(carlos,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            
+            DeveloperSubscription subBedilia = new DeveloperSubscription(bedilia,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            
+            DeveloperSubscription subPablo = new DeveloperSubscription(pablo,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            
+            DeveloperSubscription subCristina = new DeveloperSubscription(cristina,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            
+            DeveloperSubscription subAntonio = new DeveloperSubscription(antonio,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            
+            DeveloperSubscription subRafael = new DeveloperSubscription(rafael,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            
+            developerSubscriptionRepository.save(subCarlos);
+            developerSubscriptionRepository.save(subBedilia);
+            developerSubscriptionRepository.save(subPablo);
+            developerSubscriptionRepository.save(subCristina);
+            developerSubscriptionRepository.save(subAntonio);
+            developerSubscriptionRepository.save(subRafael);
         };
 
     }
