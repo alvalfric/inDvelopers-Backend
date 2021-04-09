@@ -29,6 +29,10 @@ public class GameService {
 		return gameRepository.findVerified();
 	}
 	
+	public List<Game> findNotRevised(){
+		return gameRepository.findNotRevised();
+	}
+	
 	public String addGame(Game game, Developer developer){
 		Assert.notNull(game);
 		game.setCreator(developer);

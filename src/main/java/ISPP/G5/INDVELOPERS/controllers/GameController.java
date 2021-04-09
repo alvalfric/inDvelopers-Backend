@@ -1,4 +1,3 @@
-
 package ISPP.G5.INDVELOPERS.controllers;
 
 import java.util.ArrayList;
@@ -26,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.OwnedGame;
+import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
 import ISPP.G5.INDVELOPERS.services.GameService;
@@ -61,6 +61,15 @@ public class GameController {
 		}
 	}
 
+	@GetMapping("/findNotRevised")
+	public ResponseEntity<List<Game>> findNotRevised() {
+		try {
+			return ResponseEntity.ok(gameService.findNotRevised());
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+
 	@GetMapping("/findAll")
 	public ResponseEntity<List<Game>> findAll() {
 		try {
@@ -83,7 +92,7 @@ public class GameController {
 				throw new IllegalArgumentException("There's already a game with that title");
 			if (isPremium == false && game.getPrice() != 0.0)
 				throw new IllegalArgumentException("Only premium developers can sell non-free games");
-			if (isPremium == false && (gameService.findByMyGames(developer.getId()).size() + 1 > 5))
+			if (isPremium == false && gameService.findByMyGames(developer.getId()).size() + 1 > 5)
 				throw new IllegalArgumentException(
 						"Non premium developers only can have a maximum of five games published");
 			return ResponseEntity.status(HttpStatus.CREATED).body(gameService.addGame(game, developer));
@@ -105,15 +114,19 @@ public class GameController {
 
 			if (allGames.stream().anyMatch(g -> g.getTitle().equals(game.getTitle())))
 				throw new IllegalArgumentException("There's alredy a game with that title");
-			if (!gameData.getCreator().getId().equals(developer.getId()))
-				throw new IllegalArgumentException("Only the creator of the game can edit it");
-			gameData.setTitle(game.getTitle());
-			gameData.setDescription(game.getDescription());
-			gameData.setRequirements(game.getRequirements());
-			gameData.setPrice(game.getPrice());
-			gameData.setIsNotMalware(game.getIsNotMalware());
-			gameData.setIdCloud(game.getIdCloud());
-			return new ResponseEntity<>(gameService.updateGame(gameData), HttpStatus.OK);
+
+			if (game.getCreator().getId().equals(developer.getId()) || developer.getRoles().contains(UserRole.ADMIN)) {
+				gameData.setTitle(game.getTitle());
+				gameData.setDescription(game.getDescription());
+				gameData.setRequirements(game.getRequirements());
+				gameData.setPrice(game.getPrice());
+				gameData.setIsNotMalware(game.getIsNotMalware());
+				gameData.setIdCloud(game.getIdCloud());
+				return new ResponseEntity<>(gameService.updateGame(gameData), HttpStatus.OK);
+			} else {
+				throw new IllegalArgumentException("Only the creator of the game or an admin can remove it");
+			}
+
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
@@ -126,9 +139,11 @@ public class GameController {
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			Developer developer = developerService.findByUsername(userDetails.getUsername());
 			Game game = gameService.findById(id);
-			if (!game.getCreator().getId().equals(developer.getId()))
-				throw new IllegalArgumentException("Only the creator of the game can remove it");
-			gameService.deleteGame(id);
+			if (game.getCreator().getId().equals(developer.getId()) || developer.getRoles().contains(UserRole.ADMIN)) {
+				gameService.deleteGame(id);
+			} else {
+				throw new IllegalArgumentException("Only the creator of the game or an admin can remove it");
+			}
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -204,19 +219,19 @@ public class GameController {
 				res = 0;
 
 				if (!topSellersGames.contains(g)) {
-					for (OwnedGame o: allOwnedGames) {
+					for (OwnedGame o : allOwnedGames) {
 						if (o.getOwnedGames() != null && o.getOwnedGames().contains(g)) {
 							res += 1;
 						}
 						if (res >= actual) {
 							if (first) {
-							topSellersGames.add(i, g);
-							first = false;
+								topSellersGames.add(i, g);
+								first = false;
 							} else {
 								topSellersGames.remove(i);
 								topSellersGames.add(i, g);
 							}
-							actual = res;	
+							actual = res;
 						}
 					}
 				}
@@ -231,3 +246,4 @@ public class GameController {
 	}
 
 }
+
