@@ -73,6 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             //.antMatchers("/swagger-ui.html").permitAll()
             // Disallow everything else..
             .antMatchers("/subscription/**").permitAll()
+            .antMatchers("/file/**").permitAll()
             .anyRequest().authenticated();
 
     // If a user try to access a resource without having enough permissions
