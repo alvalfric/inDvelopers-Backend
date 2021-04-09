@@ -34,7 +34,7 @@ public class ReviewServiceTests {
 	ReviewRepository	repository;
 
 	Developer			developer	= new Developer("hola", "adios", "email", new ArrayList<String>(), null, new HashSet<UserRole>(), "description", "none", true);
-	Game				game		= new Game("title", "description", "requirements", 2., "iddClou", true, developer);
+	Game				game		= new Game("title", "description", "requirements", 2., "iddClou", true, developer, null);
 	Review				r1			= new Review("Text1", 1., game, developer);
 	Review				r2			= new Review("Text2", 2., game, developer);
 
