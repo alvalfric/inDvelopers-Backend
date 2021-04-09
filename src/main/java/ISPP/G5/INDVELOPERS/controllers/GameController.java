@@ -102,36 +102,32 @@ public class GameController {
 	}
 
 	@PutMapping("/edit/{id}")
-	public ResponseEntity<String> updateGame(@PathVariable final String id, @RequestBody final Game game)
-			throws NotFoundException {
+	public ResponseEntity<String> updateGame(@PathVariable final String id, @RequestBody final Game game) throws NotFoundException {
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			Developer developer = developerService.findByUsername(userDetails.getUsername());
 			Game gameData = gameService.findById(id);
 			List<Game> allGames = gameService.findAll();
-			allGames.remove(gameData);
 
 			if (allGames.stream().anyMatch(g -> g.getTitle().equals(game.getTitle())))
 				throw new IllegalArgumentException("There's alredy a game with that title");
-
-			if (game.getCreator().getId().equals(developer.getId()) || developer.getRoles().contains(UserRole.ADMIN)) {
-				gameData.setTitle(game.getTitle());
-				gameData.setDescription(game.getDescription());
-				gameData.setRequirements(game.getRequirements());
-				gameData.setPrice(game.getPrice());
+			if (!gameData.getCreator().getId().equals(developer.getId()))
+				throw new IllegalArgumentException("Only the creator of the game can edit it");
+			gameData.setTitle(game.getTitle());
+			gameData.setDescription(game.getDescription());
+			gameData.setRequirements(game.getRequirements());
+			gameData.setPrice(game.getPrice());
+			if (developer.getRoles().contains(UserRole.ADMIN)) {
 				gameData.setIsNotMalware(game.getIsNotMalware());
-				gameData.setIdCloud(game.getIdCloud());
-				return new ResponseEntity<>(gameService.updateGame(gameData), HttpStatus.OK);
-			} else {
-				throw new IllegalArgumentException("Only the creator of the game or an admin can remove it");
-			}
-
+				}			
+			gameData.setIdCloud(game.getIdCloud());
+			return new ResponseEntity<>(gameService.updateGame(gameData), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
-
+	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<HttpStatus> deleteGameById(@PathVariable("id") final String id) throws NotFoundException {
 		try {
