@@ -31,7 +31,7 @@ public class CloudStorageService {
 				
 		s3Client.putObject(new PutObjectRequest(bucketName, fileName, file));
 		file.delete();
-		return "File uploaded: " + fileName;
+		return fileName;
 	}
 	
 	public byte[] downloadFile(String fileName) {
