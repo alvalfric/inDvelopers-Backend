@@ -65,7 +65,7 @@ public class ReviewControllerUnitTests {
 	void setUp() {
 		developer = new Developer("hola", "adios", "email", new ArrayList<String>(), null, new HashSet<UserRole>(), "description", "none", true);
 		developer.setId("devID");
-		game = new Game("title", "description", "requirements", 2., "iddClou", true, developer);
+		game = new Game("title", "description", "requirements", 2., "iddClou", true, developer, null);
 		game.setId("gameID");
 		r1 = new Review("Text1", 1., game, developer);
 		r1.setId("rev1ID");

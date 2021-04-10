@@ -64,11 +64,11 @@ public class GameControllerIntegrationTests {
 
 		developerRepository.save(dev2);
 
-		Game firstGame = new Game("Game1", "Description1", "Requirements1", 0.0, "idCloud1", true, dev1);
+		Game firstGame = new Game("Game1", "Description1", "Requirements1", 0.0, "idCloud1", true, dev1, null);
 
 		gameRepository.save(firstGame);
 
-		Game secondGame = new Game("Game2", "description2", "requirements2", 10.0, "idCloud2", true, dev2);
+		Game secondGame = new Game("Game2", "description2", "requirements2", 10.0, "idCloud2", true, dev2, null);
 
 		gameRepository.save(secondGame);
 		
@@ -98,7 +98,7 @@ public class GameControllerIntegrationTests {
 	@DisplayName("Add game test")
 	@WithMockUser(username = "developer1", authorities = { "USER" })
 	void testAddGame() throws Exception {
-		Game res = new Game("GameRes", "DescriptionRes", "RequirementsRes", 0.0, "idCloudRes", true, null);
+		Game res = new Game("GameRes", "DescriptionRes", "RequirementsRes", 0.0, "idCloudRes", true, null, null);
 		ResponseEntity<String> responseEntityStringGame = this.gameController.addGame(res);
 		Assertions.assertEquals(responseEntityStringGame.getStatusCodeValue(), 201);
 		Assertions.assertNotNull(responseEntityStringGame.getBody());
@@ -109,7 +109,7 @@ public class GameControllerIntegrationTests {
 	@DisplayName("Fail add game not free by developer not premium test")
 	@WithMockUser(username = "developer1", authorities = { "USER" })
 	void testAddGameNotFree() throws Exception {
-		Game res = new Game("GameRes", "DescriptionRes", "RequirementsRes", 10.0, "idCloudRes", true, null);
+		Game res = new Game("GameRes", "DescriptionRes", "RequirementsRes", 10.0, "idCloudRes", true, null, null);
 		ResponseEntity<String> responseEntityStringGame = this.gameController.addGame(res);
 		Assertions.assertEquals(responseEntityStringGame.getStatusCodeValue(), 400);
 	}
@@ -118,7 +118,7 @@ public class GameControllerIntegrationTests {
 	@DisplayName("Fail add game with clone title test")
 	@WithMockUser(username = "developer1", authorities = { "USER" })
 	void testAddGameCloneTitle() throws Exception {
-		Game res = new Game("Game2", "DescriptionRes", "RequirementsRes", 0.0, "idCloudRes", true, null);
+		Game res = new Game("Game2", "DescriptionRes", "RequirementsRes", 0.0, "idCloudRes", true, null, null);
 		ResponseEntity<String> responseEntityStringGame = this.gameController.addGame(res);
 		Assertions.assertEquals(responseEntityStringGame.getStatusCodeValue(), 400);
 	}
@@ -149,7 +149,7 @@ public class GameControllerIntegrationTests {
 	@DisplayName("Fail update game with clone title test")
 	@WithMockUser(username = "developer1", authorities = { "USER" })
 	void testUpdateGameCloneTitle() throws Exception {
-		Game res = new Game("Game2", "DescripcionActualizada", "RequirementsRes", 0.0, "idCloudRes", true, null);
+		Game res = new Game("Game2", "DescripcionActualizada", "RequirementsRes", 0.0, "idCloudRes", true, null, null);
 		ResponseEntity<String> responseEntityStringGame = this.gameController.updateGame(game1.getId(), res);
 		Assertions.assertEquals(responseEntityStringGame.getStatusCodeValue(), 400);
 	}

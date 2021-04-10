@@ -28,6 +28,7 @@ import ISPP.G5.INDVELOPERS.models.OwnedGame;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
+import ISPP.G5.INDVELOPERS.services.DeveloperSubscriptionService;
 import ISPP.G5.INDVELOPERS.services.GameService;
 
 @CrossOrigin("*")
@@ -37,19 +38,20 @@ public class GameController {
 
 	@Autowired
 	private GameService gameService;
-
 	@Autowired
 	private DeveloperService developerService;
-
-	@Autowired
+  	@Autowired
 	private OwnedGameRepository ownedGameRepository;
-
+	@Autowired
+	private DeveloperSubscriptionService developerSubscriptionService;
 	@Autowired
 	public GameController(final GameService gameService, final DeveloperService developerService,
-			final OwnedGameRepository ownedGameRepository) {
+			final OwnedGameRepository ownedGameRepository, final DeveloperSubscriptionService developerSubscriptionService) {
 		this.gameService = gameService;
 		this.developerService = developerService;
-		this.ownedGameRepository = ownedGameRepository;
+    this.ownedGameRepository = ownedGameRepository;
+		this.developerSubscriptionService = developerSubscriptionService;
+
 	}
 
 	@GetMapping("/findVerified")
@@ -85,9 +87,7 @@ public class GameController {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			Developer developer = developerService.findByUsername(userDetails.getUsername());
-			boolean isPremium = false;
-			if (developer.getIsPremium() != null)
-				isPremium = developer.getIsPremium();
+			boolean isPremium = this.developerSubscriptionService.checkDeveloperHasSubscription(developer);
 			if (gameService.findAll().stream().anyMatch(g -> g.getTitle().equals(game.getTitle())))
 				throw new IllegalArgumentException("There's already a game with that title");
 			if (isPremium == false && game.getPrice() != 0.0)
@@ -124,7 +124,7 @@ public class GameController {
 				gameData.setIdCloud(game.getIdCloud());
 				return new ResponseEntity<>(gameService.updateGame(gameData), HttpStatus.OK);
 			} else {
-				throw new IllegalArgumentException("Only the creator of the game or an admin can remove it");
+				throw new IllegalArgumentException("Only the creator of the game or an admin can update it");
 			}
 
 		} catch (IllegalArgumentException e) {
@@ -246,4 +246,3 @@ public class GameController {
 	}
 
 }
-

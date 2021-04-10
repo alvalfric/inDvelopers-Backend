@@ -26,7 +26,7 @@ public class Publication extends BaseEntity {
 	@NotBlank
 	private String text;
 
-	private Image imagen;
+	private String imagen;
 	
 	private Developer developer;
 
