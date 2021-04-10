@@ -122,6 +122,7 @@ public class GameController {
 				gameData.setPrice(game.getPrice());
 				gameData.setIsNotMalware(game.getIsNotMalware());
 				gameData.setIdCloud(game.getIdCloud());
+				gameData.setImagen(game.getImagen());
 				return new ResponseEntity<>(gameService.updateGame(gameData), HttpStatus.OK);
 			} else {
 				throw new IllegalArgumentException("Only the creator of the game or an admin can update it");
