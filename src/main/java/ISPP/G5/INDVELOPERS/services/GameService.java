@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ISPP.G5.INDVELOPERS.cloud.CloudStorageService;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
@@ -20,7 +21,9 @@ public class GameService {
 	private GameRepository gameRepository;
 	@Autowired
 	private DeveloperService developerService;
-	
+	@Autowired
+	private CloudStorageService cloudStorageService;
+
 	
 	public List<Game> findAll(){
 		return gameRepository.findAll();
@@ -59,6 +62,7 @@ public class GameService {
 	}
 	
 	public void deleteGame(String id){
+		this.cloudStorageService.deleteFile(this.findById(id).getIdCloud());
 		this.gameRepository.deleteById(id);
 	}
 	
