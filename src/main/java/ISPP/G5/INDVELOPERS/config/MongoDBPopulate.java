@@ -13,10 +13,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
+import ISPP.G5.INDVELOPERS.models.Order;
 import ISPP.G5.INDVELOPERS.models.OwnedGame;
 import ISPP.G5.INDVELOPERS.models.Review;
 import ISPP.G5.INDVELOPERS.models.UserEntity;
 import ISPP.G5.INDVELOPERS.models.UserRole;
+import ISPP.G5.INDVELOPERS.paypal.OrderRepository;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperSubscriptionRepository;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
@@ -35,7 +37,7 @@ public class MongoDBPopulate<E> {
     CommandLineRunner commandLineRunner(
             UserEntityRepository userEntityRepository, DeveloperRepository developerRepository,
             GameRepository gameRepository, ReviewRepository reviewRepository, OwnedGameRepository ownedGameRepository, PublicationRepository publicationRepository,
-            DeveloperSubscriptionRepository developerSubscriptionRepository) {
+            DeveloperSubscriptionRepository developerSubscriptionRepository, OrderRepository orderRepository) {
         return strings -> {
         	userEntityRepository.deleteAll();
             developerRepository.deleteAll();
@@ -44,6 +46,7 @@ public class MongoDBPopulate<E> {
             ownedGameRepository.deleteAll();
             publicationRepository.deleteAll();
             developerSubscriptionRepository.deleteAll();
+            orderRepository.deleteAll();
 
 
             /*
@@ -182,6 +185,9 @@ public class MongoDBPopulate<E> {
                     dummyDeveloper);
             
             gameRepository.save(game2);
+            
+            Order order = new Order(2.3, "USD", "Paypal", "Sale", "description");
+            orderRepository.save(order);
             
             Game game3 = new Game("Almas oscuras",
                     "Juego super complicado que no podras pasarte",
