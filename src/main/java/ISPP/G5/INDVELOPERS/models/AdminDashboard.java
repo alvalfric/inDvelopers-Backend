@@ -11,10 +11,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Document(collection="AdminDashboard")
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdminDashboard extends BaseEntity {
+public class AdminDashboard {
 	
     private Integer numGamesDone;
 	
