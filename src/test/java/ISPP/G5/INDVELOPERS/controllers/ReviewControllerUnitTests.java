@@ -75,6 +75,7 @@ public class ReviewControllerUnitTests {
 
 	@Test
 	@DisplayName("Show reviews by game id test")
+	@WithMockUser(value = "spring")
 	void showReviewListByGameTest() throws Exception {
 		List<Review> revs = new ArrayList<>();
 		revs.add(r1);
@@ -86,6 +87,7 @@ public class ReviewControllerUnitTests {
 
 	@Test
 	@DisplayName("Show review by id test")
+	@WithMockUser(value = "spring")
 	void showReviewByIdTest() throws Exception {
 		when(service.findById("ID")).thenReturn(r1);
 

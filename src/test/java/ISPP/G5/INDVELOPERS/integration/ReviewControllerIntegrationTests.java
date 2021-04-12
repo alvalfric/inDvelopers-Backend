@@ -66,6 +66,7 @@ public class ReviewControllerIntegrationTests {
 
 	@Test
 	@DisplayName("Show reviews by game id test")
+	@WithMockUser(username = "master2")
 	void showReviewListByGameTest() throws Exception {
 		Review r = repository.findAll().get(1);
 		String id = r.getGame().getId();
@@ -74,6 +75,7 @@ public class ReviewControllerIntegrationTests {
 
 	@Test
 	@DisplayName("Show review by id test")
+	@WithMockUser(username = "master2")
 	void showReviewByIdTest() throws Exception {
 		Review r = repository.findAll().get(0);
 		String id = r.getId();

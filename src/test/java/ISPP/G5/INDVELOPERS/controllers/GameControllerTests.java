@@ -83,6 +83,7 @@ public class GameControllerTests {
 	
 	@Test
 	@DisplayName("Show all games test")
+	@WithMockUser(value = "spring")
 	void testFindAllGames() throws Exception {
 		List<Game> games = new ArrayList<>();
 		games.add(game1);

@@ -56,6 +56,7 @@ class DeveloperControllerIntegrationTests {
 
 	@Test
 	@DisplayName("Show developer list")
+	@WithMockUser(username = "master2")
 	void showDeveloperListTest() throws Exception {
 		mockMvc.perform(get("/developers")).andExpect(status().isOk()).andExpect(jsonPath("$[0].username").value("master2"));
 		repo.delete(developer1);
