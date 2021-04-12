@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.paypal.api.payments.Amount;
+import com.paypal.api.payments.Payee;
 import com.paypal.api.payments.Payer;
 import com.paypal.api.payments.Payment;
 import com.paypal.api.payments.PaymentExecution;
@@ -16,6 +19,10 @@ import com.paypal.api.payments.RedirectUrls;
 import com.paypal.api.payments.Transaction;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
+import com.paypal.orders.AmountWithBreakdown;
+import com.paypal.orders.ApplicationContext;
+import com.paypal.orders.OrderRequest;
+import com.paypal.orders.PurchaseUnitRequest;
 
 @Service
 public class PaypalService {
@@ -34,6 +41,9 @@ public class PaypalService {
 		Transaction transaction = new Transaction();
 		transaction.setDescription(description);
 		transaction.setAmount(amount);
+		Payee payee = new Payee();
+		payee.setEmail("sb-2zs1z5901854@personal.example.com");//Email del developer al que se le va a pagar
+		transaction.setPayee(payee);
 
 		List<Transaction> transactions = new ArrayList<>();
 		transactions.add(transaction);
@@ -49,6 +59,8 @@ public class PaypalService {
 		redirectUrls.setCancelUrl(cancelUrl);
 		redirectUrls.setReturnUrl(successUrl);
 		payment.setRedirectUrls(redirectUrls);
+		
+		
 
 		return payment.create(apiContext);
 	}
@@ -60,5 +72,7 @@ public class PaypalService {
 		paymentExecute.setPayerId(payerId);
 		return payment.execute(apiContext, paymentExecute);
 	}
+	
+
 	
 }

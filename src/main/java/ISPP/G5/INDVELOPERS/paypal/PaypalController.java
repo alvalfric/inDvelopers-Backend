@@ -1,5 +1,8 @@
 package ISPP.G5.INDVELOPERS.paypal;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +22,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paypal.api.payments.Links;
+import com.paypal.api.payments.Payee;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
+import com.paypal.orders.AmountWithBreakdown;
+import com.paypal.orders.ApplicationContext;
+import com.paypal.orders.OrderRequest;
+import com.paypal.orders.PurchaseUnitRequest;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
@@ -35,7 +43,7 @@ public class PaypalController {
 
 	@Autowired
 	PaypalService service;
-	
+
 	@Autowired
 	private OrderService orderService;
 
@@ -45,11 +53,11 @@ public class PaypalController {
 	public static final String SUCCESS_URL = "/success";
 	public static final String CANCEL_URL = "/cancel";
 
-	@GetMapping(value = "/{gameId}") 
+	@GetMapping(value = "/{gameId}")
 	public ResponseEntity<Order> summary(@PathVariable String gameId) {
 		try {
 			Game game = gameService.findById(gameId);
-			Order order = new Order(game.getPrice(), "USD", "Paypal", "Sale", "This is a pay for a game.");
+			Order order = new Order(200.0, "USD", "Paypal", "Sale", "This is a pay for a game.");
 			this.orderService.save(order);
 			return ResponseEntity.ok(order);
 		} catch (IllegalArgumentException e) {
@@ -57,7 +65,7 @@ public class PaypalController {
 		}
 
 	}
-	//comprobaciones con entidad order
+	// comprobaciones con entidad order
 //	@GetMapping("/findById/{id}")
 //	public ResponseEntity<Order> getorderById(@PathVariable final String id) {
 //		try {
@@ -77,13 +85,16 @@ public class PaypalController {
 //
 //	}
 
-	@PostMapping(value = "/pay") 
+	@PostMapping(value = "/pay")
 	public ResponseEntity<String> payment(@RequestBody Order order) {
 		String linkRef = null;
 		try {
 			Payment payment = service.createPayment(order.getPrice(), order.getCurrency(), order.getMethod(),
 					order.getIntent(), order.getDescription(), "http://localhost:8080" + CANCEL_URL,
 					"http://localhost:8080" + SUCCESS_URL);
+			Payee payee = new Payee();
+			payee.setEmail("sb-2zs1z5901854@personal.example.com");
+			payment.setPayee(payee);
 			for (Links link : payment.getLinks()) {
 				if (link.getRel().equals("approval_url")) {
 					linkRef = link.getHref();
@@ -96,7 +107,7 @@ public class PaypalController {
 
 	}
 
-	@GetMapping(value = CANCEL_URL) 
+	@GetMapping(value = CANCEL_URL)
 	public ResponseEntity<String> cancelPay() {
 		return new ResponseEntity<String>("The payment was canceled.", HttpStatus.BAD_REQUEST);
 	}
@@ -108,6 +119,7 @@ public class PaypalController {
 		try {
 			Payment payment = service.executePayment(paymentId, payerId);
 			if (payment.getState().equals("approved")) {
+
 				res = "The transaccion was successful.";
 			}
 			return new ResponseEntity<>(res, HttpStatus.OK);
@@ -116,4 +128,6 @@ public class PaypalController {
 		}
 
 	}
+
+	
 }
