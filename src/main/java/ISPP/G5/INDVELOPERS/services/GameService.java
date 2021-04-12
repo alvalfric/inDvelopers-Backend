@@ -33,7 +33,8 @@ public class GameService {
 		res = gameRepository.findAll();
 		Collections.reverse(res);
 		return res;
-
+	}
+	
 	public List<Game> findVerified() {
 		List<Game> res = new ArrayList<>();
 		res = gameRepository.findVerified();

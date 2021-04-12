@@ -67,9 +67,8 @@ public class ReviewControllerIntegrationTests {
 	@Test
 	@DisplayName("Show reviews by game id test")
 	void showReviewListByGameTest() throws Exception {
-		Review r = repository.findAll().get(0);
+		Review r = repository.findAll().get(1);
 		String id = r.getGame().getId();
-
 		mvc.perform(get("/reviews/game/" + id)).andExpect(status().isOk()).andExpect(jsonPath("$[0].id").value(r.getId()));
 	}
 
