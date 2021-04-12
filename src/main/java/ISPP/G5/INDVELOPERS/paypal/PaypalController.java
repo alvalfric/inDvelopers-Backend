@@ -93,7 +93,7 @@ public class PaypalController {
 					order.getIntent(), order.getDescription(), "http://localhost:8080" + CANCEL_URL,
 					"http://localhost:8080" + SUCCESS_URL);
 			Payee payee = new Payee();
-			payee.setEmail("sb-2zs1z5901854@personal.example.com");
+			payee.setEmail("sb-2zs1z5901854@personal.example.com"); //Email del developer al que se le va a pagar
 			payment.setPayee(payee);
 			for (Links link : payment.getLinks()) {
 				if (link.getRel().equals("approval_url")) {
