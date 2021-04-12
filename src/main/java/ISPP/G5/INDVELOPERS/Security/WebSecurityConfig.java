@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     // Disable CSRF (cross site request forgery)
     http.csrf().disable();//
-    http.cors().disable();
+    http.cors();
 
     // No session will be created or used by spring security
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -50,16 +50,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             //.antMatchers("/**").permitAll()
             .antMatchers("/users/sign-up").permitAll()
             .antMatchers("/users/login").permitAll()
-            //.antMatchers("/developers/sign-up").permitAll()
-            //.antMatchers("/developers/login").permitAll()
+            .antMatchers("/developers/sign-up").permitAll()
+            .antMatchers("/developers/login").permitAll()
             //.antMatchers("/developers/me").permitAll()
             //.antMatchers("/developers/edit/**").permitAll()
             //.antMatchers("/developers").permitAll()
-            .antMatchers("/publications/**").permitAll()
+//            .antMatchers("/publications/**").permitAll()
             //.antMatchers("/developers/findAll").permitAll()
             //.antMatchers("/developers/add").authenticated()
-            .antMatchers("/developers/**").permitAll()
-            .antMatchers("/developers/changeToAdmin/**").permitAll()
+//            .antMatchers("/developers/**").permitAll()
+//            .antMatchers("/developers/changeToAdmin/**").permitAll()
             //.antMatchers("/games/findNotRevised").hasRole("admin")
             //.antMatchers("/games/findAll").permitAll()
             //.antMatchers("/games/findByDeveloper/**").permitAll()
@@ -68,14 +68,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             //.antMatchers("/games/edit/**").authenticated()
             //.antMatchers("/games/delete/**").authenticated()
             //.antMatchers("/games/findMyGames").authenticated()
-            .antMatchers("/games/**").permitAll()
-            .antMatchers("/ownedGames/**").permitAll()
-            .antMatchers("/reviews/**").permitAll()
+//            .antMatchers("/games/**").permitAll()
+//            .antMatchers("/ownedGames/**").permitAll()
+//            .antMatchers("/reviews/**").permitAll()
             //.antMatchers("/reviews**").permitAll()
             //.antMatchers("/swagger-ui.html").permitAll()
             // Disallow everything else..
-            .antMatchers("/subscription/**").permitAll()
-            .antMatchers("/file/**").permitAll()
+//            .antMatchers("/subscription/**").permitAll()
+//            .antMatchers("/file/**").permitAll()
             .anyRequest().authenticated();
 
     // If a user try to access a resource without having enough permissions
