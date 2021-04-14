@@ -186,9 +186,7 @@ public class MongoDBPopulate<E> {
             
             gameRepository.save(game2);
             
-            Order order = new Order(2.3, "USD", "Paypal", "Sale", "description");
-            orderRepository.save(order);
-            
+           
             Game game3 = new Game("Almas oscuras",
                     "Juego super complicado que no podras pasarte",
                     "Requiere de una grafica de ultima generacion",

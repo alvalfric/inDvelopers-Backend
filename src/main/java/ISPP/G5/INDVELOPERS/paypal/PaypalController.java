@@ -35,6 +35,7 @@ import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.Order;
 import ISPP.G5.INDVELOPERS.models.Publication;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
+import ISPP.G5.INDVELOPERS.services.DeveloperSubscriptionService;
 import ISPP.G5.INDVELOPERS.services.GameService;
 import ISPP.G5.INDVELOPERS.services.OwnedGameService;
 
@@ -57,6 +58,9 @@ public class PaypalController {
 	
 	@Autowired
 	private DeveloperService developerService;
+	
+	@Autowired
+	private DeveloperSubscriptionService devSubscrService;
 
 	public static final String SUCCESS_URL = "/success";
 	public static final String CANCEL_URL = "/cancel";
@@ -74,25 +78,6 @@ public class PaypalController {
 		}
 
 	}
-	// comprobaciones con entidad order
-//	@GetMapping("/findById/{id}")
-//	public ResponseEntity<Order> getorderById(@PathVariable final String id) {
-//		try {
-//			return ResponseEntity.ok(orderService.findById(id));
-//		} catch (IllegalArgumentException e) {
-//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-//		}
-//	}
-//	
-//	@PostMapping("/add")
-//	public ResponseEntity<Order> addPublication(@RequestBody final Order order) {
-//		try {
-//			return new ResponseEntity<>(orderService.save(order), HttpStatus.OK);
-//		} catch (IllegalArgumentException e) {
-//			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-//		}
-//
-//	}
 
 	@PostMapping(value = "/pay")
 	public ResponseEntity<String> payment(@RequestBody Order order) {
@@ -102,7 +87,7 @@ public class PaypalController {
 					order.getIntent(), order.getDescription(), "http://localhost:8080" + CANCEL_URL,
 					"http://localhost:8080" + SUCCESS_URL, order.getPayeeEmail());
 			Payee payee = new Payee();
-			payee.setEmail(order.getPayeeEmail()); //Email del developer al que se le va a pagar
+			payee.setEmail(order.getPayeeEmail()); // Email del developer al que se le va a pagar
 			payment.setPayee(payee);
 			for (Links link : payment.getLinks()) {
 				if (link.getRel().equals("approval_url")) {
@@ -142,5 +127,44 @@ public class PaypalController {
 
 	}
 
-	
+	@PostMapping(value = "/suscription")
+	public ResponseEntity<String> buy() {
+		String linkRef = null;
+		try {
+			Developer developer = developerService.findCurrentDeveloper();
+			//considerando que la suscripcion son 50EUR
+			Order order = new Order(50.0, "EUR", "Paypal", "Sale", "This is a pay for a game.", developer.getEmail());
+			this.orderService.save(order);
+			Payment payment = service.createPaymentToUs(order.getPrice(), order.getCurrency(), order.getMethod(),
+					order.getIntent(), order.getDescription(), "http://localhost:8080" + CANCEL_URL,
+					"http://localhost:8080" + "/suscriptionSuccess");
+			for (Links link : payment.getLinks()) {
+				if (link.getRel().equals("approval_url")) {
+					linkRef = link.getHref();
+				}
+			}
+			return new ResponseEntity<>(linkRef, HttpStatus.OK);
+		} catch (PayPalRESTException e) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+
+	}
+
+	@GetMapping(value = "/suscriptionSuccess")
+	public ResponseEntity<String> successPaySubscription(@RequestParam("paymentId") String paymentId,
+			@RequestParam("PayerID") String payerId) {
+		String res = null;
+		try {
+			Payment payment = service.executePayment(paymentId, payerId);
+			if (payment.getState().equals("approved")) {
+				Developer developer = developerService.findCurrentDeveloper();
+				return ResponseEntity.status(HttpStatus.CREATED).body(this.devSubscrService.buySubscription(developer));
+
+			}
+			return new ResponseEntity<>(res, HttpStatus.OK);
+		} catch (PayPalRESTException e) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+
+	}
 }
