@@ -34,7 +34,9 @@ import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.Order;
 import ISPP.G5.INDVELOPERS.models.Publication;
+import ISPP.G5.INDVELOPERS.services.DeveloperService;
 import ISPP.G5.INDVELOPERS.services.GameService;
+import ISPP.G5.INDVELOPERS.services.OwnedGameService;
 
 @RestController
 @CrossOrigin("*")
@@ -49,6 +51,12 @@ public class PaypalController {
 
 	@Autowired
 	private GameService gameService;
+	
+	@Autowired
+	private OwnedGameService ownedGameService;
+	
+	@Autowired
+	private DeveloperService developerService;
 
 	public static final String SUCCESS_URL = "/success";
 	public static final String CANCEL_URL = "/cancel";
@@ -57,7 +65,8 @@ public class PaypalController {
 	public ResponseEntity<Order> summary(@PathVariable String gameId) {
 		try {
 			Game game = gameService.findById(gameId);
-			Order order = new Order(200.0, "USD", "Paypal", "Sale", "This is a pay for a game.");
+			String email = game.getCreator().getEmail();
+			Order order = new Order(game.getPrice(), "EUR", "Paypal", "Sale", "This is a pay for a game.",email);
 			this.orderService.save(order);
 			return ResponseEntity.ok(order);
 		} catch (IllegalArgumentException e) {
@@ -91,9 +100,9 @@ public class PaypalController {
 		try {
 			Payment payment = service.createPayment(order.getPrice(), order.getCurrency(), order.getMethod(),
 					order.getIntent(), order.getDescription(), "http://localhost:8080" + CANCEL_URL,
-					"http://localhost:8080" + SUCCESS_URL);
+					"http://localhost:8080" + SUCCESS_URL, order.getPayeeEmail());
 			Payee payee = new Payee();
-			payee.setEmail("sb-2zs1z5901854@personal.example.com"); //Email del developer al que se le va a pagar
+			payee.setEmail(order.getPayeeEmail()); //Email del developer al que se le va a pagar
 			payment.setPayee(payee);
 			for (Links link : payment.getLinks()) {
 				if (link.getRel().equals("approval_url")) {
@@ -114,12 +123,16 @@ public class PaypalController {
 
 	@GetMapping(value = SUCCESS_URL)
 	public ResponseEntity<String> successPay(@RequestParam("paymentId") String paymentId,
-			@RequestParam("PayerID") String payerId) {
+			@RequestParam("PayerID") String payerId, @RequestParam("gameId") String gameId) {
 		String res = null;
 		try {
 			Payment payment = service.executePayment(paymentId, payerId);
 			if (payment.getState().equals("approved")) {
-
+				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+				UserDetails userDetails = (UserDetails) auth.getPrincipal();
+				String user = userDetails.getUsername();
+				Developer developer = developerService.findByUsername(user);
+				ownedGameService.buyGameByDeveloperAndGameId(developer, gameId);
 				res = "The transaccion was successful.";
 			}
 			return new ResponseEntity<>(res, HttpStatus.OK);

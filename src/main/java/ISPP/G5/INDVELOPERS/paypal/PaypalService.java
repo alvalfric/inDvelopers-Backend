@@ -32,17 +32,17 @@ public class PaypalService {
 	
 
 	public Payment createPayment(Double total, String currency, String method, String intent, String description,
-			String cancelUrl, String successUrl) throws PayPalRESTException {
+			String cancelUrl, String successUrl, String payeeEmail) throws PayPalRESTException {
 		Amount amount = new Amount();
 		amount.setCurrency(currency);
-		total = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP).doubleValue();
-		amount.setTotal(String.format("%.3f", total));
+		//total = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP).doubleValue();
+		amount.setTotal(total.toString());
 
 		Transaction transaction = new Transaction();
 		transaction.setDescription(description);
 		transaction.setAmount(amount);
 		Payee payee = new Payee();
-		payee.setEmail("sb-2zs1z5901854@personal.example.com");//Email del developer al que se le va a pagar
+		payee.setEmail(payeeEmail);//Email del developer al que se le va a pagar
 		transaction.setPayee(payee);
 
 		List<Transaction> transactions = new ArrayList<>();
