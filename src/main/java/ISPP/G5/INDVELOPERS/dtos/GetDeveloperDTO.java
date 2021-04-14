@@ -26,7 +26,7 @@ public class GetDeveloperDTO {
 
 	private List<String> gameList;
 
-	private Image userImage;
+	private String userImage;
 
 	private Set<UserRole> roles;
 
