@@ -234,7 +234,7 @@ public class GameControllerTests {
 		List<Game> games = new ArrayList<>();
 		games.add(game1);
 		
-		when(gameService.findAll()).thenReturn(games);
+		when(gameService.findVerified()).thenReturn(games);
 
 		mvc.perform(get("/games/findByNew")).andExpect(status().isOk()).andExpect(jsonPath("$[0].id").value("game1Id"));
 	}
