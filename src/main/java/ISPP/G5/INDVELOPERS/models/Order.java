@@ -21,4 +21,5 @@ public class Order extends BaseEntity {
 	private String intent;
 	private String description;
 	private String payeeEmail;
+	private String gameId;
 }

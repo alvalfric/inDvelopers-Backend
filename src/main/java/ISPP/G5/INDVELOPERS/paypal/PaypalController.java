@@ -52,13 +52,13 @@ public class PaypalController {
 
 	@Autowired
 	private GameService gameService;
-	
+
 	@Autowired
 	private OwnedGameService ownedGameService;
-	
+
 	@Autowired
 	private DeveloperService developerService;
-	
+
 	@Autowired
 	private DeveloperSubscriptionService devSubscrService;
 
@@ -70,7 +70,8 @@ public class PaypalController {
 		try {
 			Game game = gameService.findById(gameId);
 			String email = game.getCreator().getEmail();
-			Order order = new Order(game.getPrice(), "EUR", "Paypal", "Sale", "This is a pay for a game.",email);
+			Order order = new Order(game.getPrice(), "EUR", "Paypal", "Sale", "This is a pay for a game.", email,
+					gameId);
 			this.orderService.save(order);
 			return ResponseEntity.ok(order);
 		} catch (IllegalArgumentException e) {
@@ -84,8 +85,8 @@ public class PaypalController {
 		String linkRef = null;
 		try {
 			Payment payment = service.createPayment(order.getPrice(), order.getCurrency(), order.getMethod(),
-					order.getIntent(), order.getDescription(), "http://localhost:8080" + CANCEL_URL,
-					"http://localhost:8080" + SUCCESS_URL, order.getPayeeEmail());
+					order.getIntent(), order.getDescription(), "http://localhost:3000" + CANCEL_URL,
+					"http://localhost:3000" + SUCCESS_URL + "/?gameId=" + order.getGameId(), order.getPayeeEmail());
 			Payee payee = new Payee();
 			payee.setEmail(order.getPayeeEmail()); // Email del developer al que se le va a pagar
 			payment.setPayee(payee);
@@ -127,17 +128,17 @@ public class PaypalController {
 
 	}
 
-	@PostMapping(value = "/suscription")
+	@PostMapping(value = "/subscription")
 	public ResponseEntity<String> buy() {
 		String linkRef = null;
 		try {
 			Developer developer = developerService.findCurrentDeveloper();
-			//considerando que la suscripcion son 50EUR
-			Order order = new Order(50.0, "EUR", "Paypal", "Sale", "This is a pay for a game.", developer.getEmail());
+			// considerando que la suscripcion son 50EUR
+			Order order = new Order(7.99, "EUR", "Paypal", "Sale", "This is a pay for a game.", developer.getEmail(),"");
 			this.orderService.save(order);
 			Payment payment = service.createPaymentToUs(order.getPrice(), order.getCurrency(), order.getMethod(),
-					order.getIntent(), order.getDescription(), "http://localhost:8080" + CANCEL_URL,
-					"http://localhost:8080" + "/suscriptionSuccess");
+					order.getIntent(), order.getDescription(), "http://localhost:3000" + CANCEL_URL,
+					"http://localhost:3000" + "/subscriptionSuccess");
 			for (Links link : payment.getLinks()) {
 				if (link.getRel().equals("approval_url")) {
 					linkRef = link.getHref();
@@ -150,7 +151,7 @@ public class PaypalController {
 
 	}
 
-	@GetMapping(value = "/suscriptionSuccess")
+	@GetMapping(value = "/subscriptionSuccess")
 	public ResponseEntity<String> successPaySubscription(@RequestParam("paymentId") String paymentId,
 			@RequestParam("PayerID") String payerId) {
 		String res = null;
