@@ -31,30 +31,40 @@ public class AdminDashboardService {
 	private OwnedGameRepository ownedGameRepository;
 	
 	
-	public AdminDashboard showOne() {
+	public AdminDashboard show() {
 		
-		AdminDashboard result = new AdminDashboard();
+		AdminDashboard dashboard = new AdminDashboard();
 
-		result.setNumGamesDone(this.gameRepository.findAll().size());
-		result.setNumPublications(this.publicationRepository.findAll().size());
-		result.setNumReviews(this.reviewRepository.findAll().size());
+		dashboard.setTotalGamesCreated(this.gameRepository.findAll().size());
+		dashboard.setTotalPublicationsCreated(this.publicationRepository.findAll().size());
+		dashboard.setTotalReviewsCreated(this.reviewRepository.findAll().size());
+		dashboard.setTotalGamesPurchased(this.gamesPurchased());
+		dashboard.setTotalMoneyEarnedByDevelopers(this.moneyEarned());
 		
-		//Todas las entidades ownedGames
+		return dashboard;
+	}
+	
+	private Integer gamesPurchased() {
+		List<OwnedGame> ownedGames = this.ownedGameRepository.findAll();
+		Integer purchasedGames = 0;
 		
-		List<OwnedGame> todos = this.ownedGameRepository.findAll();
-		
-		//Iteramos para sacar el numero de juegos
-		
-		Integer juegosTotales = 0;
-		
-		for (int i = 0; i < todos.size(); i++) {
-			juegosTotales += todos.get(i).getOwnedGames().size();
+		for (int i = 0; i < ownedGames.size(); i++) {
+			purchasedGames += ownedGames.get(i).getOwnedGames().size();
 		}
 		
-		
-		result.setNumGamesOwned(juegosTotales);
-
-		return result;
+		return purchasedGames;
 	}
 
+	private Double moneyEarned() {
+		List<OwnedGame> ownedGames = this.ownedGameRepository.findAll();
+		Double moneyEarned = 0.0;
+		
+		for(OwnedGame og: ownedGames) {
+			for(Game g: og.getOwnedGames()) {
+				moneyEarned += g.getPrice();
+			}
+		}
+		
+		return moneyEarned;
+	}
 }

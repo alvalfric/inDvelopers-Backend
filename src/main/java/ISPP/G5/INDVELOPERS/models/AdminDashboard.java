@@ -15,12 +15,14 @@ import lombok.ToString;
 @NoArgsConstructor
 public class AdminDashboard {
 	
-    private Integer numGamesDone;
+    private Integer totalGamesCreated;
 	
-	private Integer numReviews;
+	private Integer totalReviewsCreated;
 	
-	private Integer numPublications;
+	private Integer totalPublicationsCreated;
 	
-	private Integer numGamesOwned;
+	private Integer totalGamesPurchased;
+	
+	private Double totalMoneyEarnedByDevelopers;
 
 }
