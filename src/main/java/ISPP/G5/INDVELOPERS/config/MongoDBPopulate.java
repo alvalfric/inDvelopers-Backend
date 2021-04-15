@@ -46,8 +46,7 @@ public class MongoDBPopulate<E> {
             ownedGameRepository.deleteAll();
             publicationRepository.deleteAll();
             developerSubscriptionRepository.deleteAll();
-
-
+            
             /*
                 ================= USERS =================
              */
