@@ -76,7 +76,7 @@ public class GameControllerTests {
 
 		game1.setId("game1Id");
 
-		game2 = new Game("Game2", "description2", "requirements2", 10.0, "idCloud2", true, developer2, null);
+		game2 = new Game("Game2", "description2", "requirements2", 10.0, "idCloud2", null, developer2, null);
 
 		game2.setId("game2Id");
 	}
@@ -215,6 +215,53 @@ public class GameControllerTests {
 		mvc.perform(get("/games/findMyGames")).andExpect(status().isOk()).andExpect(jsonPath("$[0].id").value("game1Id"));
 	}
 	
+	@Test
+	@DisplayName("Find games by top sellers")
+	@WithMockUser(value = "spring")
+	void testFindGameByTopSellers() throws Exception{
+		List<Game> games = new ArrayList<>();
+		games.add(game1);
+		
+		when(gameService.findByTopSellers()).thenReturn(games);
+
+		mvc.perform(get("/games/findByTopSellers")).andExpect(status().isOk()).andExpect(jsonPath("$[0].id").value("game1Id"));
+	}
+	
+	@Test
+	@DisplayName("Find games by new games")
+	@WithMockUser(value = "spring")
+	void testFindGameByNew() throws Exception{
+		List<Game> games = new ArrayList<>();
+		games.add(game1);
+		
+		when(gameService.findAll()).thenReturn(games);
+
+		mvc.perform(get("/games/findByNew")).andExpect(status().isOk()).andExpect(jsonPath("$[0].id").value("game1Id"));
+	}
+	
+	@Test
+	@DisplayName("Find verified games")
+	@WithMockUser(value = "spring")
+	void testFindVerifiedGames() throws Exception{
+		List<Game> games = new ArrayList<>();
+		games.add(game1);
+		
+		when(gameService.findVerified()).thenReturn(games);
+
+		mvc.perform(get("/games/findVerified")).andExpect(status().isOk()).andExpect(jsonPath("$[0].id").value("game1Id"));
+	}
+	
+	@Test
+	@DisplayName("Find not revised games")
+	@WithMockUser(value = "spring")
+	void testFindNotRevisedGames() throws Exception{
+		List<Game> games = new ArrayList<>();
+		games.add(game2);
+		
+		when(gameService.findNotRevised()).thenReturn(games);
+
+		mvc.perform(get("/games/findNotRevised")).andExpect(status().isOk()).andExpect(jsonPath("$[0].id").value("game2Id"));
+	}
 	private String objectToJsonStringContent(final Object o) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);

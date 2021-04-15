@@ -195,10 +195,7 @@ public class GameController {
 	@GetMapping("/findByNew")
 	public ResponseEntity<List<Game>> findByNew() {
 		try {
-			List<Game> allGames = this.gameService.findAll();
-			Collections.reverse(allGames);
-			return ResponseEntity
-					.ok(allGames.stream().filter(g -> g.getIsNotMalware() == true).collect(Collectors.toList()));
+			return ResponseEntity.ok(this.gameService.findVerified());
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
@@ -206,41 +203,9 @@ public class GameController {
 
 	@GetMapping("/findByTopSellers")
 	public ResponseEntity<List<Game>> findByTopSellers() {
-		Integer actual = 0;
-		Integer res = 0;
-		Boolean first = true;
-		List<Game> topSellersGames = new ArrayList<Game>();
-		List<OwnedGame> allOwnedGames = this.ownedGameRepository.findAll();
-		List<Game> allGames = this.gameService.findAll();
-		Integer size = allGames.size();
-		for (int i = 0; i < size; i++) {
-			actual = 0;
-			first = true;
-			for (Game g : allGames) {
-				res = 0;
-
-				if (!topSellersGames.contains(g)) {
-					for (OwnedGame o : allOwnedGames) {
-						if (o.getOwnedGames() != null && o.getOwnedGames().contains(g)) {
-							res += 1;
-						}
-						if (res >= actual) {
-							if (first) {
-								topSellersGames.add(i, g);
-								first = false;
-							} else {
-								topSellersGames.remove(i);
-								topSellersGames.add(i, g);
-							}
-							actual = res;
-						}
-					}
-				}
-			}
-		}
 		try {
 
-			return ResponseEntity.ok(topSellersGames);
+			return ResponseEntity.ok(this.gameService.findByTopSellers());
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}

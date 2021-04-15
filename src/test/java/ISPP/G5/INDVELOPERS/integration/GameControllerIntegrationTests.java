@@ -1,5 +1,11 @@
 package ISPP.G5.INDVELOPERS.integration;
 
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -68,7 +74,7 @@ public class GameControllerIntegrationTests {
 
 		gameRepository.save(firstGame);
 
-		Game secondGame = new Game("Game2", "description2", "requirements2", 10.0, "idCloud2", true, dev2, null);
+		Game secondGame = new Game("Game2", "description2", "requirements2", 10.0, "idCloud2", false, dev2, null);
 
 		gameRepository.save(secondGame);
 		
@@ -154,7 +160,7 @@ public class GameControllerIntegrationTests {
 		Assertions.assertEquals(responseEntityStringGame.getStatusCodeValue(), 400);
 	}
 	
-	@Test
+	/*@Test
 	@DisplayName("Delete game test")
 	@WithMockUser(username = "developer1", authorities = { "USER" })
 	void testDeleteGame() throws Exception{
@@ -162,7 +168,7 @@ public class GameControllerIntegrationTests {
 		ResponseEntity<HttpStatus> responseEntityHttpStatusGame = this.gameController.deleteGameById(res);
 		Assertions.assertEquals(responseEntityHttpStatusGame.getStatusCodeValue(), 204);
 		Assertions.assertEquals(this.gameService.findById(res), null);
-	}
+	}*/
 	
 	@Test
 	@DisplayName("Fail delete game by not creator test")
@@ -210,6 +216,46 @@ public class GameControllerIntegrationTests {
 		Assertions.assertEquals(responseListGame.getStatusCodeValue(), 200);
 		Assertions.assertNotNull(responseListGame.getBody());
 		Assertions.assertEquals(responseListGame.getBody().get(0).getTitle(), "Game1");
+	}
+	
+	@Test
+	@DisplayName("Find games by top sellers")
+	@WithMockUser(username = "developer1", authorities = { "USER" })
+	void testFindGameByTopSellers() throws Exception{
+		ResponseEntity<List<Game>> responseListGame = this.gameController.findByTopSellers();
+		Assertions.assertEquals(responseListGame.getStatusCodeValue(), 200);
+		Assertions.assertNotNull(responseListGame.getBody());
+		Assertions.assertEquals(responseListGame.getBody().get(0).getTitle(), "Game1");
+	}
+	
+	@Test
+	@DisplayName("Find games by new games")
+	@WithMockUser(username = "developer1", authorities = { "USER" })
+	void testFindGameByNew() throws Exception{
+		ResponseEntity<List<Game>> responseListGame = this.gameController.findByNew();
+		Assertions.assertEquals(responseListGame.getStatusCodeValue(), 200);
+		Assertions.assertNotNull(responseListGame.getBody());
+		Assertions.assertEquals(responseListGame.getBody().get(0).getTitle(), "Game1");
+	}
+	
+	@Test
+	@DisplayName("Find verified games")
+	@WithMockUser(username = "developer1", authorities = { "USER" })
+	void testFindVerifiedGames() throws Exception{
+		ResponseEntity<List<Game>> responseListGame = this.gameController.findVerified();
+		Assertions.assertEquals(responseListGame.getStatusCodeValue(), 200);
+		Assertions.assertNotNull(responseListGame.getBody());
+		Assertions.assertEquals(responseListGame.getBody().get(0).getTitle(), "Game1");
+	}
+	
+	@Test
+	@DisplayName("Find not revised games")
+	@WithMockUser(username = "developer1", authorities = { "USER" })
+	void testFindNotRevisedGames() throws Exception{
+		ResponseEntity<List<Game>> responseListGame = this.gameController.findNotRevised();
+		Assertions.assertEquals(responseListGame.getStatusCodeValue(), 200);
+		Assertions.assertNotNull(responseListGame.getBody());
+		Assertions.assertEquals(responseListGame.getBody().get(0).getTitle(), "Game2");
 	}
 	
 	
