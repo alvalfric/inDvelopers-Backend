@@ -1,7 +1,5 @@
 package ISPP.G5.INDVELOPERS.models;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,14 +13,14 @@ import lombok.ToString;
 @NoArgsConstructor
 public class DeveloperDashboard {
 	
-	private Integer numGamesDone;
+	private Integer numGamesCreated;
 	
-	private Integer numReviews;
+	private Integer numReviewsCreated;
 	
-	private Integer numPublications;
+	private Integer numPublicationsCreated;
 	
 	private Integer numGamesOwned;
 	
-	
+	private Double moneyEarned;
 
 }

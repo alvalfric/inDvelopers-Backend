@@ -28,36 +28,13 @@ public class DeveloperDashboardController {
 	
 	@Autowired
 	private DeveloperDashboardService		developerDashboardService;
-	
-	@Autowired
-	private DeveloperService	developerService;
-	
-	@GetMapping("/showOne")
-	public ResponseEntity<DeveloperDashboard> showOne(@PathVariable final String developerUsername)throws NotFoundException {
-		try {
-			
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-			Developer developer = developerService.findByUsername(userDetails.getUsername());
-			
-			String id = developer.getId();
-			
-			//Saco el id del developer
-			
-			DeveloperDashboard dashboard = developerDashboardService.showOne();
-			
-			//Creo el dashboard vacio y le voy metiendo las cositas
-			
-			dashboard.setNumGamesDone(developerDashboardService.findGameByDeveloper(id).size());
-			dashboard.setNumReviews(developerDashboardService.findReviewByDeveloper(id).size());
-			dashboard.setNumReviews(developerDashboardService.findPublicationByUSername(id).size());
-			dashboard.setNumGamesOwned(developerDashboardService.findGameByMyGames(id).size());
-			
-			
-			return ResponseEntity.ok(dashboard);
-			
+
+	@GetMapping("/show")
+	public ResponseEntity<DeveloperDashboard> showOne() throws NotFoundException {
+		try {	
+			return ResponseEntity.status(HttpStatus.CREATED)
+					.body(this.developerDashboardService.show());
 		} catch (IllegalArgumentException e) {
-			
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
