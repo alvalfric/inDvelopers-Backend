@@ -168,7 +168,7 @@ public class MongoDBPopulate<E> {
                     "Es un juego en el que elijas el camino que elijas pierdes",
                     "No tiene grandes requisitos, 20 gigas de ram",
                     25.65,
-                    "25.icloud.",
+                    "1618508350667_blob",
                     true, 
                     dummyDeveloper,
                     null);
@@ -179,7 +179,7 @@ public class MongoDBPopulate<E> {
                     "No intentes que el payaso se quede quieto, siempre salta",
                     "Con tener ordenador ya te tira",
                     21.43,
-                    "no tiene",
+                    "1618508350667_blob",
                     true, 
                     dummyDeveloper,
                     null);
@@ -190,7 +190,7 @@ public class MongoDBPopulate<E> {
                     "Juego super complicado que no podras pasarte",
                     "Requiere de una grafica de ultima generacion",
                     39.99,
-                    "no tiene",
+                    "1618508350667_blob",
                     true, 
                     dummyDeveloper,
                     null);
