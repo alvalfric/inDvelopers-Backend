@@ -19,7 +19,7 @@ public class CloudStorageController {
 
     @Autowired
     private CloudStorageService cloudStorageService;
-
+    
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam(value = "file") MultipartFile file) {
         return new ResponseEntity<>(cloudStorageService.uploadFile(file), HttpStatus.OK);
@@ -29,16 +29,31 @@ public class CloudStorageController {
     public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName) {
         byte[] data = cloudStorageService.downloadFile(fileName);
         ByteArrayResource resource = new ByteArrayResource(data);
-        return ResponseEntity
-                .ok()
-                .contentLength(data.length)
-                .header("Content-type", "application/octet-stream")
-                .header("Content-disposition", "attachment; filename=\"" + fileName + "\"")
-                .body(resource);
+
+        if(this.cloudStorageService.canDownloadGame(fileName)) {
+            return ResponseEntity
+                    .ok()
+                    .contentLength(data.length)
+                    .header("Content-type", "application/octet-stream")
+                    .header("Content-disposition", "attachment; filename=\"" + fileName + "\"")
+                    .body(resource);
+        }else {
+            return ResponseEntity
+            		.status(HttpStatus.FORBIDDEN)
+                    .contentLength(data.length)
+                    .header("Content-type", "application/octet-stream")
+                    .header("Content-disposition", "attachment; filename=\"" + fileName + "\"")
+                    .body(null);
+        }
     }
 
     @DeleteMapping("/delete/{fileName}")
     public ResponseEntity<String> deleteFile(@PathVariable String fileName) {
-        return new ResponseEntity<>(cloudStorageService.deleteFile(fileName), HttpStatus.OK);
+        if(this.cloudStorageService.isOwnerOfTheFile(fileName)) {
+            return new ResponseEntity<>(cloudStorageService.deleteFile(fileName), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("You are not the owner of the file", HttpStatus.FORBIDDEN);
+
+        }
     }
 }
