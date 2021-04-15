@@ -2,6 +2,7 @@ package ISPP.G5.INDVELOPERS.paypal;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +12,6 @@ import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.OAuthTokenCredential;
 import com.paypal.base.rest.PayPalRESTException;
 import com.paypal.orders.ApplicationContext;
-
 
 @Configuration
 public class PaypalConfig {
@@ -40,6 +40,5 @@ public class PaypalConfig {
 		context.setConfigurationMap(paypalSdkConfig());
 		return context;
 	}
-	
-	
+
 }
