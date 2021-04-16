@@ -21,12 +21,12 @@ public class Publication extends BaseEntity {
 	@NotBlank
 	private String username;
 
-	private Image userPicture;
+	private String userPicture;
 
 	@NotBlank
 	private String text;
 
-	private Image imagen;
+	private String imagen;
 	
 	private Developer developer;
 

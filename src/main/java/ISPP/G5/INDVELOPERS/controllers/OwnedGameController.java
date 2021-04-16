@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
@@ -36,17 +34,17 @@ public class OwnedGameController {
 
 	@Autowired
 	public OwnedGameController(final DeveloperService developerService, final GameService gameService,
-			final OwnedGameService ownedGameService) {
+		final OwnedGameService ownedGameService) {
 		this.developerService = developerService;
 		this.ownedGameService = ownedGameService;
 		this.gameService = gameService;
 	}
 
 	@GetMapping("/findOwnedGames")
-	public ResponseEntity<List<Game>> findAll() throws NotFoundException {
+	public ResponseEntity<List<Game>> findAll() {
 		try {
-			List<Game> ownedGames = this.ownedGameService
-					.findAllMyOwnedGames(this.developerService.findCurrentDeveloper());
+			List<Game> ownedGames = ownedGameService
+				.findAllMyOwnedGames(developerService.findCurrentDeveloper());
 
 			if (ownedGames == null) {
 				ownedGames = new ArrayList<Game>();
@@ -59,32 +57,30 @@ public class OwnedGameController {
 	}
 
 	@PostMapping("/buy/{gameId}")
-	public ResponseEntity<String> buyGame(@PathVariable String gameId) throws NotFoundException {
+	public ResponseEntity<String> buyGame(@PathVariable String gameId) {
 		try {
-			Developer developer = this.developerService.findCurrentDeveloper();
-			OwnedGame ownedGame = this.ownedGameService.findByDeveloper(developer);
-			Game game = this.gameService.findById(gameId);
+			Developer developer = developerService.findCurrentDeveloper();
+			OwnedGame ownedGame = ownedGameService.findByDeveloper(developer);
+			Game game = gameService.findById(gameId);
 
 			if (game != null) {
-				if (ownedGame.getOwnedGames().contains(game)) {
+				if (ownedGame.getOwnedGames().contains(game))
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-				}
-			} else {
+			} else
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-			}
 
 			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(this.ownedGameService.buyGameByDeveloperAndGameId(developer, gameId));
+				.body(ownedGameService.buyGameByDeveloperAndGameId(developer, gameId));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
 
 	@GetMapping("/checkGameOwned/{gameId}")
-	public ResponseEntity<Boolean> checkGameOwned(@PathVariable String gameId) throws NotFoundException {
+	public ResponseEntity<Boolean> checkGameOwned(@PathVariable String gameId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(
-					this.ownedGameService.checkGameOwned(this.developerService.findCurrentDeveloper(), gameId));
+				ownedGameService.checkGameOwned(developerService.findCurrentDeveloper(), gameId));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}

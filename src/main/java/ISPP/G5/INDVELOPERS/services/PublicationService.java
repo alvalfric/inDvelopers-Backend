@@ -1,7 +1,7 @@
 package ISPP.G5.INDVELOPERS.services;
 
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
+import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.Publication;
 import ISPP.G5.INDVELOPERS.repositories.PublicationRepository;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,10 @@ public class PublicationService {
 	private PublicationRepository publicationRepository;
 
 	public List<Publication> findAll() {
-		return publicationRepository.findAll();
+		List<Publication> res = new ArrayList<>();
+		res = publicationRepository.findAll();
+		Collections.reverse(res);
+		return res;
 	}
 
 	public Publication findById(String id) {
@@ -41,6 +45,7 @@ public class PublicationService {
 				publications.add(p);
 			}
 		}
+		Collections.reverse(publications);
 		return publications;
 	}
 
