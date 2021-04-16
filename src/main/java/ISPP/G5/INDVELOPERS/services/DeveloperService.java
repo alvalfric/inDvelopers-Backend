@@ -141,6 +141,7 @@ public class DeveloperService {
 		}
 	}
 
+	
 	public Developer findCurrentDeveloper() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
