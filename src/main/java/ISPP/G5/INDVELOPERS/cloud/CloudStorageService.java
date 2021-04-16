@@ -18,6 +18,7 @@ import com.amazonaws.util.IOUtils;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
+import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
 import ISPP.G5.INDVELOPERS.services.GameService;
 import ISPP.G5.INDVELOPERS.services.OwnedGameService;
@@ -93,12 +94,15 @@ public class CloudStorageService {
     	boolean downloadAccess = false;
         Developer currentDeveloper = this.developerService.findCurrentDeveloper();
         List<Game> purchasedGames = this.ownedGameService.findAllMyOwnedGames(currentDeveloper);
-        
-        
+        if(currentDeveloper.getRoles().contains(UserRole.ADMIN)) {
+        	downloadAccess=true;
+        }else {
         for(Game myGame: purchasedGames) {
         	if(fileName == myGame.getIdCloud()) {
         		downloadAccess = true;
+        		break;
         	}
+        }
         }
         
         return downloadAccess;
