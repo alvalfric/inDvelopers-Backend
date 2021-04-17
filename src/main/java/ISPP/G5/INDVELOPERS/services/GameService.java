@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
+import ISPP.G5.INDVELOPERS.models.OwnedGame;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
 import io.jsonwebtoken.lang.Assert;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,8 @@ public class GameService {
 
 	@Autowired
 	private GameRepository gameRepository;
+//	@Autowired
+//	private OwnedGameService ownedGameService;
 //	@Autowired
 //	private CloudStorageService cloudStorageService;
 

@@ -30,81 +30,84 @@ public class CloudStorageService {
 
 	@Value("${application.bucket.name}")
 	private String bucketName;
-	
+
 	@Autowired
 	private AmazonS3 s3Client;
-    @Autowired
-    private DeveloperService developerService;
-    @Autowired
-    private GameService gameService;
-    @Autowired
-    private OwnedGameService ownedGameService;
-    
+	@Autowired
+	private DeveloperService developerService;
+	@Autowired
+	private GameService gameService;
+	@Autowired
+	private OwnedGameService ownedGameService;
+
 	public String uploadFile(MultipartFile multipartFile) {
-        File file = convertMultiPartFileToFile(multipartFile);
-		String fileName = System.currentTimeMillis()+"_"+multipartFile.getOriginalFilename();
-				
+		File file = convertMultiPartFileToFile(multipartFile);
+		String fileName = System.currentTimeMillis() + "_" + multipartFile.getOriginalFilename();
+
 		s3Client.putObject(new PutObjectRequest(bucketName, fileName, file));
 		file.delete();
 		return fileName;
 	}
-	
+
 	public byte[] downloadFile(String fileName) {
-        S3Object s3Object = s3Client.getObject(bucketName, fileName);
-        S3ObjectInputStream inputStream = s3Object.getObjectContent();
-        try {
-        	byte[] content = IOUtils.toByteArray(inputStream);
-            return content;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+		S3Object s3Object = s3Client.getObject(bucketName, fileName);
+		S3ObjectInputStream inputStream = s3Object.getObjectContent();
+		try {
+			byte[] content = IOUtils.toByteArray(inputStream);
+			return content;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
-	
-    public String deleteFile(String fileName) {
-        s3Client.deleteObject(bucketName, fileName);
-        return fileName + " removed";
-    }
-	
-    private File convertMultiPartFileToFile(MultipartFile multipartFile) {
-        File convertedFile = new File(multipartFile.getOriginalFilename());
-        try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
-            fos.write(multipartFile.getBytes());
-        } catch (IOException e) {
-            log.error("Error converting multipartFile to file", e);
-        }
-        return convertedFile;
-    }
-    
-    public boolean isOwnerOfTheFile(String fileName) {
-    	boolean modifyAccess = false;
-        Developer currentDeveloper = this.developerService.findCurrentDeveloper();
-        List<Game> createdGames = this.gameService.findByMyGames(currentDeveloper.getId());
-        
-        for(Game myGame: createdGames) {
-        	if(fileName == myGame.getIdCloud()) {
-        		modifyAccess = true;
-        	}
-        }
-        
-        return modifyAccess;
-    }
-    
-    public boolean canDownloadGame(String fileName) {
-    	boolean downloadAccess = false;
-        Developer currentDeveloper = this.developerService.findCurrentDeveloper();
-        List<Game> purchasedGames = this.ownedGameService.findAllMyOwnedGames(currentDeveloper);
-        if(currentDeveloper.getRoles().contains(UserRole.ADMIN)) {
-        	downloadAccess=true;
-        }else {
-        for(Game myGame: purchasedGames) {
-        	if(fileName == myGame.getIdCloud()) {
-        		downloadAccess = true;
-        		break;
-        	}
-        }
-        }
-        
-        return downloadAccess;
-    }
+
+	public String deleteFile(String fileName) {
+		s3Client.deleteObject(bucketName, fileName);
+		return fileName + " removed";
+	}
+
+	private File convertMultiPartFileToFile(MultipartFile multipartFile) {
+		File convertedFile = new File(multipartFile.getOriginalFilename());
+		try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
+			fos.write(multipartFile.getBytes());
+		} catch (IOException e) {
+			log.error("Error converting multipartFile to file", e);
+		}
+		return convertedFile;
+	}
+
+	public boolean isOwnerOfTheFile(String fileName) {
+		boolean modifyAccess = false;
+		Developer currentDeveloper = this.developerService.findCurrentDeveloper();
+		List<Game> createdGames = this.gameService.findByMyGames(currentDeveloper.getId());
+		if (currentDeveloper.getRoles().contains(UserRole.ADMIN)) {
+			modifyAccess = true;
+		} else {
+			for (Game myGame : createdGames) {
+				if (fileName.equals(myGame.getIdCloud())) {
+					modifyAccess = true;
+				}
+			}
+		}
+
+		return modifyAccess;
+	}
+
+	public boolean canDownloadGame(String fileName) {
+		boolean downloadAccess = false;
+		Developer currentDeveloper = this.developerService.findCurrentDeveloper();
+		List<Game> purchasedGames = this.ownedGameService.findAllMyOwnedGames(currentDeveloper);
+		if (currentDeveloper.getRoles().contains(UserRole.ADMIN)) {
+			downloadAccess = true;
+		} else {
+			for (Game myGame : purchasedGames) {
+				if (fileName.equals(myGame.getIdCloud())) {
+					downloadAccess = true;
+					break;
+				}
+			}
+		}
+
+		return downloadAccess;
+	}
 }
