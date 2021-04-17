@@ -176,16 +176,65 @@ public class GameServiceTests {
 		assertThatThrownBy(() -> this.gameService.updateGame(testGame)).isInstanceOf(IllegalArgumentException.class);
 	}
 
-	@Test
-	@DisplayName("Delete game test")
-	void shouldDeleteGame() {
-		this.gameService.deleteGame(game1.getId());
-		Assertions.assertFalse(this.gameService.findAll().contains(game1));
-	}
+	/*
+	 * @Test
+	 * 
+	 * @DisplayName("Delete game test") void shouldDeleteGame(){
+	 * this.gameService.deleteGame(game1.getId());
+	 * Assertions.assertFalse(this.gameService.findAll().contains(game1)); }
+	 */
 
 	@Test
 	@DisplayName("Delete game by null game test")
 	void shouldNotDeleteGameNotFoundException() {
 		assertThatThrownBy(() -> this.gameService.deleteGame(null)).isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
+	@DisplayName("Show games that are verified by an admin")
+	void shouldFindVerified() {
+		assertThat(this.gameService.findVerified()).contains(game1);
+	}
+
+	@Test
+	@DisplayName("Fail show games that are not verified by an admin")
+	void shouldNotFindVerified() {
+		Assertions.assertFalse(this.gameService.findVerified().contains(game2));
+	}
+
+	@Test
+	@DisplayName("Show games that haven't been revised by an admin")
+	void shouldFindNotRevised() {
+		assertThat(this.gameService.findNotRevised()).contains(game2);
+	}
+
+	@Test
+	@DisplayName("Fail show games that have been revised by an admin")
+	void shouldNotFindNotRevised() {
+		Assertions.assertFalse(this.gameService.findNotRevised().contains(game1));
+	}
+	
+	@Test
+	@DisplayName("Show top sellers games")
+	void shouldFindTopSellers() {
+		assertThat(this.gameService.findByTopSellers()).contains(game1);
+	}
+
+	@Test
+	@DisplayName("Fail show a non top sellers games")
+	void shouldNotFindTopSellers() {
+		Assertions.assertFalse(this.gameService.findByTopSellers().contains(game2));
+	}
+	
+	@Test
+	@DisplayName("Check if there's a game with that title")
+	void shouldCheckTitle() {
+		assertThat(this.gameService.checkGameTitle("Game1")).isTrue();
+	}
+	
+	@Test
+	@DisplayName("Fail check if there's a game with inexistent title")
+	void shouldNotCheckTitle() {
+		assertThat(this.gameService.checkGameTitle("Untituloquenoexiste")).isFalse();
 	}
 }
