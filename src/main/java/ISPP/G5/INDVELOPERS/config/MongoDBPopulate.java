@@ -15,10 +15,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.DeveloperSubscription;
 import ISPP.G5.INDVELOPERS.models.Game;
+import ISPP.G5.INDVELOPERS.models.Order;
 import ISPP.G5.INDVELOPERS.models.OwnedGame;
 import ISPP.G5.INDVELOPERS.models.Review;
 import ISPP.G5.INDVELOPERS.models.UserEntity;
 import ISPP.G5.INDVELOPERS.models.UserRole;
+import ISPP.G5.INDVELOPERS.paypal.OrderRepository;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperSubscriptionRepository;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
@@ -37,7 +39,7 @@ public class MongoDBPopulate<E> {
     CommandLineRunner commandLineRunner(
             UserEntityRepository userEntityRepository, DeveloperRepository developerRepository,
             GameRepository gameRepository, ReviewRepository reviewRepository, OwnedGameRepository ownedGameRepository, PublicationRepository publicationRepository,
-            DeveloperSubscriptionRepository developerSubscriptionRepository) {
+            DeveloperSubscriptionRepository developerSubscriptionRepository, OrderRepository orderRepository) {
         return strings -> {
         	userEntityRepository.deleteAll();
             developerRepository.deleteAll();
@@ -46,8 +48,8 @@ public class MongoDBPopulate<E> {
             ownedGameRepository.deleteAll();
             publicationRepository.deleteAll();
             developerSubscriptionRepository.deleteAll();
-
-
+            orderRepository.deleteAll();
+			
             /*
                 ================= USERS =================
              */
@@ -169,7 +171,7 @@ public class MongoDBPopulate<E> {
                     "Es un juego en el que elijas el camino que elijas pierdes",
                     "No tiene grandes requisitos, 20 gigas de ram",
                     25.65,
-                    "25.icloud.",
+                    "1618508350667_blob",
                     true, 
                     dummyDeveloper,
                     null);
@@ -180,18 +182,19 @@ public class MongoDBPopulate<E> {
                     "No intentes que el payaso se quede quieto, siempre salta",
                     "Con tener ordenador ya te tira",
                     21.43,
-                    "no tiene",
+                    "1618508350667_blob",
                     true, 
                     dummyDeveloper,
                     null);
             
             gameRepository.save(game2);
             
+           
             Game game3 = new Game("Almas oscuras",
                     "Juego super complicado que no podras pasarte",
                     "Requiere de una grafica de ultima generacion",
                     39.99,
-                    "no tiene",
+                    "1618508350667_blob",
                     true, 
                     dummyDeveloper,
                     null);
