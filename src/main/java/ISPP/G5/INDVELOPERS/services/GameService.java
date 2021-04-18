@@ -23,17 +23,7 @@ public class GameService {
 	@Autowired
 	private GameRepository gameRepository;
 	@Autowired
-	private DeveloperService developerService;
-  @Autowired
-	private CloudStorageService cloudStorageService;
-	@Autowired
 	private OwnedGameRepository ownedGameRepository;
-
-//	@Autowired
-//	private OwnedGameService ownedGameService;
-//	@Autowired
-//	private CloudStorageService cloudStorageService;
-
 
 	public List<Game> findAll() {
 		List<Game> res = new ArrayList<>();
