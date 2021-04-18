@@ -2,6 +2,7 @@ package ISPP.G5.INDVELOPERS.models;
 
 import java.util.List;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -20,5 +21,6 @@ public class OwnedGame extends BaseEntity{
 	
 	private Developer buyer;
 	
+	@DBRef
 	private List<Game> ownedGames;
 }

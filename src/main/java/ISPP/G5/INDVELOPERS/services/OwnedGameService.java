@@ -41,7 +41,6 @@ public class OwnedGameService {
 		List<Game> res = new ArrayList<Game>();
 		res.addAll(findByDeveloper(developer).getOwnedGames());
 		res.sort((g1,g2)->g1.getTitle().compareTo(g2.getTitle()));
-		System.out.println(res);
 		return res;
 	}
 

@@ -62,6 +62,7 @@ public class PaypalController {
 	@Autowired
 	private DeveloperSubscriptionService devSubscrService;
 
+	public static final String MAIN_PAGE_DEPLOYED_URL = "https://level2-indvelopers.herokuapp.com";
 	public static final String SUCCESS_URL = "/success";
 	public static final String CANCEL_URL = "/cancel";
 
@@ -85,8 +86,8 @@ public class PaypalController {
 		String linkRef = null;
 		try {
 			Payment payment = service.createPayment(order.getPrice(), order.getCurrency(), order.getMethod(),
-					order.getIntent(), order.getDescription(), "http://localhost:3000" + CANCEL_URL,
-					"http://localhost:3000" + SUCCESS_URL + "/?gameId=" + order.getGameId(), order.getPayeeEmail());
+					order.getIntent(), order.getDescription(), MAIN_PAGE_DEPLOYED_URL + CANCEL_URL,
+					MAIN_PAGE_DEPLOYED_URL + SUCCESS_URL + "/?gameId=" + order.getGameId(), order.getPayeeEmail());
 			Payee payee = new Payee();
 			payee.setEmail(order.getPayeeEmail()); // Email del developer al que se le va a pagar
 			payment.setPayee(payee);
@@ -137,8 +138,8 @@ public class PaypalController {
 			Order order = new Order(7.99, "EUR", "Paypal", "Sale", "This is a pay for a game.", developer.getEmail(),"");
 			this.orderService.save(order);
 			Payment payment = service.createPaymentToUs(order.getPrice(), order.getCurrency(), order.getMethod(),
-					order.getIntent(), order.getDescription(), "http://localhost:3000" + CANCEL_URL,
-					"http://localhost:3000" + "/subscriptionSuccess");
+					order.getIntent(), order.getDescription(), MAIN_PAGE_DEPLOYED_URL + CANCEL_URL,
+					MAIN_PAGE_DEPLOYED_URL + "/subscriptionSuccess");
 			for (Links link : payment.getLinks()) {
 				if (link.getRel().equals("approval_url")) {
 					linkRef = link.getHref();
