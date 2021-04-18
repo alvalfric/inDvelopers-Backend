@@ -12,6 +12,7 @@ import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.OwnedGame;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
+import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
 import io.jsonwebtoken.lang.Assert;
 import lombok.AllArgsConstructor;
 
@@ -21,10 +22,18 @@ public class GameService {
 
 	@Autowired
 	private GameRepository gameRepository;
+	@Autowired
+	private DeveloperService developerService;
+  @Autowired
+	private CloudStorageService cloudStorageService;
+	@Autowired
+	private OwnedGameRepository ownedGameRepository;
+
 //	@Autowired
 //	private OwnedGameService ownedGameService;
 //	@Autowired
 //	private CloudStorageService cloudStorageService;
+
 
 	public List<Game> findAll() {
 		List<Game> res = new ArrayList<>();
@@ -73,6 +82,43 @@ public class GameService {
 		res = gameRepository.findByMyGames(developerId);
 		Collections.reverse(res);
 		return res;
+
+	}
+	
+	public List<Game> findByTopSellers() {
+		Integer actual = 0;
+		Integer res = 0;
+		Boolean first = true;
+		List<Game> topSellersGames = new ArrayList<Game>();
+		List<OwnedGame> allOwnedGames = this.ownedGameRepository.findAll();
+		List<Game> allGames = gameRepository.findVerified();
+		Integer size = allGames.size();
+		for (int i = 0; i < size; i++) {
+			actual = 0;
+			first = true;
+			for (Game g : allGames) {
+				res = 0;
+
+				if (!topSellersGames.contains(g)) {
+					for (OwnedGame o : allOwnedGames) {
+						if (o.getOwnedGames() != null && o.getOwnedGames().contains(g)) {
+							res += 1;
+						}
+						if (res >= actual) {
+							if (first) {
+								topSellersGames.add(i, g);
+								first = false;
+							} else {
+								topSellersGames.remove(i);
+								topSellersGames.add(i, g);
+							}
+							actual = res;
+						}
+					}
+				}
+			}
+		}
+		return topSellersGames;
 
 	}
 
