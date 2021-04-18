@@ -82,7 +82,7 @@ public class CloudStorageService {
         List<Game> createdGames = this.gameService.findByMyGames(currentDeveloper.getId());
         
         for(Game myGame: createdGames) {
-        	if(fileName == myGame.getIdCloud()) {
+        	if(fileName.equals(myGame.getIdCloud())) {
         		modifyAccess = true;
         	}
         }
@@ -98,7 +98,7 @@ public class CloudStorageService {
         	downloadAccess=true;
         }else {
         for(Game myGame: purchasedGames) {
-        	if(fileName == myGame.getIdCloud()) {
+        	if(fileName.equals(myGame.getIdCloud()) || fileName == myGame.getIdCloud()) {
         		downloadAccess = true;
         		break;
         	}
