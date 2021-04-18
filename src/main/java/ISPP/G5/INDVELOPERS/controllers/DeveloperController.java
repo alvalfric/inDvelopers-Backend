@@ -104,13 +104,12 @@ public class DeveloperController {
 	@PutMapping("/changeToAdmin/{id}")
 	public ResponseEntity<GetDeveloperDTO> changeToAdmin(@PathVariable String id) throws IllegalArgumentException {
 		try {
-//			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-//			Developer admin = this.developerService.findByUsername(userDetails.getUsername());
-//			if (!admin.getRoles().contains(UserRole.ADMIN)) {
-//				throw new IllegalArgumentException("Only an admin can upgrade an user to admin");
-//			}
-//			return new ResponseEntity<GetDeveloperDTO>(DeveloperDTOConverter.DevelopertoGetDeveloperDTO(this.developerService.updateDeveloper(developer2)), HttpStatus.OK);
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			Developer admin = this.developerService.findByUsername(userDetails.getUsername());
+			if (!admin.getRoles().contains(UserRole.ADMIN)) {
+				throw new IllegalArgumentException("Only an admin can upgrade an user to admin");
+			}
 			return ResponseEntity
 					.ok(DeveloperDTOConverter.DevelopertoGetDeveloperDTO(this.developerService.changeToAdmin(id)));
 		} catch (IllegalArgumentException e) {
