@@ -98,7 +98,7 @@ public class CloudStorageService {
         	downloadAccess=true;
         }else {
         for(Game myGame: purchasedGames) {
-        	if(fileName.equals(myGame.getIdCloud()) || fileName == myGame.getIdCloud()) {
+        	if(fileName.equals(myGame.getIdCloud())) {
         		downloadAccess = true;
         		break;
         	}
