@@ -78,9 +78,17 @@ public class MongoDBPopulate<E> {
 
             developerRepository.save(alvaro);
             
+            Developer John = new Developer("JohnDoe1",
+                    passwordEncoder.encode("JohnDoe1"),
+                    "sb-n43pka5914239@personal.example.com",
+                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, false);
+
+            developerRepository.save(John);
+            
             Developer dummyDeveloper = new Developer("dummyDeveloper",
                     passwordEncoder.encode("dummyDeveloper"),
-                    "dummyDeveloper@gmail.com",
+                    "sb-m439ui5916012@business.example.com",
                     null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
                     null, null, true);
 
