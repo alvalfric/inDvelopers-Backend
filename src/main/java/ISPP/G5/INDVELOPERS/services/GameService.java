@@ -25,7 +25,6 @@ public class GameService {
 	@Autowired
 	private OwnedGameRepository ownedGameRepository;
 
-
 	public List<Game> findAll() {
 		List<Game> res = new ArrayList<>();
 		res = gameRepository.findAll();
