@@ -1,0 +1,60 @@
+project:
+  name: 'indvelopers-backend'
+  owner: 'morning'
+  teamId: '5'
+  identities:
+    github:
+      url: 'https://github.com/alvalfric/indvelopers-backend'
+    heroku:
+      url: 'https://continuous-indvelopers-backend.herokuapp.com/'
+    travis:
+      url: 'https://travis-ci.com/github/alvalfric/inDvelopers-Backend'
+  members:
+    member1:
+      name: 'Álvaro Jesús'
+      surname: 'Alférez Richarte' 
+      githubUsername: 'alvalfric'
+    member2:
+      name: 'David'
+      surname: 'Cáceres Romero' 
+      githubUsername: 'D-RHYM'
+    member3:
+      name: 'Marta'
+      surname: 'Díaz Fernández' 
+      githubUsername: 'mardiafer13'
+    member4:
+      name: 'Elena'
+      surname: 'España González' 
+      githubUsername: 'eleespana'
+    member5:
+      name: 'Gonzalo'
+      surname: 'Fernández Jiménez' 
+      githubUsername: 'gonferjim'
+    member6:
+      name: 'Francisco Javier'
+      surname: 'García Robles' 
+      githubUsername: 'fragarroa'
+    member7:
+      name: 'Alejandro'
+      surname: 'González Martín' 
+      githubUsername: 'Alejandrogm1'
+    member8:
+      name: 'Luis'
+      surname: 'Pardo López' 
+      githubUsername: 'luiparlop1'
+    member9:
+      name: 'Guillermo'
+      surname: 'Pavón Vargas' 
+      githubUsername: 'guipavvar'
+    member10:
+      name: 'Juan Pablo'
+      surname: 'Portero Montaño' 
+      githubUsername: 'juapormon'
+    member11:
+      name: 'Moisés'
+      surname: 'Romero Romo' 
+      githubUsername: 'moiromrom'
+    member12:
+      name: 'Fernando'
+      surname: 'Wals Rodríguez' 
+      githubUsername: 'Ferwalrod'      
