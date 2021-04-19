@@ -62,8 +62,12 @@ public class CloudStorageService {
 	}
 
 	public String deleteFile(String fileName) {
-		s3Client.deleteObject(bucketName, fileName);
-		return fileName + " removed";
+		if(this.isOwnerOfTheFile(fileName)) {
+			s3Client.deleteObject(bucketName, fileName);
+			return fileName + " removed";
+		} else {
+			return "You cannot delete this file";
+		}
 	}
 
 	private File convertMultiPartFileToFile(MultipartFile multipartFile) {

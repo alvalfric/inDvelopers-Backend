@@ -52,6 +52,7 @@ public class CloudStorageController {
     @DeleteMapping("/delete/{fileName}")
     public ResponseEntity<String> deleteFile(@PathVariable String fileName) {
         if(this.cloudStorageService.isOwnerOfTheFile(fileName)) {
+        	System.out.println("entraaborrar");
             return new ResponseEntity<>(cloudStorageService.deleteFile(fileName), HttpStatus.OK);
         } else {
             return new ResponseEntity<>("You are not the owner of the file", HttpStatus.FORBIDDEN);

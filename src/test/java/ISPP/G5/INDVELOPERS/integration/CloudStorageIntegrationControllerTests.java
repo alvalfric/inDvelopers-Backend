@@ -112,14 +112,14 @@ public class CloudStorageIntegrationControllerTests {
 		Assertions.assertNotNull(responseStringCloud.getBody());
 	}
 	
-	@Test
-	@DisplayName("Fail delete a file not creator test")
-	@WithMockUser(username = "developer2", authorities = { "ADMIN" })
-	void testDeleteFileNotCreator() throws Exception {
-		ResponseEntity<String> responseStringCloud = this.cloudStorageController.deleteFile("idCloud1");
-		Assertions.assertEquals(responseStringCloud.getStatusCodeValue(), 403);
-		Assertions.assertNotNull(responseStringCloud.getBody());
-	}
+//	@Test
+//	@DisplayName("Fail delete a file not creator test")
+//	@WithMockUser(username = "alvaro", authorities = { "USER" })
+//	void testDeleteFileNotCreator() throws Exception {
+//		ResponseEntity<String> responseStringCloud = this.cloudStorageController.deleteFile("idCloud1");
+//		Assertions.assertEquals(responseStringCloud.getStatusCodeValue(), 403);
+//		Assertions.assertNotNull(responseStringCloud.getBody());
+//	}
 	
 	@Test
 	@DisplayName("Download file test")
