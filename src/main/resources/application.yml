@@ -1,0 +1,22 @@
+cloud:
+  aws:
+    credentials:
+      access-key: AKIAR2TANKCF4ZAMEHYZ
+      secret-key: 
+      secret-key-encoded: djZNSjFpd1JNQmhuRkxIek5RVjY2U0V3MFBLcWN5VjcwKzZLVVJTNQ==
+    region:
+      static: eu-west-3
+    stack:
+      auto: false
+
+application:
+  bucket:
+    name: indvelopers
+
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 5GB
+      max-file-size: 5GB
+      max-request-size: 5GB

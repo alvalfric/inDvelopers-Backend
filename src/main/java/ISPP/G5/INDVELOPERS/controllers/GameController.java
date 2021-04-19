@@ -1,7 +1,9 @@
-
 package ISPP.G5.INDVELOPERS.controllers;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
@@ -22,7 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
+import ISPP.G5.INDVELOPERS.models.OwnedGame;
+import ISPP.G5.INDVELOPERS.models.UserRole;
+import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
+import ISPP.G5.INDVELOPERS.services.DeveloperSubscriptionService;
 import ISPP.G5.INDVELOPERS.services.GameService;
 
 @CrossOrigin("*")
@@ -31,16 +37,39 @@ import ISPP.G5.INDVELOPERS.services.GameService;
 public class GameController {
 
 	@Autowired
-	private GameService			gameService;
-
+	private GameService gameService;
 	@Autowired
-	private DeveloperService	developerService;
-
-
+	private DeveloperService developerService;
+  	@Autowired
+	private OwnedGameRepository ownedGameRepository;
 	@Autowired
-	public GameController(final GameService gameService, final DeveloperService developerService) {
+	private DeveloperSubscriptionService developerSubscriptionService;
+	@Autowired
+	public GameController(final GameService gameService, final DeveloperService developerService,
+			final OwnedGameRepository ownedGameRepository, final DeveloperSubscriptionService developerSubscriptionService) {
 		this.gameService = gameService;
 		this.developerService = developerService;
+    this.ownedGameRepository = ownedGameRepository;
+		this.developerSubscriptionService = developerSubscriptionService;
+
+	}
+
+	@GetMapping("/findVerified")
+	public ResponseEntity<List<Game>> findVerified() {
+		try {
+			return ResponseEntity.ok(gameService.findVerified());
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+
+	@GetMapping("/findNotRevised")
+	public ResponseEntity<List<Game>> findNotRevised() {
+		try {
+			return ResponseEntity.ok(gameService.findNotRevised());
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
 	}
 
 	@GetMapping("/findAll")
@@ -58,15 +87,14 @@ public class GameController {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			Developer developer = developerService.findByUsername(userDetails.getUsername());
-			boolean isPremium = false;
-			if (developer.getIsPremium() != null)
-				isPremium = developer.getIsPremium();
+			boolean isPremium = this.developerSubscriptionService.checkDeveloperHasSubscription(developer);
 			if (gameService.findAll().stream().anyMatch(g -> g.getTitle().equals(game.getTitle())))
 				throw new IllegalArgumentException("There's already a game with that title");
 			if (isPremium == false && game.getPrice() != 0.0)
 				throw new IllegalArgumentException("Only premium developers can sell non-free games");
-			if (isPremium == false && (gameService.findByMyGames(developer.getId()).size() + 1 > 5))
-				throw new IllegalArgumentException("Non premium developers only can have a maximum of five games published");
+			if (isPremium == false && gameService.findByMyGames(developer.getId()).size() + 1 > 5)
+				throw new IllegalArgumentException(
+						"Non premium developers only can have a maximum of five games published");
 			return ResponseEntity.status(HttpStatus.CREATED).body(gameService.addGame(game, developer));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -74,7 +102,8 @@ public class GameController {
 	}
 
 	@PutMapping("/edit/{id}")
-	public ResponseEntity<String> updateGame(@PathVariable final String id, @RequestBody final Game game) throws NotFoundException {
+	public ResponseEntity<String> updateGame(@PathVariable final String id, @RequestBody final Game game)
+			throws NotFoundException {
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -85,15 +114,20 @@ public class GameController {
 
 			if (allGames.stream().anyMatch(g -> g.getTitle().equals(game.getTitle())))
 				throw new IllegalArgumentException("There's alredy a game with that title");
-			if (!gameData.getCreator().getId().equals(developer.getId()))
-				throw new IllegalArgumentException("Only the creator of the game can edit it");
-			gameData.setTitle(game.getTitle());
-			gameData.setDescription(game.getDescription());
-			gameData.setRequirements(game.getRequirements());
-			gameData.setPrice(game.getPrice());
-			gameData.setIsNotMalware(game.getIsNotMalware());
-			gameData.setIdCloud(game.getIdCloud());
-			return new ResponseEntity<>(gameService.updateGame(gameData), HttpStatus.OK);
+
+			if (game.getCreator().getId().equals(developer.getId()) || developer.getRoles().contains(UserRole.ADMIN)) {
+				gameData.setTitle(game.getTitle());
+				gameData.setDescription(game.getDescription());
+				gameData.setRequirements(game.getRequirements());
+				gameData.setPrice(game.getPrice());
+				gameData.setIsNotMalware(game.getIsNotMalware());
+				gameData.setIdCloud(game.getIdCloud());
+				gameData.setImagen(game.getImagen());
+				return new ResponseEntity<>(gameService.updateGame(gameData), HttpStatus.OK);
+			} else {
+				throw new IllegalArgumentException("Only the creator of the game or an admin can update it");
+			}
+
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
@@ -106,9 +140,11 @@ public class GameController {
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			Developer developer = developerService.findByUsername(userDetails.getUsername());
 			Game game = gameService.findById(id);
-			if (!game.getCreator().getId().equals(developer.getId()))
-				throw new IllegalArgumentException("Only the creator of the game can remove it");
-			gameService.deleteGame(id);
+			if (game.getCreator().getId().equals(developer.getId()) || developer.getRoles().contains(UserRole.ADMIN)) {
+				gameService.deleteGame(id);
+			} else {
+				throw new IllegalArgumentException("Only the creator of the game or an admin can remove it");
+			}
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -125,7 +161,8 @@ public class GameController {
 	}
 
 	@GetMapping("/findByDeveloper/{developerUsername}")
-	public ResponseEntity<List<Game>> getGameByDeveloper(@PathVariable final String developerUsername) throws NotFoundException {
+	public ResponseEntity<List<Game>> getGameByDeveloper(@PathVariable final String developerUsername)
+			throws NotFoundException {
 		try {
 			Developer developer = developerService.findByUsername(developerUsername);
 			return ResponseEntity.ok(gameService.findByDeveloper(developer.getId()));
@@ -150,6 +187,25 @@ public class GameController {
 	public ResponseEntity<Game> getGameById(@PathVariable final String id) throws NotFoundException {
 		try {
 			return ResponseEntity.ok(gameService.findById(id));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+
+	@GetMapping("/findByNew")
+	public ResponseEntity<List<Game>> findByNew() {
+		try {
+			return ResponseEntity.ok(this.gameService.findVerified());
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+
+	@GetMapping("/findByTopSellers")
+	public ResponseEntity<List<Game>> findByTopSellers() {
+		try {
+
+			return ResponseEntity.ok(this.gameService.findByTopSellers());
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}

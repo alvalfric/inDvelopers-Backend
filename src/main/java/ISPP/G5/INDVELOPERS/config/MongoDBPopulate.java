@@ -1,5 +1,6 @@
 package ISPP.G5.INDVELOPERS.config;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,16 +13,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
+import ISPP.G5.INDVELOPERS.models.DeveloperSubscription;
 import ISPP.G5.INDVELOPERS.models.Game;
-import ISPP.G5.INDVELOPERS.models.Review;
+import ISPP.G5.INDVELOPERS.models.Order;
 import ISPP.G5.INDVELOPERS.models.OwnedGame;
+import ISPP.G5.INDVELOPERS.models.Review;
 import ISPP.G5.INDVELOPERS.models.UserEntity;
 import ISPP.G5.INDVELOPERS.models.UserRole;
+import ISPP.G5.INDVELOPERS.paypal.OrderRepository;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
+import ISPP.G5.INDVELOPERS.repositories.DeveloperSubscriptionRepository;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
-import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
 import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
 import ISPP.G5.INDVELOPERS.repositories.PublicationRepository;
+import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
 import ISPP.G5.INDVELOPERS.repositories.UserEntityRepository;
 
 @Configuration
@@ -33,22 +38,25 @@ public class MongoDBPopulate<E> {
     @Bean
     CommandLineRunner commandLineRunner(
             UserEntityRepository userEntityRepository, DeveloperRepository developerRepository,
-            GameRepository gameRepository, ReviewRepository reviewRepository, OwnedGameRepository ownedGameRepository, PublicationRepository publicationRepository) {
+            GameRepository gameRepository, ReviewRepository reviewRepository, OwnedGameRepository ownedGameRepository, PublicationRepository publicationRepository,
+            DeveloperSubscriptionRepository developerSubscriptionRepository, OrderRepository orderRepository) {
         return strings -> {
         	userEntityRepository.deleteAll();
             developerRepository.deleteAll();
             gameRepository.deleteAll();
             reviewRepository.deleteAll();
             ownedGameRepository.deleteAll();
-          publicationRepository.deleteAll();
-
+            publicationRepository.deleteAll();
+            developerSubscriptionRepository.deleteAll();
+            orderRepository.deleteAll();
+			
             /*
                 ================= USERS =================
              */
 
             UserEntity master = new UserEntity("master",
                     passwordEncoder.encode("master123"),
-                    "https://dummyimage.com/300",
+                    "master@indvelopers.com",
                     Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
                     true);
 
@@ -56,7 +64,7 @@ public class MongoDBPopulate<E> {
 
             Developer master2 = new Developer("master2",
                     passwordEncoder.encode("master212"),
-                    "https://dummyimage.com/300",
+                    "master2@indvelopers.com",
                     null, null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
                     null, null, true);
 
@@ -70,9 +78,17 @@ public class MongoDBPopulate<E> {
 
             developerRepository.save(alvaro);
             
+            Developer John = new Developer("JohnDoe1",
+                    passwordEncoder.encode("JohnDoe1"),
+                    "sb-n43pka5914239@personal.example.com",
+                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, false);
+
+            developerRepository.save(John);
+            
             Developer dummyDeveloper = new Developer("dummyDeveloper",
                     passwordEncoder.encode("dummyDeveloper"),
-                    "dummyDeveloper@gmail.com",
+                    "sb-m439ui5916012@business.example.com",
                     null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
                     null, null, true);
 
@@ -97,7 +113,7 @@ public class MongoDBPopulate<E> {
             Developer asdf = new Developer("asdf",
                     passwordEncoder.encode("asdfasdf"),
                     "asdf@asdf.com",
-                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
                     null, null, true);
 
             developerRepository.save(asdf);
@@ -163,9 +179,10 @@ public class MongoDBPopulate<E> {
                     "Es un juego en el que elijas el camino que elijas pierdes",
                     "No tiene grandes requisitos, 20 gigas de ram",
                     25.65,
-                    "25.icloud.",
+                    "1618508350667_blob",
                     true, 
-                    dummyDeveloper);
+                    dummyDeveloper,
+                    null);
             
             gameRepository.save(game1);
             
@@ -173,19 +190,22 @@ public class MongoDBPopulate<E> {
                     "No intentes que el payaso se quede quieto, siempre salta",
                     "Con tener ordenador ya te tira",
                     21.43,
-                    "no tiene",
+                    "1618508350667_blob",
                     true, 
-                    dummyDeveloper);
+                    dummyDeveloper,
+                    null);
             
             gameRepository.save(game2);
             
+           
             Game game3 = new Game("Almas oscuras",
                     "Juego super complicado que no podras pasarte",
                     "Requiere de una grafica de ultima generacion",
                     39.99,
-                    "no tiene",
+                    "1618508350667_blob",
                     true, 
-                    dummyDeveloper);
+                    dummyDeveloper,
+                    null);
             
             gameRepository.save(game3);
 
@@ -205,6 +225,43 @@ public class MongoDBPopulate<E> {
             OwnedGame ownedGame1 = new OwnedGame(alvaro, gamesOfDeveloperAlvaro);
             
             ownedGameRepository.save(ownedGame1);
+            
+            /*
+            ================= SUBSCRIPTIONS =================
+             */
+            
+            DeveloperSubscription devSub1 = new DeveloperSubscription(master2,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            developerSubscriptionRepository.save(devSub1);
+            
+            DeveloperSubscription devSub2 = new DeveloperSubscription(dummyDeveloper,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            developerSubscriptionRepository.save(devSub2);
+            
+            DeveloperSubscription devSub3 = new DeveloperSubscription(dummyDeveloper2,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            developerSubscriptionRepository.save(devSub3);
+            
+            DeveloperSubscription devSub4 = new DeveloperSubscription(alvaro,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            developerSubscriptionRepository.save(devSub4);
+            
+            /* Subscripciones de los profesores */
+            
+            DeveloperSubscription subCarlos = new DeveloperSubscription(carlos,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            
+            DeveloperSubscription subBedilia = new DeveloperSubscription(bedilia,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            
+            DeveloperSubscription subPablo = new DeveloperSubscription(pablo,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            
+            DeveloperSubscription subCristina = new DeveloperSubscription(cristina,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            
+            DeveloperSubscription subAntonio = new DeveloperSubscription(antonio,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            
+            DeveloperSubscription subRafael = new DeveloperSubscription(rafael,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+            
+            developerSubscriptionRepository.save(subCarlos);
+            developerSubscriptionRepository.save(subBedilia);
+            developerSubscriptionRepository.save(subPablo);
+            developerSubscriptionRepository.save(subCristina);
+            developerSubscriptionRepository.save(subAntonio);
+            developerSubscriptionRepository.save(subRafael);
         };
 
     }

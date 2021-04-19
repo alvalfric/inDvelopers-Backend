@@ -2,7 +2,10 @@
 package ISPP.G5.INDVELOPERS.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +38,10 @@ public class OwnedGameService {
 	}
 
 	public List<Game> findAllMyOwnedGames(final Developer developer) {
-		return new ArrayList<>(findByDeveloper(developer).getOwnedGames());
+		List<Game> res = new ArrayList<Game>();
+		res.addAll(findByDeveloper(developer).getOwnedGames());
+		res.sort((g1,g2)->g1.getTitle().compareTo(g2.getTitle()));
+		return res;
 	}
 
 	public String buyGameByDeveloperAndGameId(final Developer developer, final String gameId) {

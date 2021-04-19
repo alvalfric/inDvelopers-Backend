@@ -49,7 +49,7 @@ public class Developer extends BaseEntity implements UserDetails{
 	
 	private List<String> gameList;
 	
-	private Image userImage;
+	private String userImage;
 	
 	private Set<UserRole> roles;
 	

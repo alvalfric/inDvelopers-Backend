@@ -1,6 +1,8 @@
 package ISPP.G5.INDVELOPERS.Security;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,8 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     // Disable CSRF (cross site request forgery)
     http.csrf().disable();//
-    http.cors().disable();
+    http.cors();
 
     // No session will be created or used by spring security
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -48,29 +48,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // Entry points
     http.authorizeRequests()
             //.antMatchers("/**").permitAll()
-            .antMatchers("/users/sign-up").permitAll()
-            .antMatchers("/users/login").permitAll()
             .antMatchers("/developers/sign-up").permitAll()
             .antMatchers("/developers/login").permitAll()
-            .antMatchers("/developers/me").permitAll()
-            .antMatchers("/developers/edit/**").permitAll()
-            .antMatchers("/developers").permitAll()
-            .antMatchers("/publications/**").permitAll()
-            .antMatchers("/developers/findAll").permitAll()
-            .antMatchers("/developers/add").authenticated()
-            //.antMatchers("/games/findAll").permitAll()
-            //.antMatchers("/games/findByDeveloper/**").permitAll()
-            //.antMatchers("/games/findByTitle/**").permitAll()
-            //.antMatchers("/games/add").authenticated()
-            //.antMatchers("/games/edit/**").authenticated()
-            //.antMatchers("/games/delete/**").authenticated()
-            //.antMatchers("/games/findMyGames").authenticated()
-            .antMatchers("/games/**").permitAll()
-            .antMatchers("/ownedGames/**").permitAll()
-            .antMatchers("/reviews/**").permitAll()
-            //.antMatchers("/reviews**").permitAll()
-            //.antMatchers("/swagger-ui.html").permitAll()
-            // Disallow everything else..
+            .antMatchers("/games/findVerified").permitAll()
+            .antMatchers("/games/*").permitAll()
+            .antMatchers("/reviews/game/*").permitAll()
+            .antMatchers("/publications/findAll").permitAll()
             .anyRequest().authenticated();
 
     // If a user try to access a resource without having enough permissions
@@ -81,21 +64,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     // Optional, if you want to test the API from a browser
     http.httpBasic();
-  }
-
-  @Override
-  public void configure(WebSecurity web) throws Exception {
-    // Allow swagger to be accessed without authentication
-    web.ignoring().antMatchers("/v2/api-docs")//
-        .antMatchers("/swagger-resources/**")//
-        .antMatchers("/swagger-ui.html")//
-        .antMatchers("/configuration/**")//
-        .antMatchers("/webjars/**")//
-        .antMatchers("/public")
-
-        // Un-secure H2 Database (for testing purposes, H2 console shouldn't be
-        // unprotected in production)
-        .and().ignoring().antMatchers("/h2-console/**/**");
   }
 
   @Bean
