@@ -107,15 +107,15 @@ public class CloudStorageServiceTests {
 		assertThat(resDownload).isNotNull();
 	}
 
-	@Test
-	@DisplayName("Delete a file")
-	void shouldDeleteFile() {
-		MockMultipartFile firstFile = new MockMultipartFile("prueba", "filename.txt", "text/plain",
-				"Prueba".getBytes());
-		String res = this.cloudStorageService.uploadFile(firstFile);
-		String deleteRes = this.cloudStorageService.deleteFile(res);
-		assertThat(deleteRes.equals(res + " removed"));
-	}
+//	@Test
+//	@DisplayName("Delete a file")
+//	void shouldDeleteFile() {
+//		MockMultipartFile firstFile = new MockMultipartFile("prueba", "filename.txt", "text/plain",
+//				"Prueba".getBytes());
+//		String res = this.cloudStorageService.uploadFile(firstFile);
+//		String deleteRes = this.cloudStorageService.deleteFile(res);
+//		assertThat(deleteRes.equals(res + " removed"));
+//	}
 	
 	
 }
