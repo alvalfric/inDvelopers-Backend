@@ -161,7 +161,7 @@ public class DeveloperController {
 	public ResponseEntity<String> followUsername(
 			@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, @PathVariable String username) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(developerService.followDeveloper(this.developerService.findByUsername(username)));
+			return ResponseEntity.status(HttpStatus.OK).body(developerService.followDeveloper(username));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
@@ -171,7 +171,17 @@ public class DeveloperController {
 	public ResponseEntity<String> unfollowUsername(
 			@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, @PathVariable String username) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(developerService.unfollowDeveloper(this.developerService.findByUsername(username)));
+			return ResponseEntity.status(HttpStatus.OK).body(developerService.unfollowDeveloper(username));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+	
+	@GetMapping("/me/myFollowers")
+	public ResponseEntity<List<GetDeveloperDTO>> myFollowers(
+			@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal) {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(this.developerService.getMyFollowersDTO(principal.getUsername()));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
