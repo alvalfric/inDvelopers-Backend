@@ -74,8 +74,8 @@ public class ReviewController {
 	@PutMapping("/edit/{id}")
 	public ResponseEntity<String> editReview(@RequestBody final Review review, @PathVariable("id") final String id) throws NotFoundException {
 		try {
-      //Review oldReview = service.findById(id);
-	  Review oldReview = null;
+      Review oldReview = service.findById(id);
+//	  Review oldReview = null;
 	  List<Review> gameReviews = service.findAllByGameId(id);
 	  for (Review r : gameReviews) {
 	  	if(r.getDeveloper().getUsername().equals(review.getDeveloper().getUsername()))

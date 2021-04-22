@@ -157,7 +157,7 @@ public class DeveloperController {
 	
 	/* Following users implementation*/
 	
-	@GetMapping("/follow/{username}")
+	@PutMapping("/follow/{username}")
 	public ResponseEntity<String> followUsername(
 			@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, @PathVariable String username) {
 		try {
@@ -167,7 +167,7 @@ public class DeveloperController {
 		}
 	}
 
-	@GetMapping("/unfollow/{username}")
+	@PutMapping("/unfollow/{username}")
 	public ResponseEntity<String> unfollowUsername(
 			@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, @PathVariable String username) {
 		try {

@@ -100,10 +100,16 @@ public class ReviewControllerIntegrationTests {
 	@DisplayName("Edit review test")
 	@WithMockUser(username = "master2")
 	void editReview() throws Exception {
-		Review rev = new Review("Text1", 1., false, null, null);
+		Developer dev = devRepository.findByUsername("master2").get();
+		Review rev = new Review("Text1", 1., false, null, dev);
+		rev.setId("revtoedit");
 		String bodyContent = objectToJsonStringContent(rev);
 
-		mvc.perform(put("/reviews/edit/" + reviewDefault.getId()).contentType(MediaType.APPLICATION_JSON).content(bodyContent)).andExpect(status().isOk()).andExpect(content().string("Updated Review with Id: " + reviewDefault.getId()));
+		mvc.perform(put("/reviews/edit/" + reviewDefault.getId())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(bodyContent))
+		.andExpect(status().isOk())
+		.andExpect(content().string("Updated Review with Id: " + reviewDefault.getId()));
 	}
 
 	@Test
