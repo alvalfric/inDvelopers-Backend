@@ -201,4 +201,16 @@ public class DeveloperService {
 
 		return myFollowersDTO;
 	}
+	
+	public List<GetDeveloperDTO> getMyFollowedDTO(String username) {
+		Developer currentDeveloper = this.findByUsername(username);
+		List<GetDeveloperDTO> myFollowersDTO = new ArrayList<GetDeveloperDTO>();
+
+		for (Developer dev : currentDeveloper.getFollowing()) {
+			GetDeveloperDTO devToAdd = DeveloperDTOConverter.DevelopertoGetDeveloperDTO(dev);
+			myFollowersDTO.add(devToAdd);
+		}
+
+		return myFollowersDTO;
+	}
 }

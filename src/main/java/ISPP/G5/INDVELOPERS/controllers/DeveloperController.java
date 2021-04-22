@@ -186,4 +186,14 @@ public class DeveloperController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
+	
+	@GetMapping("/me/myFollowed")
+	public ResponseEntity<List<GetDeveloperDTO>> myFollowed(
+			@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal) {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(this.developerService.getMyFollowedDTO(principal.getUsername()));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
 }
