@@ -55,7 +55,7 @@ public class GameService {
 
 	public List<Game> findByTitle(String title) {
 		List<Game> res = new ArrayList<>();
-		res = findAll().stream().filter(g -> g.getTitle().contains(title)).collect(Collectors.toList());
+		res = findVerified().stream().filter(g -> g.getTitle().contains(title)).collect(Collectors.toList());
 		Collections.reverse(res);
 		return res;
 	}
