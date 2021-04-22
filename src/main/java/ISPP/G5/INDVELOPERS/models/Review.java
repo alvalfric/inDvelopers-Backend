@@ -26,6 +26,8 @@ public class Review extends BaseEntity {
 	@NotNull
 	@Positive
 	private double	score;
+
+	private Boolean edited;
 	
 	@NotNull
 	@DBRef

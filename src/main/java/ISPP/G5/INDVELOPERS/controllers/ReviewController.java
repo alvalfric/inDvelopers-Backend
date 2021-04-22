@@ -74,16 +74,22 @@ public class ReviewController {
 	@PutMapping("/edit/{id}")
 	public ResponseEntity<String> editReview(@RequestBody final Review review, @PathVariable("id") final String id) throws NotFoundException {
 		try {
-      Review r = service.findById(id);
+      //Review oldReview = service.findById(id);
+	  Review oldReview = null;
+	  List<Review> gameReviews = service.findAllByGameId(id);
+	  for (Review r : gameReviews) {
+	  	if(r.getDeveloper().getUsername().equals(review.getDeveloper().getUsername()))
+	  		oldReview = r;
+	  }
       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
       UserDetails userDetails = (UserDetails) authentication.getPrincipal();
       Developer developer = developerService.findByUsername(userDetails.getUsername());
-      if (!r.getDeveloper().getId().equals(developer.getId()))
-        throw new IllegalArgumentException("Only the creator of the review can edit it");
-		
-			r.setScore(review.getScore());
-			r.setText(review.getText());
-			return new ResponseEntity<>(service.updateReview(r), HttpStatus.OK);
+      if (!oldReview.getDeveloper().getId().equals(developer.getId()))
+        throw new IllegalArgumentException("Only the creator of the review can edit a review!");
+			oldReview.setScore(review.getScore());
+			oldReview.setText(review.getText());
+			oldReview.setEdited(review.getEdited());
+			return new ResponseEntity<>(service.updateReview(oldReview), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
