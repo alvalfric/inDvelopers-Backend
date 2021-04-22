@@ -1,5 +1,6 @@
 package ISPP.G5.INDVELOPERS.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,7 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ISPP.G5.INDVELOPERS.Security.JwtTokenProvider;
-import ISPP.G5.INDVELOPERS.cloud.CloudStorageService;
+import ISPP.G5.INDVELOPERS.dtos.GetDeveloperDTO;
+import ISPP.G5.INDVELOPERS.mappers.DeveloperDTOConverter;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
@@ -30,7 +32,7 @@ public class DeveloperService {
 	private JwtTokenProvider jwtTokenProvider;
 	private AuthenticationManager authenticationManager;
 	private DeveloperRepository developerRepository;
-	
+
 	public List<Developer> getAll() {
 		return this.developerRepository.findAll();
 
@@ -146,30 +148,57 @@ public class DeveloperService {
 		Developer developer = findByUsername(userDetails.getUsername());
 		return developer;
 	}
-	
-	/* Following users implementation*/
-	
-	public String followDeveloper(Developer devToFollow) {
+
+	/* Following users implementation */
+
+	public String followDeveloper(String username) {
 		Developer currentDeveloper = this.findCurrentDeveloper();
-		if(currentDeveloper.getFollowing().contains(devToFollow)) {
+		Developer devToFollow = this.findByUsername(username);
+		if (devToFollow == null) {
+			return "This developer doesn't exist";
+		} else if (currentDeveloper.getFollowing().contains(devToFollow)) {
 			return "You are already following this user";
-		} else if(devToFollow.equals(currentDeveloper)){
+		} else if (devToFollow.equals(currentDeveloper)) {
 			return "You can't follow yourself";
-		} else{
+		} else {
 			currentDeveloper.getFollowing().add(devToFollow);
 			this.updateDeveloper(currentDeveloper);
 			return "You are now following " + devToFollow.getUsername();
 		}
 	}
-	
-	public String unfollowDeveloper(Developer devToUnollow) {
+
+	public String unfollowDeveloper(String username) {
 		Developer currentDeveloper = this.findCurrentDeveloper();
-		if(currentDeveloper.getFollowing().contains(devToUnollow)) {
-			currentDeveloper.getFollowing().remove(devToUnollow);
+		Developer devToUnfollow = this.findByUsername(username);
+		if (devToUnfollow == null) {
+			return "This developer doesn't exist";
+		} else if (currentDeveloper.getFollowing().contains(devToUnfollow)) {
+			currentDeveloper.getFollowing().remove(devToUnfollow);
 			this.updateDeveloper(currentDeveloper);
-			return "You are not following " +devToUnollow.getUsername() + " anymore" ;
+			return "You are not following " + devToUnfollow.getUsername() + " anymore";
 		} else {
-			return "You are not following " +devToUnollow.getUsername();
+			return "You are not following " + devToUnfollow.getUsername();
 		}
+	}
+
+	public List<Developer> getMyFollowers(String username) {
+		Developer currentDeveloper = this.findByUsername(username);
+		List<Developer> myFollowers = new ArrayList<Developer>();
+
+		myFollowers.addAll(this.developerRepository.findMyFollowers(currentDeveloper.getId()));
+
+		return myFollowers;
+	}
+
+	public List<GetDeveloperDTO> getMyFollowersDTO(String username) {
+		List<Developer> myFollowers = this.getMyFollowers(username);
+		List<GetDeveloperDTO> myFollowersDTO = new ArrayList<GetDeveloperDTO>();
+
+		for (Developer dev : myFollowers) {
+			GetDeveloperDTO devToAdd = DeveloperDTOConverter.DevelopertoGetDeveloperDTO(dev);
+			myFollowersDTO.add(devToAdd);
+		}
+
+		return myFollowersDTO;
 	}
 }

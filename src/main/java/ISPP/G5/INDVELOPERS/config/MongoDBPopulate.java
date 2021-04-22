@@ -262,6 +262,17 @@ public class MongoDBPopulate<E> {
             developerSubscriptionRepository.save(subCristina);
             developerSubscriptionRepository.save(subAntonio);
             developerSubscriptionRepository.save(subRafael);
+            
+            /*
+            ================= FOLLOWERS =================
+             */
+            
+            alvaro.getFollowing().add(fernando);
+            alvaro.getFollowing().add(dummyDeveloper);
+            developerRepository.save(alvaro);
+            
+            dummyDeveloper.getFollowing().add(fernando);
+            developerRepository.save(dummyDeveloper);
         };
 
     }
