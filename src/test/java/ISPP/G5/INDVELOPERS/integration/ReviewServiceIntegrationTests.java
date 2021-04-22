@@ -56,7 +56,7 @@ public class ReviewServiceIntegrationTests {
 		//Eliminamos la review por si ya existe
 		reviewService.deleteReview(reviewDefault.getId());
 
-		Review review = new Review("Text", 1.5, null, null);
+		Review review = new Review("Text", 1.5, false, null, null);
 		int reviewsCountBefore = reviewService.findAll().size();
 		reviewService.addReview(review, game, developer);
 		int reviewsCountAfter = reviewService.findAll().size();
@@ -67,7 +67,7 @@ public class ReviewServiceIntegrationTests {
 	@DisplayName("Trying to Add 2 reviews with same Game and Developer test")
 	public void testingAddTooMuchReviews() {
 		Assertions.assertThatThrownBy(() -> {
-			Review review = new Review("Text", 1.5, null, null);
+			Review review = new Review("Text", 1.5, false, null, null);
 			reviewService.addReview(review, game, developer);
 		}).isInstanceOf(IllegalArgumentException.class);
 	}

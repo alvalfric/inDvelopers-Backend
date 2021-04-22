@@ -56,7 +56,7 @@ public class ReviewControllerIntegrationTests {
 	void init() {
 		Developer dev = devRepository.findByUsername("master2").get();
 		Game game = gameRepository.findAll().get(0);
-		Review r = new Review("ALgo", 2., game, dev);
+		Review r = new Review("ALgo", 2., false, game, dev);
 		repository.save(r);
 		List<Review> revs = repository.findAllByGameId(game.getId());
 		for (Review r1 : revs)
@@ -88,7 +88,7 @@ public class ReviewControllerIntegrationTests {
 	@WithMockUser(username = "master2")
 	void createReviewForAGame() throws Exception {
 		repository.deleteAll();
-		Review rev = new Review("Text1", 1., null, null);
+		Review rev = new Review("Text1", 1., false, null, null);
 		String bodyContent = objectToJsonStringContent(rev);
 
 		Game game = gameRepository.findAll().get(0);
@@ -100,7 +100,7 @@ public class ReviewControllerIntegrationTests {
 	@DisplayName("Edit review test")
 	@WithMockUser(username = "master2")
 	void editReview() throws Exception {
-		Review rev = new Review("Text1", 1., null, null);
+		Review rev = new Review("Text1", 1., false, null, null);
 		String bodyContent = objectToJsonStringContent(rev);
 
 		mvc.perform(put("/reviews/edit/" + reviewDefault.getId()).contentType(MediaType.APPLICATION_JSON).content(bodyContent)).andExpect(status().isOk()).andExpect(content().string("Updated Review with Id: " + reviewDefault.getId()));

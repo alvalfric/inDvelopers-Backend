@@ -213,7 +213,7 @@ public class MongoDBPopulate<E> {
             ================= REVIEWS =================
             */
           
-          	Review r1 = new Review("text", 2., game1, master2);
+          	Review r1 = new Review("text", 2., false, game1, master2);
 			      reviewRepository.save(r1);
           
             /*

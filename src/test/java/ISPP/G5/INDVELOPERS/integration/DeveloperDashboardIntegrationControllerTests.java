@@ -111,7 +111,7 @@ public class DeveloperDashboardIntegrationControllerTests {
 		Publication publication = new Publication("martaad", imagenB64, "description of publication", imagenB64, developer1);
 		this.publicationService.addPublication(publication, developer1);
 		
-		Review review = new Review("Un buen juego", 5.0, firstGame, dev2);
+		Review review = new Review("Un buen juego", 5.0, false, firstGame, dev2);
 		reviewRepository.save(review);
 		
 

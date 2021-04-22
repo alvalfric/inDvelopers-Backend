@@ -88,7 +88,7 @@ public class DeveloperDashboardControllerTests {
 		publication1 = new Publication("martaad", imagenB64, "description of publication", imagenB64, developer1);
 		publication1.setId("publication1Id");
 		
-		review1 = new Review("Un buen juego", 5.0, game1, developer1);
+		review1 = new Review("Un buen juego", 5.0, false, game1, developer1);
 		review1.setId("review1Id");
 
 		List<Game> myGames = new ArrayList<Game>();
