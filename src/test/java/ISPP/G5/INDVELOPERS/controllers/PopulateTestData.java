@@ -1,5 +1,6 @@
 package ISPP.G5.INDVELOPERS.controllers;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -16,8 +17,8 @@ public class PopulateTestData {
 
 	public static Developer dummyDeveloper(String developerId) {
 		Developer dummyDeveloper = new Developer("dummyDeveloper", passwordEncoder.encode("dummyDeveloper"),
-				"dummyDeveloper@gmail.com", null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()), null,
-				null, true);
+				"dummyDeveloper@gmail.com", null, Stream.of(UserRole.USER).collect(Collectors.toSet()), null,
+				null, true, new ArrayList<Developer>());
 
 		dummyDeveloper.setId(developerId);
 

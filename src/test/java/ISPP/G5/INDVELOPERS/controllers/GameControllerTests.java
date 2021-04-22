@@ -60,13 +60,13 @@ public class GameControllerTests {
 
 	@BeforeEach
 	void setUp() {
-		developer1 = new Developer("developer1", "developer1", "developer1@gmail.com", null, null,
-				new HashSet<UserRole>(), null, null, false);
+		developer1 = new Developer("developer1", "developer1", "developer1@gmail.com", null,
+				new HashSet<UserRole>(), null, null, false, new ArrayList<Developer>());
 
 		developer1.setId("dev1Id");
 
-		developer2 = new Developer("developer2", "developer2", "developer2Developer@gmail.com", null, null,
-				new HashSet<UserRole>(), null, null, true);
+		developer2 = new Developer("developer2", "developer2", "developer2Developer@gmail.com", null,
+				new HashSet<UserRole>(), null, null, true, new ArrayList<Developer>());
 
 		developer2.setId("dev2Id");
 

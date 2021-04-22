@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,7 +43,7 @@ class DeveloperServiceIntegrationTests {
 	@BeforeEach
 	void initAll() {
 		sizeBefore = developerService.getAll().size();
-		d1 = new Developer("developer1", "password1", "email1@gmail.com", null, null, null, "description1", null, null);
+		d1 = new Developer("developer1", "password1", "email1@gmail.com", null, null, "description1", null, null, new ArrayList<Developer>());
 		repo.save(d1);
 	}
 
@@ -110,7 +111,7 @@ class DeveloperServiceIntegrationTests {
 	@Test
 	@DisplayName("Change developer to Admin")
 	void testDeveloperToAdmin() {
-		Developer d3 = new Developer("developer3", "password3", "email3@gmail.com", null, null , Stream.of(UserRole.USER).collect(Collectors.toSet()), "description3", null, null);
+		Developer d3 = new Developer("developer3", "password3", "email3@gmail.com", null , Stream.of(UserRole.USER).collect(Collectors.toSet()), "description3", null, null, new ArrayList<Developer>());
 		this.repo.save(d3);
 		Developer res = this.developerService.changeToAdmin(d3.getId());
 		
@@ -121,7 +122,7 @@ class DeveloperServiceIntegrationTests {
 	@Test
 	@DisplayName("Change Admin to developer")
 	void testAdminToDeveloper() {
-		Developer d4 = new Developer("developer4", "password4", "email4@gmail.com", null, null , Stream.of(UserRole.ADMIN).collect(Collectors.toSet()), "description4", null, null);
+		Developer d4 = new Developer("developer4", "password4", "email4@gmail.com", null , Stream.of(UserRole.ADMIN).collect(Collectors.toSet()), "description4", null, null, new ArrayList<Developer>());
 		this.repo.save(d4);
 		Developer res = this.developerService.changeToUser(d4.getId());
 		

@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -47,7 +48,6 @@ public class Developer extends BaseEntity implements UserDetails{
 	@Email
 	private String email;
 	
-	private List<String> gameList;
 	
 	private String userImage;
 	
@@ -60,6 +60,9 @@ public class Developer extends BaseEntity implements UserDetails{
 	private String technologies;
 	
 	private Boolean isPremium;
+	
+	@DBRef
+	private List<Developer> following;
 
 	@Override
 	@JsonDeserialize(using = CustomAuthorityDeserializer.class)
