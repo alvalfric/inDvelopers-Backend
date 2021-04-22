@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.mockito.ArgumentMatchers.any;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -49,9 +50,9 @@ class DeveloperControllerTests {
 	void init() {
 		Set<UserRole> setRole1 = new HashSet<UserRole>();
 		setRole1.add(UserRole.USER);
-		developer1 = new Developer("developer1", "password", "email1@gmail.com", null, null, setRole1, null, null, null);
+		developer1 = new Developer("developer1", "password", "email1@gmail.com", null, setRole1, null, null, null, new ArrayList<Developer>());
 		developer1.setId("id1");
-		developer2 = new Developer("developer2", "password", "email2@gmail.com", null, null, setRole1, null, null, null);
+		developer2 = new Developer("developer2", "password", "email2@gmail.com", null, setRole1, null, null, null, new ArrayList<Developer>());
 	}
 
 	@Test

@@ -104,7 +104,6 @@ public class DeveloperService {
 	}
 
 	public Developer findByUsername(String username) {
-
 		return developerRepository.findByUsername(username).orElse(null);
 	}
 
@@ -141,11 +140,36 @@ public class DeveloperService {
 		}
 	}
 
-	
 	public Developer findCurrentDeveloper() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Developer developer = findByUsername(userDetails.getUsername());
 		return developer;
+	}
+	
+	/* Following users implementation*/
+	
+	public String followDeveloper(Developer devToFollow) {
+		Developer currentDeveloper = this.findCurrentDeveloper();
+		if(currentDeveloper.getFollowing().contains(devToFollow)) {
+			return "You are already following this user";
+		} else if(devToFollow.equals(currentDeveloper)){
+			return "You can't follow yourself";
+		} else{
+			currentDeveloper.getFollowing().add(devToFollow);
+			this.updateDeveloper(currentDeveloper);
+			return "You are now following " + devToFollow.getUsername();
+		}
+	}
+	
+	public String unfollowDeveloper(Developer devToUnollow) {
+		Developer currentDeveloper = this.findCurrentDeveloper();
+		if(currentDeveloper.getFollowing().contains(devToUnollow)) {
+			currentDeveloper.getFollowing().remove(devToUnollow);
+			this.updateDeveloper(currentDeveloper);
+			return "You are not following " +devToUnollow.getUsername() + " anymore" ;
+		} else {
+			return "You are not following " +devToUnollow.getUsername();
+		}
 	}
 }

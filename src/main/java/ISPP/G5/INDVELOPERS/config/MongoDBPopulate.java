@@ -61,68 +61,68 @@ public class MongoDBPopulate<E> {
                     true);
 
             userEntityRepository.save(master);
-
+            
             Developer master2 = new Developer("master2",
                     passwordEncoder.encode("master212"),
                     "master2@indvelopers.com",
-                    null, null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
-                    null, null, true);
+                    null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
+                    null, null, true, new ArrayList<Developer>());
 
             developerRepository.save(master2);
             
             Developer alvaro = new Developer("alvaro",
                     passwordEncoder.encode("alvaro123"),
                     "alvaro@gmail.com",
-                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true);
+                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true, new ArrayList<Developer>());
 
             developerRepository.save(alvaro);
             
             Developer John = new Developer("JohnDoe1",
                     passwordEncoder.encode("JohnDoe1"),
                     "sb-n43pka5914239@personal.example.com",
-                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, false);
+                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, false, new ArrayList<Developer>());
 
             developerRepository.save(John);
             
             Developer dummyDeveloper = new Developer("dummyDeveloper",
                     passwordEncoder.encode("dummyDeveloper"),
                     "sb-m439ui5916012@business.example.com",
-                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true);
+                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true, new ArrayList<Developer>());
 
             developerRepository.save(dummyDeveloper);
             
             Developer dummyDeveloper2 = new Developer("dummyDeveloper2",
                     passwordEncoder.encode("dummyDeveloper2"),
                     "dummyDeveloper2@gmail.com",
-                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, false);
+                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, false, new ArrayList<Developer>());
 
             developerRepository.save(dummyDeveloper2);
             
             Developer fernando = new Developer("fernando",
                     passwordEncoder.encode("fernando"),
                     "fernando@gmail.com",
-                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true);
+                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true, new ArrayList<Developer>());
 
             developerRepository.save(fernando);
 
             Developer asdf = new Developer("asdf",
                     passwordEncoder.encode("asdfasdf"),
                     "asdf@asdf.com",
-                    null, null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
-                    null, null, true);
+                    null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
+                    null, null, true, new ArrayList<Developer>());
 
             developerRepository.save(asdf);
 
             Developer asdfasdf = new Developer("asdfasdf",
                     passwordEncoder.encode("asdfasdf"),
                     "asdf@asdf.com",
-                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, false);
+                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, false, new ArrayList<Developer>());
 
             developerRepository.save(asdfasdf);
             
@@ -131,38 +131,38 @@ public class MongoDBPopulate<E> {
             Developer carlos = new Developer("carlosmuller",
                     passwordEncoder.encode("carlosmuller"),
                     "cmuller@us.es",
-                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true);
+                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true, new ArrayList<Developer>());
 
             Developer bedilia = new Developer("bediliaestrada",
                     passwordEncoder.encode("bediliaestrada"),
                     "iestrada@us.es",
-                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true);
+                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true, new ArrayList<Developer>());
             
             Developer pablo = new Developer("pablofernandez",
                     passwordEncoder.encode("pablofernandez"),
                     "pablofm@us.es",
-                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true);
+                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true, new ArrayList<Developer>());
             
             Developer cristina = new Developer("cristinacabanillas",
                     passwordEncoder.encode("cristinacabanillas"),
                     "cristinacabanillas@us.es",
-                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true);
+                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true, new ArrayList<Developer>());
             
             Developer antonio = new Developer("antonioruiz",
                     passwordEncoder.encode("antonioruiz"),
                     "aruiz@us.es",
-                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true);
+                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true, new ArrayList<Developer>());
             
             Developer rafael = new Developer("rafaelfresno",
                     passwordEncoder.encode("rafaelfresno"),
                     "rfrenos@us.es",
-                    null, null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true);
+                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                    null, null, true, new ArrayList<Developer>());
             
             developerRepository.save(carlos);
             developerRepository.save(bedilia);

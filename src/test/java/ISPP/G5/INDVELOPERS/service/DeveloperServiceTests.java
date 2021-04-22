@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -116,7 +117,8 @@ class DeveloperServiceTests {
 	@Test
 	@DisplayName("Change developer to Admin")
 	void testDeveloperToAdmin() {
-		Developer d3 = new Developer("developer3", "password3", "email3@gmail.com", null, null , Stream.of(UserRole.USER).collect(Collectors.toSet()), "description3", null, null);
+		Developer d3 = new Developer("developer3", "password3", "email3@gmail.com", null, 
+				Stream.of(UserRole.USER).collect(Collectors.toSet()), "description3", null, null, new ArrayList<Developer>());
 		d3.setId("IdPrueba3");
 		when(this.repo.findById("IdPrueba3")).thenReturn(Optional.of(d3));
 		when(this.repo.save(d3)).thenReturn(d3);
@@ -130,7 +132,8 @@ class DeveloperServiceTests {
 	@Test
 	@DisplayName("Change Admin to developer")
 	void testAdminToDeveloper() {
-		Developer d4 = new Developer("developer4", "password4", "email4@gmail.com", null, null , Stream.of(UserRole.ADMIN).collect(Collectors.toSet()), "description4", null, null);
+		Developer d4 = new Developer("developer4", "password4", "email4@gmail.com", null, 
+				Stream.of(UserRole.ADMIN).collect(Collectors.toSet()), "description4", null, null, new ArrayList<Developer>());
 		d4.setId("IdPrueba4");
 		when(this.repo.findById("IdPrueba4")).thenReturn(Optional.of(d4));
 		when(this.repo.save(d4)).thenReturn(d4);
