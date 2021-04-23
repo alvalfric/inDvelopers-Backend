@@ -126,6 +126,13 @@ public class GameService {
 	public Game findById(String id) {
 		return this.gameRepository.findById(id).orElse(null);
 	}
+	
+	public List<Game> findByTitleVerified(String title) {
+		List<Game> res = new ArrayList<>();
+		res = this.gameRepository.findByTitleVerified(title);
+		Collections.reverse(res);
+		return res;
+	}
 
 	public boolean checkGameTitle(String gameTitle) {
 		boolean result = false;

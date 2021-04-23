@@ -209,5 +209,14 @@ public class GameController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
+	
+	@GetMapping("/findByTitleVerified/{title}")
+	public ResponseEntity<List<Game>> findGameByTitleVerified(@PathVariable final String title) {
+		try {
+			return ResponseEntity.ok(gameService.findByTitleVerified(title));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
 
 }
