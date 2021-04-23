@@ -49,9 +49,8 @@ public class GameController {
 			final OwnedGameRepository ownedGameRepository, final DeveloperSubscriptionService developerSubscriptionService) {
 		this.gameService = gameService;
 		this.developerService = developerService;
-    this.ownedGameRepository = ownedGameRepository;
+    	this.ownedGameRepository = ownedGameRepository;
 		this.developerSubscriptionService = developerSubscriptionService;
-
 	}
 
 	@GetMapping("/findVerified")
