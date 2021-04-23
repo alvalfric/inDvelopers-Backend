@@ -1,5 +1,6 @@
 package ISPP.G5.INDVELOPERS.dtos;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -35,6 +36,8 @@ public class GetDeveloperDTO {
 	private String technologies;
 
 	private Boolean isPremium;
+	
+	private Date dateOfBirth;
 	
 	@DBRef
 	private List<GetDeveloperDTO> following;

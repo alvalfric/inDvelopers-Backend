@@ -1,7 +1,9 @@
 package ISPP.G5.INDVELOPERS.config;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -53,6 +55,7 @@ public class MongoDBPopulate<E> {
             /*
                 ================= USERS =================
              */
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
             UserEntity master = new UserEntity("master",
                     passwordEncoder.encode("master123"),
@@ -66,7 +69,7 @@ public class MongoDBPopulate<E> {
                     passwordEncoder.encode("master212"),
                     "master2@indvelopers.com",
                     null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
-                    null, null, true, new ArrayList<Developer>());
+                    null, null, true,formatter.parse("1999-05-03"), new ArrayList<Developer>());
 
             developerRepository.save(master2);
             
@@ -74,7 +77,7 @@ public class MongoDBPopulate<E> {
                     passwordEncoder.encode("alvaro123"),
                     "alvaro@gmail.com",
                      null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true, new ArrayList<Developer>());
+                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
 
             developerRepository.save(alvaro);
             
@@ -82,7 +85,7 @@ public class MongoDBPopulate<E> {
                     passwordEncoder.encode("JohnDoe1"),
                     "sb-n43pka5914239@personal.example.com",
                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, false, new ArrayList<Developer>());
+                    null, null, false, formatter.parse("1994-03-06"), new ArrayList<Developer>());
 
             developerRepository.save(John);
             
@@ -90,7 +93,7 @@ public class MongoDBPopulate<E> {
                     passwordEncoder.encode("dummyDeveloper"),
                     "sb-m439ui5916012@business.example.com",
                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true, new ArrayList<Developer>());
+                    null, null, true, formatter.parse("1998-03-06"), new ArrayList<Developer>());
 
             developerRepository.save(dummyDeveloper);
             
@@ -98,7 +101,7 @@ public class MongoDBPopulate<E> {
                     passwordEncoder.encode("dummyDeveloper2"),
                     "dummyDeveloper2@gmail.com",
                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, false, new ArrayList<Developer>());
+                    null, null, false, formatter.parse("1997-07-14"), new ArrayList<Developer>());
 
             developerRepository.save(dummyDeveloper2);
             
@@ -106,7 +109,7 @@ public class MongoDBPopulate<E> {
                     passwordEncoder.encode("fernando"),
                     "fernando@gmail.com",
                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true, new ArrayList<Developer>());
+                    null, null, true, formatter.parse("1997-03-12"), new ArrayList<Developer>());
 
             developerRepository.save(fernando);
 
@@ -114,7 +117,7 @@ public class MongoDBPopulate<E> {
                     passwordEncoder.encode("asdfasdf"),
                     "asdf@asdf.com",
                     null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
-                    null, null, true, new ArrayList<Developer>());
+                    null, null, true, formatter.parse("1991-03-06"), new ArrayList<Developer>());
 
             developerRepository.save(asdf);
 
@@ -122,7 +125,7 @@ public class MongoDBPopulate<E> {
                     passwordEncoder.encode("asdfasdf"),
                     "asdf@asdf.com",
                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, false, new ArrayList<Developer>());
+                    null, null, false, formatter.parse("1990-03-06"), new ArrayList<Developer>());
 
             developerRepository.save(asdfasdf);
             
@@ -132,37 +135,37 @@ public class MongoDBPopulate<E> {
                     passwordEncoder.encode("carlosmuller"),
                     "cmuller@us.es",
                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true, new ArrayList<Developer>());
+                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
 
             Developer bedilia = new Developer("bediliaestrada",
                     passwordEncoder.encode("bediliaestrada"),
                     "iestrada@us.es",
                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true, new ArrayList<Developer>());
+                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
             
             Developer pablo = new Developer("pablofernandez",
                     passwordEncoder.encode("pablofernandez"),
                     "pablofm@us.es",
                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true, new ArrayList<Developer>());
+                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
             
             Developer cristina = new Developer("cristinacabanillas",
                     passwordEncoder.encode("cristinacabanillas"),
                     "cristinacabanillas@us.es",
                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true, new ArrayList<Developer>());
+                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
             
             Developer antonio = new Developer("antonioruiz",
                     passwordEncoder.encode("antonioruiz"),
                     "aruiz@us.es",
                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true, new ArrayList<Developer>());
+                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
             
             Developer rafael = new Developer("rafaelfresno",
                     passwordEncoder.encode("rafaelfresno"),
                     "rfrenos@us.es",
                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true, new ArrayList<Developer>());
+                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
             
             developerRepository.save(carlos);
             developerRepository.save(bedilia);
