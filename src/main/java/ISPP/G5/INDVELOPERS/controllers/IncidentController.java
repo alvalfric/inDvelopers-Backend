@@ -41,14 +41,42 @@ public class IncidentController {
 	@GetMapping
 	public ResponseEntity<List<Incident>> findAll() {
 		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			Developer developer = developerService.findByUsername(userDetails.getUsername());
+			if (!developer.getRoles().contains(UserRole.ADMIN))
+				throw new IllegalArgumentException("Only an admin can access this list");
+
 			return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
+
+	@GetMapping("/notSolved")
+	public ResponseEntity<List<Incident>> findNotSolved() {
+		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			Developer developer = developerService.findByUsername(userDetails.getUsername());
+			if (!developer.getRoles().contains(UserRole.ADMIN))
+				throw new IllegalArgumentException("Only an admin can access this list");
+
+			return new ResponseEntity<>(service.findNotSolved(), HttpStatus.OK);
+		} catch (IllegalArgumentException e) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Incident> findById(@PathVariable("id") final String id) {
 		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			Developer developer = developerService.findByUsername(userDetails.getUsername());
+			if (!developer.getRoles().contains(UserRole.ADMIN))
+				throw new IllegalArgumentException("Only an admin can access the details of a Incident");
+
 			return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -62,13 +90,13 @@ public class IncidentController {
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			Developer developer = developerService.findByUsername(userDetails.getUsername());
 
-			return new ResponseEntity<>(service.addIncident(incident, developer), HttpStatus.OK);
+			return new ResponseEntity<>(service.addIncident(incident, developer), HttpStatus.CREATED);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
 
-	@PutMapping("/{id}/solved")
+	@PutMapping("/solve/{id}")
 	public ResponseEntity<String> setIncidentAsSolved(@PathVariable("id") final String id) throws NotFoundException {
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -77,7 +105,7 @@ public class IncidentController {
 			if (!developer.getRoles().contains(UserRole.ADMIN))
 				throw new IllegalArgumentException("Only an admin can set an incident as Solved");
 
-			return new ResponseEntity<>(service.deleteIncident(id), HttpStatus.OK);
+			return new ResponseEntity<>(service.setIncidentAsSolved(id), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}

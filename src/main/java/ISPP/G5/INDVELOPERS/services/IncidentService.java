@@ -1,6 +1,7 @@
 
 package ISPP.G5.INDVELOPERS.services;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,16 @@ public class IncidentService {
 	@Autowired
 	private IncidentRepository repository;
 
+
 	public List<Incident> findAll() {
 		List<Incident> res = repository.findAll();
-		res.sort((x,y)->x.getDate().compareTo(y.getDate()));
+		res.sort((x, y) -> y.getDate().compareTo(x.getDate()));
+		return res;
+	}
+
+	public List<Incident> findNotSolved() {
+		List<Incident> res = repository.findNotSolved();
+		res.sort((x, y) -> y.getDate().compareTo(x.getDate()));
 		return res;
 	}
 
@@ -29,10 +37,11 @@ public class IncidentService {
 		return repository.findById(id).orElse(null);
 	}
 
-	public String addIncident(final Incident incident,final Developer developer) {
+	public String addIncident(final Incident incident, final Developer developer) {
 		Assert.notNull(incident);
 		incident.setDeveloper(developer);
 		incident.setSolved(false);
+		incident.setDate(LocalDate.now());
 		repository.save(incident);
 		return "Added Incident with Id: " + incident.getId();
 	}
@@ -44,7 +53,7 @@ public class IncidentService {
 		Incident incident = repository.findById(id).get();
 		incident.setSolved(true);
 		repository.save(incident);
-		return "Updated Incident with Id: " + incident.getId();
+		return "Setted as Solved Incident with Id: " + incident.getId();
 	}
 
 	public String deleteIncident(final String id) {
