@@ -80,9 +80,9 @@ public class PublicationControllerTests {
 		Set<UserRole> roles = new HashSet<UserRole>();
 		roles.add(UserRole.USER);
 		developer1 = new Developer("martaad", "Marta123", "maartaadq@alum.us.es", imagenB64, roles, "I'm developer",
-				"technologies", true, new ArrayList<Developer>());
+				"technologies", true, null, new ArrayList<Developer>());
 		developer2 = new Developer("miguel001", "Miguel1234", "maartadq11@alum.us.es", imagenB64, roles,
-				"I'm developer", "technologies", true, new ArrayList<Developer>());
+				"I'm developer", "technologies", true, null, new ArrayList<Developer>());
 		this.developerService.createDeveloper(developer1);
 		this.developerService.createDeveloper(developer2);
 		publication1 = new Publication("martaad", null, "description of publication", null, developer1);

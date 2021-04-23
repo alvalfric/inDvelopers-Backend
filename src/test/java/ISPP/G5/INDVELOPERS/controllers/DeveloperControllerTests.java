@@ -10,6 +10,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.mockito.ArgumentMatchers.any;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -48,12 +50,14 @@ class DeveloperControllerTests {
 
 
 	@BeforeEach
-	void init() {
+	void init() throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
 		Set<UserRole> setRole1 = new HashSet<UserRole>();
 		setRole1.add(UserRole.USER);
-		developer1 = new Developer("developer1", "password", "email1@gmail.com", null, setRole1, null, null, null, new ArrayList<Developer>());
+		developer1 = new Developer("developer1", "password", "email1@gmail.com", null, setRole1, null, null, null, formatter.parse("1999-05-05"), new ArrayList<Developer>());
 		developer1.setId("id1");
-		developer2 = new Developer("developer2", "password", "email2@gmail.com", null, setRole1, null, null, null, new ArrayList<Developer>());
+		developer2 = new Developer("developer2", "password", "email2@gmail.com", null, setRole1, null, null, null, formatter.parse("1999-05-05"), new ArrayList<Developer>());
 	}
 
 	@Test

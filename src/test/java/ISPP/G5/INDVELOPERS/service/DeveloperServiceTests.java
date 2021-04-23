@@ -47,7 +47,7 @@ class DeveloperServiceTests {
 
 	@BeforeEach
 	void initAll() {
-		d1 = new Developer("developer1", "password1", "email1@gmail.com", null, null , null, "description1", null, null);
+		d1 = new Developer("developer1", "password1", "email1@gmail.com", null, null , null, "description1", null, null, null);
 	}
 
 	// Casos positivos
@@ -79,7 +79,7 @@ class DeveloperServiceTests {
 	@Test
 	@DisplayName("Finding by Username")
 	void testFindByUsername() throws DataAccessException, NotFoundException {
-		Developer developerPrueba = new Developer("developerPrueba", "password", "emailPrueba@gmail.com", null, null , null, "descriptionPrueba", null, null);
+		Developer developerPrueba = new Developer("developerPrueba", "password", "emailPrueba@gmail.com", null, null , null, "descriptionPrueba", null, null, null);
 		developerPrueba.setUsername("test");
 
 		when(this.repo.findByUsername("test")).thenReturn(Optional.of(developerPrueba));
@@ -109,7 +109,7 @@ class DeveloperServiceTests {
 	@Test
 	@DisplayName("Create a new developer")
 	void testCreateDeveloper() {
-		Developer d2 = new Developer("developer2", "password2", "email2@gmail.com", null, null , null, "description2", null, null);
+		Developer d2 = new Developer("developer2", "password2", "email2@gmail.com", null, null , null, "description2", null, null, null);
 		
 		when(this.repo.save(d2)).thenReturn(d2);
 		Developer res = this.developerService.createDeveloper(d2);
@@ -121,7 +121,7 @@ class DeveloperServiceTests {
 	@DisplayName("Change developer to Admin")
 	void testDeveloperToAdmin() {
 		Developer d3 = new Developer("developer3", "password3", "email3@gmail.com", null, 
-				Stream.of(UserRole.USER).collect(Collectors.toSet()), "description3", null, null, new ArrayList<Developer>());
+				Stream.of(UserRole.USER).collect(Collectors.toSet()), "description3", null, null, null, new ArrayList<Developer>());
 		d3.setId("IdPrueba3");
 		when(this.repo.findById("IdPrueba3")).thenReturn(Optional.of(d3));
 		when(this.repo.save(d3)).thenReturn(d3);
@@ -136,7 +136,7 @@ class DeveloperServiceTests {
 	@DisplayName("Change Admin to developer")
 	void testAdminToDeveloper() {
 		Developer d4 = new Developer("developer4", "password4", "email4@gmail.com", null, 
-				Stream.of(UserRole.ADMIN).collect(Collectors.toSet()), "description4", null, null, new ArrayList<Developer>());
+				Stream.of(UserRole.ADMIN).collect(Collectors.toSet()), "description4", null, null, null, new ArrayList<Developer>());
 		d4.setId("IdPrueba4");
 		when(this.repo.findById("IdPrueba4")).thenReturn(Optional.of(d4));
 		when(this.repo.save(d4)).thenReturn(d4);
@@ -150,7 +150,7 @@ class DeveloperServiceTests {
 	@Test
 	@DisplayName("Update a developer")
 	void testUpdateDeveloper() {
-		Developer d2 = new Developer("developer", "password2", "email2@gmail.com", null, null , null, "description2", null, null);
+		Developer d2 = new Developer("developer", "password2", "email2@gmail.com", null, null , null, "description2", null, null, null);
 		
 		when(this.repo.save(d2)).thenReturn(d2);
 		Developer res = this.developerService.updateDeveloper(d2);
