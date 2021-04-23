@@ -1,5 +1,7 @@
 package ISPP.G5.INDVELOPERS.controllers;
 
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,6 +105,7 @@ public class DeveloperController {
 			developer2.setTechnologies(developerDTO.getTechnologies());
 			developer2.setDescription(developerDTO.getDescription());
 			developer2.setEmail(developerDTO.getEmail());
+			developer2.setDateOfBirth(developerDTO.getDateOfBirth());
 			return ResponseEntity.ok(DeveloperDTOConverter
 					.DevelopertoGetDeveloperDTO(this.developerService.updateDeveloper(developer2)));
 		} catch (IllegalArgumentException e) {
@@ -157,7 +160,7 @@ public class DeveloperController {
 	
 	/* Following users implementation*/
 	
-	@GetMapping("/follow/{username}")
+	@PutMapping("/follow/{username}")
 	public ResponseEntity<String> followUsername(
 			@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, @PathVariable String username) {
 		try {
@@ -167,7 +170,7 @@ public class DeveloperController {
 		}
 	}
 
-	@GetMapping("/unfollow/{username}")
+	@PutMapping("/unfollow/{username}")
 	public ResponseEntity<String> unfollowUsername(
 			@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, @PathVariable String username) {
 		try {

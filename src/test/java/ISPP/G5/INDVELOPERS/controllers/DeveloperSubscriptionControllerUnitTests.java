@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,8 +38,9 @@ class DeveloperSubscriptionControllerUnitTests {
 
 	@MockBean
 	DeveloperService				devService;
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-	Developer						developer				= new Developer("hola", "adios", "email", null, new HashSet<UserRole>(), "description", "none", true, new ArrayList<Developer>());
+	Developer						developer				= new Developer("hola", "adios", "email", null, new HashSet<UserRole>(), "description", "none", true, null, new ArrayList<Developer>());
 	DeveloperSubscription			developerSubscription	= new DeveloperSubscription(developer, LocalDate.now(), LocalDate.of(2022, 5, 10));
 
 
