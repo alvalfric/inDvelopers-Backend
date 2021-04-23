@@ -6,9 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -22,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 
+import ISPP.G5.INDVELOPERS.dtos.GetDeveloperDTO;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
@@ -153,6 +156,75 @@ class DeveloperServiceTests {
 		Developer res = this.developerService.updateDeveloper(d2);
 		
 		assertTrue(d2.getUsername().equals(res.getUsername()));
+	}
+	
+	/* Followers feature tests */
+	
+	@Test
+	@DisplayName("Follow a developer")
+	void testFollowDeveloper() {
+		Developer d2 = new Developer("developer", "password2", "email2@gmail.com", null, null , null, "description2", null, null);
+		
+		when(developerService.findCurrentDeveloper()).thenReturn(d1);
+		when(developerService.findByUsername(any(String.class))).thenReturn(d2);
+		when(developerService.updateDeveloper(any(Developer.class))).thenReturn(d2);
+		
+		String res = developerService.followDeveloper("developer");
+		
+		assertTrue(res.equals("You are now following developer"));
+	}
+	
+	@Test
+	@DisplayName("Unfollow a developer")
+	void testUnfollowDeveloper() {
+		Developer d2 = new Developer("developer", "password2", "email2@gmail.com", null, null , null, "description2", null, null);
+		List<Developer> followed = new ArrayList<Developer>();
+		followed.add(d2);
+		d1.setFollowing(followed);
+		when(developerService.findCurrentDeveloper()).thenReturn(d1);
+		when(developerService.findByUsername(any(String.class))).thenReturn(d2);
+		when(developerService.updateDeveloper(any(Developer.class))).thenReturn(d2);
+		
+		String res = developerService.unfollowDeveloper("developer");
+		
+		assertTrue(res.equals("You are not following developer anymore"));
+	}
+	
+	@Test
+	@DisplayName("Get my followers")
+	void testGetMyFollowers() {
+		Developer d2 = new Developer("developer", "password2", "email2@gmail.com", null, null , null, "description2", null, null);
+		d2.setId("ID");
+		List<Developer> followed = new ArrayList<Developer>();
+		when(developerService.findByUsername(any(String.class))).thenReturn(d2);
+		when(repo.findMyFollowers(any(String.class))).thenReturn(followed);
+		
+		List<Developer> res = developerService.getMyFollowers("developer");
+		
+		assertTrue(res.equals(followed));
+	}
+	
+	@Test
+	@DisplayName("Get my followers DTO")
+	void testGetMyFollowersDTO() {
+		List<Developer> followed = new ArrayList<Developer>();
+		when(developerService.getMyFollowers(any(String.class))).thenReturn(followed);
+		
+		List<GetDeveloperDTO> res = developerService.getMyFollowersDTO("developer");
+		
+		List<GetDeveloperDTO> followedDTO = new ArrayList<GetDeveloperDTO>();
+		assertTrue(res.equals(followedDTO));
+	}
+	
+	@Test
+	@DisplayName("Get my followed DTO")
+	void testGetMyFollowedDTO() {
+		when(developerService.findByUsername(any(String.class))).thenReturn(d1);
+
+		List<GetDeveloperDTO> res = developerService.getMyFollowedDTO("developer");
+		
+		List<GetDeveloperDTO> followedDTO = new ArrayList<GetDeveloperDTO>();
+		assertTrue(res.equals(followedDTO));
 	}
 
 }
