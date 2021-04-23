@@ -138,4 +138,16 @@ public class GameService {
 
 		return result;
 	}
+	
+	public List<Game> findByTitleVerifiedOrCategorie(String input) {
+		List<Game> res = this.gameRepository.findByTitleVerifiedOrCategorie(input);
+		Collections.reverse(res);
+		return res;
+	}
+	
+	public List<Game> findByPrice(Double price) {
+		List<Game> res = this.gameRepository.findByPrice(price);
+		Collections.reverse(res);
+		return res;
+	}
 }
