@@ -50,9 +50,9 @@ class DeveloperControllerIntegrationTests {
 	void init() {
 		setRole1 = new HashSet<UserRole>();
 		setRole1.add(UserRole.USER);
-		developer1 = new Developer("developer1", "password", "email1@gmail.com", null, setRole1, null, null, null, new ArrayList<Developer>());
+		developer1 = new Developer("developer1", "password", "email1@gmail.com", null, setRole1, null, null, null, null, new ArrayList<Developer>());
 		repo.save(developer1);
-		developer2 = new Developer("developer2", "password", "email2@gmail.com", null, setRole1, null, null, null, new ArrayList<Developer>());
+		developer2 = new Developer("developer2", "password", "email2@gmail.com", null, setRole1, null, null, null, null, new ArrayList<Developer>());
 	}
 
 	@Test
@@ -88,7 +88,7 @@ class DeveloperControllerIntegrationTests {
 	@Test
 	@DisplayName("Login as developer")
 	void loginDeveloper() throws Exception {
-		Developer developer3 = new Developer("developer3", "password", "email3@gmail.com", null, setRole1, null, null, null, new ArrayList<Developer>());
+		Developer developer3 = new Developer("developer3", "password", "email3@gmail.com", null, setRole1, null, null, null, null, new ArrayList<Developer>());
 		repo.save(developer3);
 		mockMvc.perform(post("/developers/login?username=dummyDeveloper&password=dummyDeveloper")).andExpect(status().isOk());
 		repo.delete(developer1);

@@ -47,9 +47,9 @@ public class PublicationServiceTests {
 		Set<UserRole> roles = new HashSet<UserRole>();
 		roles.add(UserRole.USER);
 		Developer developer1 = new Developer("martaad", "Marta123", "maartaadq@alum.us.es", imagenB64, roles,
-				"I'm developer", "technologies", true, new ArrayList<Developer>());
+				"I'm developer", "technologies", true, null, new ArrayList<Developer>());
 		Developer developer2 = new Developer("miguel001", "Miguel1234", "maartadq11@alum.us.es", imagenB64, roles,
-				"I'm developer", "technologies", true, new ArrayList<Developer>());
+				"I'm developer", "technologies", true, null, new ArrayList<Developer>());
 		this.developerService.createDeveloper(developer1);
 		this.developerService.createDeveloper(developer2);
 		Publication publication = new Publication("martaad", imagenB64, "description of publication", imagenB64, developer1);

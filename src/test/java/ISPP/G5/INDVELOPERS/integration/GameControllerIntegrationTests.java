@@ -59,12 +59,12 @@ public class GameControllerIntegrationTests {
 		developerRepository.deleteAll();
 		gameRepository.deleteAll();
 		Developer dev1 = new Developer("developer1", "developer1", "developer1@gmail.com", null,
-				Stream.of(UserRole.USER).collect(Collectors.toSet()), null, null, false, new ArrayList<Developer>());
+				Stream.of(UserRole.USER).collect(Collectors.toSet()), null, null, false, null, new ArrayList<Developer>());
 
 		developerRepository.save(dev1);
 
 		Developer dev2 = new Developer("developer2", "developer2", "developer2Developer@gmail.com", null,
-				Stream.of(UserRole.USER).collect(Collectors.toSet()), null, null, true, new ArrayList<Developer>());
+				Stream.of(UserRole.USER).collect(Collectors.toSet()), null, null, true, null, new ArrayList<Developer>());
 
 		developerRepository.save(dev2);
 

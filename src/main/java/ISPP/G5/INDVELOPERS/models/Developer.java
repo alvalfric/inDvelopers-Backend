@@ -1,8 +1,9 @@
 package ISPP.G5.INDVELOPERS.models;
 
 
-import java.awt.Image;
+import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,7 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import ISPP.G5.INDVELOPERS.Utils.CustomAuthorityDeserializer;
-import ISPP.G5.INDVELOPERS.models.UserEntity.UserEntityBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -60,6 +60,9 @@ public class Developer extends BaseEntity implements UserDetails{
 	private String technologies;
 	
 	private Boolean isPremium;
+	
+	@NotBlank
+	private Date dateOfBirth;
 	
 	@DBRef
 	private List<Developer> following;
