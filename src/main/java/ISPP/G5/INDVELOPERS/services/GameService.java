@@ -55,7 +55,7 @@ public class GameService {
 
 	public List<Game> findByTitle(String title) {
 		List<Game> res = new ArrayList<>();
-		res = findVerified().stream().filter(g -> g.getTitle().contains(title)).collect(Collectors.toList());
+		res = findAll().stream().filter(g -> g.getTitle().contains(title)).collect(Collectors.toList());
 		Collections.reverse(res);
 		return res;
 	}
@@ -125,6 +125,13 @@ public class GameService {
 
 	public Game findById(String id) {
 		return this.gameRepository.findById(id).orElse(null);
+	}
+	
+	public List<Game> findByTitleVerified(String title) {
+		List<Game> res = new ArrayList<>();
+		res = this.gameRepository.findByTitleVerified(title);
+		Collections.reverse(res);
+		return res;
 	}
 
 	public boolean checkGameTitle(String gameTitle) {
