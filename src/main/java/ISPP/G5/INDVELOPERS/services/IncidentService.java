@@ -39,6 +39,7 @@ public class IncidentService {
 
 	public String addIncident(final Incident incident, final Developer developer) {
 		Assert.notNull(incident);
+		Assert.notNull(developer);
 		incident.setDeveloper(developer);
 		incident.setSolved(false);
 		incident.setDate(LocalDate.now());

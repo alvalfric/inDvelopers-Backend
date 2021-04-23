@@ -31,6 +31,8 @@ public class Incident extends BaseEntity {
 	@NotBlank
 	private LocalDate date;
 	
+	private String imagen;
+	
 	private boolean solved;
 	
 	@NotNull
