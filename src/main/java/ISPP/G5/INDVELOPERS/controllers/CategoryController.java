@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ISPP.G5.INDVELOPERS.models.Categoria;
+import ISPP.G5.INDVELOPERS.models.Category;
 import ISPP.G5.INDVELOPERS.services.CategoriaService;
 
 @RestController
@@ -27,7 +27,7 @@ public class CategoryController {
 
 	
 	@GetMapping("/findAll")
-	public ResponseEntity<List<Categoria>> getCategories() {
+	public ResponseEntity<List<Category>> getCategories() {
 		try {
 			return ResponseEntity.ok(service.findAll());
 		} catch (IllegalArgumentException e) {
@@ -36,7 +36,7 @@ public class CategoryController {
 	}
 	
 	@GetMapping("/findById/{id}")
-	public ResponseEntity<Categoria> getCategoryById(@PathVariable final String id) {
+	public ResponseEntity<Category> getCategoryById(@PathVariable final String id) {
 		try {
 			return ResponseEntity.ok(service.findById(id));
 		} catch (IllegalArgumentException e) {
@@ -46,7 +46,7 @@ public class CategoryController {
 	
 	
 	@PostMapping("/add")
-	public ResponseEntity<String> addCategory(@RequestBody final Categoria categoria) {
+	public ResponseEntity<String> addCategory(@RequestBody final Category categoria) {
 		try {
 			return new ResponseEntity<>(service.addCategory(categoria), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
@@ -58,7 +58,7 @@ public class CategoryController {
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<String> deleteCategory(@PathVariable final String id) {
 		try {
-			Categoria categoria = service.findById(id);
+			Category categoria = service.findById(id);
 			return new ResponseEntity<>(service.deleteCategory(categoria), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

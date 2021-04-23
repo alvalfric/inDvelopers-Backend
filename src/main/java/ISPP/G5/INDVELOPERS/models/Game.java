@@ -45,7 +45,7 @@ public class Game extends BaseEntity{
 	private String imagen;
 	
 	@DBRef
-	private List<Categoria> categorias;
+	private List<Category> categorias;
 	
 	private Date fechaCreacion;
 	

@@ -2,6 +2,7 @@ package ISPP.G5.INDVELOPERS.config;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import ISPP.G5.INDVELOPERS.models.Categoria;
+import ISPP.G5.INDVELOPERS.models.Category;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.DeveloperSubscription;
 import ISPP.G5.INDVELOPERS.models.Game;
@@ -177,21 +178,23 @@ public class MongoDBPopulate<E> {
             /*
             ================= GAMES =================
              */
-            
-            Categoria categoria1 = new Categoria("Accion");
+         
+            Category categoria1 = new Category("Accion");
             categoriaRepository.save(categoria1);
-            Categoria categoria2 = new Categoria("Arcade");
+            Category categoria2 = new Category("Arcade");
             categoriaRepository.save(categoria2);
-            Categoria categoria3 = new Categoria("Deportivo");
+            Category categoria3 = new Category("Deportivo");
             categoriaRepository.save(categoria3);
-            Categoria categoria4 = new Categoria("Estrategia");
+            Category categoria4 = new Category("Estrategia");
             categoriaRepository.save(categoria4);
-            Categoria categoria5 = new Categoria("Simulacion");
+            Category categoria5 = new Category("Simulacion");
             categoriaRepository.save(categoria5);
             
-            List<Categoria> categorias = new ArrayList<Categoria>();
+            List<Category> categorias = new ArrayList<Category>();
             categorias.add(categoria1);
             categorias.add(categoria5);
+            
+            Date fecha = new Date();
             
             Game game1 = new Game("25 caminos oscuros",
                     "Es un juego en el que elijas el camino que elijas pierdes",
@@ -200,7 +203,7 @@ public class MongoDBPopulate<E> {
                     "1618508350667_blob",
                     true, 
                     dummyDeveloper,
-                    null, categorias, null, 18);
+                    null, categorias, fecha, 18);
             gameRepository.save(game1);
             
             
@@ -212,7 +215,7 @@ public class MongoDBPopulate<E> {
                     "1618508350667_blob",
                     true, 
                     dummyDeveloper,
-                    null, null, null, 18);
+                    null, categorias, fecha, 18);
             
             gameRepository.save(game2);
             
@@ -224,7 +227,7 @@ public class MongoDBPopulate<E> {
                     "1618508350667_blob",
                     true, 
                     dummyDeveloper,
-                    null, null, null, 18);
+                    null, categorias, fecha, 18);
             
             gameRepository.save(game3);
 
