@@ -32,7 +32,7 @@ class DeveloperSubscriptionServiceTests {
 	@Mock
 	DeveloperSubscriptionRepository	repository;
 
-	Developer						developer				= new Developer("hola", "adios", "email", null, new HashSet<UserRole>(), "description", "none", true, new ArrayList<Developer>());
+	Developer						developer				= new Developer("hola", "adios", "email", null, new HashSet<UserRole>(), "description", "none", true, null, new ArrayList<Developer>());
 	DeveloperSubscription			developerSubscription	= new DeveloperSubscription(developer, LocalDate.now(), LocalDate.of(2022, 5, 10));
 
 

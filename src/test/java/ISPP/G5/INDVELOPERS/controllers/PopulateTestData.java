@@ -18,7 +18,7 @@ public class PopulateTestData {
 	public static Developer dummyDeveloper(String developerId) {
 		Developer dummyDeveloper = new Developer("dummyDeveloper", passwordEncoder.encode("dummyDeveloper"),
 				"dummyDeveloper@gmail.com", null, Stream.of(UserRole.USER).collect(Collectors.toSet()), null,
-				null, true, new ArrayList<Developer>());
+				null, true, null, new ArrayList<Developer>());
 
 		dummyDeveloper.setId(developerId);
 
