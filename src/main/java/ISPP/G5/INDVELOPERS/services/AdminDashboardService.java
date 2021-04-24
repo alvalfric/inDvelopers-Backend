@@ -37,9 +37,6 @@ public class AdminDashboardService {
 	private DeveloperRepository developerRepository;
 	
 	@Autowired
-	private DeveloperService developerService;
-	
-	@Autowired
 	private IncidentRepository incidentRepository;
 	
 	public AdminDashboard show() {

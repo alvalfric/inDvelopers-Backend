@@ -27,7 +27,6 @@ class AdminDashboardControllerUnitTests {
 	@MockBean
 	AdminDashboardService	service;
 
-
 	@Test
 	@DisplayName("Show Test")
 	@WithMockUser(value = "spring")

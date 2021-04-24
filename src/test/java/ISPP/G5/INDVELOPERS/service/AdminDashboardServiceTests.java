@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 
@@ -18,7 +19,9 @@ import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.OwnedGame;
 import ISPP.G5.INDVELOPERS.models.Publication;
 import ISPP.G5.INDVELOPERS.models.Review;
+import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
+import ISPP.G5.INDVELOPERS.repositories.IncidentRepository;
 import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
 import ISPP.G5.INDVELOPERS.repositories.PublicationRepository;
 import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
@@ -38,7 +41,10 @@ class AdminDashboardServiceTests {
 	ReviewRepository		reviewRepo;
 	@Mock
 	OwnedGameRepository		ownedGameRepo;
-
+	@Mock
+	private DeveloperRepository developerRepository;
+	@Mock
+	private IncidentRepository incidentRepository;
 
 	// Casos positivos
 	@Test
