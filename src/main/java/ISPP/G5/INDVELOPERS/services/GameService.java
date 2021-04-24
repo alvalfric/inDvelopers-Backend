@@ -31,7 +31,7 @@ public class GameService {
 		Collections.reverse(res);
 		return res;
 	}
-	
+
 	public List<Game> findVerified() {
 		List<Game> res = new ArrayList<>();
 		res = gameRepository.findVerified();
@@ -74,7 +74,18 @@ public class GameService {
 		return res;
 
 	}
-	
+
+	public List<Game> gamesByDevelopersFollowed(Developer developer) {
+
+		List<Game> res = new ArrayList<>();
+		List<Developer> followed = developer.getFollowing();
+		for (Developer d : followed) {
+			res.addAll(gameRepository.findByDeveloper(d.getId()));
+		}
+		return res;
+
+	}
+
 	public List<Game> findByTopSellers() {
 		Integer actual = 0;
 		Integer res = 0;
@@ -117,8 +128,8 @@ public class GameService {
 		this.gameRepository.save(game);
 		return "Updated game with title:" + game.getTitle();
 	}
-	
-	public void deleteGame(String id){
+
+	public void deleteGame(String id) {
 //		this.cloudStorageService.deleteFile(this.findById(id).getIdCloud());
 		this.gameRepository.deleteById(id);
 	}
@@ -126,7 +137,7 @@ public class GameService {
 	public Game findById(String id) {
 		return this.gameRepository.findById(id).orElse(null);
 	}
-	
+
 	public List<Game> findByTitleVerified(String title) {
 		List<Game> res = new ArrayList<>();
 		res = this.gameRepository.findByTitleVerified(title);
