@@ -105,7 +105,7 @@ public class DeveloperDashboardControllerTests {
 	@DisplayName("Show developer dashboard test")
 	@WithMockUser(value = "spring")
 	void testFindAllGames() throws Exception {
-		DeveloperDashboard res = new DeveloperDashboard(1, 1, 2, 1, 0.0);
+		DeveloperDashboard res = new DeveloperDashboard(1, 1, 2, 1, 0.0, 0, 1, 1, 0, 0, 0, 5.0);
 		when(developerDashboardService.show()).thenReturn(res);
 
 		mvc.perform(get("/developerDashboard/show")).andExpect(status().isCreated()).andReturn().equals(res);
