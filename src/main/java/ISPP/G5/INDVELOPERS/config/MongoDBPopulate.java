@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import ISPP.G5.INDVELOPERS.models.Category;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.DeveloperSubscription;
 import ISPP.G5.INDVELOPERS.models.Game;
@@ -23,6 +24,7 @@ import ISPP.G5.INDVELOPERS.models.Review;
 import ISPP.G5.INDVELOPERS.models.UserEntity;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.paypal.OrderRepository;
+import ISPP.G5.INDVELOPERS.repositories.CategoriaRepository;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperSubscriptionRepository;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
@@ -41,7 +43,7 @@ public class MongoDBPopulate<E> {
     CommandLineRunner commandLineRunner(
             UserEntityRepository userEntityRepository, DeveloperRepository developerRepository,
             GameRepository gameRepository, ReviewRepository reviewRepository, OwnedGameRepository ownedGameRepository, PublicationRepository publicationRepository,
-            DeveloperSubscriptionRepository developerSubscriptionRepository, OrderRepository orderRepository) {
+            DeveloperSubscriptionRepository developerSubscriptionRepository, OrderRepository orderRepository, CategoriaRepository categoriaRepository) {
         return strings -> {
         	userEntityRepository.deleteAll();
             developerRepository.deleteAll();
@@ -51,6 +53,7 @@ public class MongoDBPopulate<E> {
             publicationRepository.deleteAll();
             developerSubscriptionRepository.deleteAll();
             orderRepository.deleteAll();
+            categoriaRepository.deleteAll();
 			
             /*
                 ================= USERS =================
@@ -177,6 +180,23 @@ public class MongoDBPopulate<E> {
             /*
             ================= GAMES =================
              */
+         
+            Category categoria1 = new Category("Accion");
+            categoriaRepository.save(categoria1);
+            Category categoria2 = new Category("Arcade");
+            categoriaRepository.save(categoria2);
+            Category categoria3 = new Category("Deportivo");
+            categoriaRepository.save(categoria3);
+            Category categoria4 = new Category("Estrategia");
+            categoriaRepository.save(categoria4);
+            Category categoria5 = new Category("Simulacion");
+            categoriaRepository.save(categoria5);
+            
+            List<Category> categorias = new ArrayList<Category>();
+            categorias.add(categoria1);
+            categorias.add(categoria5);
+            
+            Date fecha = new Date();
             
             Game game1 = new Game("25 caminos oscuros",
                     "Es un juego en el que elijas el camino que elijas pierdes",
@@ -185,9 +205,10 @@ public class MongoDBPopulate<E> {
                     "1618508350667_blob",
                     true, 
                     dummyDeveloper,
-                    null);
-            
+                    null, categorias, fecha, 18);
             gameRepository.save(game1);
+            
+            
             
             Game game2 = new Game("Payaso que salta",
                     "No intentes que el payaso se quede quieto, siempre salta",
@@ -196,7 +217,7 @@ public class MongoDBPopulate<E> {
                     "1618508350667_blob",
                     true, 
                     dummyDeveloper,
-                    null);
+                    null, categorias, fecha, 18);
             
             gameRepository.save(game2);
             
@@ -208,7 +229,7 @@ public class MongoDBPopulate<E> {
                     "1618508350667_blob",
                     true, 
                     dummyDeveloper,
-                    null);
+                    null, categorias, fecha, 18);
             
             gameRepository.save(game3);
 

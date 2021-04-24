@@ -54,6 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/games/*").permitAll()
             .antMatchers("/reviews/game/*").permitAll()
             .antMatchers("/publications/findAll").permitAll()
+            .antMatchers("/categories/**").permitAll()
             .anyRequest().authenticated();
 
     // If a user try to access a resource without having enough permissions

@@ -2,6 +2,7 @@ package ISPP.G5.INDVELOPERS.services;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,6 +50,8 @@ public class GameService {
 	public String addGame(Game game, Developer developer) {
 		Assert.notNull(game);
 		game.setCreator(developer);
+		Date fechaCreacion = new Date();
+		game.setFechaCreacion(fechaCreacion);
 		this.gameRepository.save(game);
 		return "Added game with title:" + game.getTitle();
 	}
