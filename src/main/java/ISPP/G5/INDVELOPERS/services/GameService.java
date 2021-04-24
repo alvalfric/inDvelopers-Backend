@@ -54,6 +54,7 @@ public class GameService {
 	public String addGame(Game game, Developer developer) {
 		Assert.notNull(game);
 		game.setCreator(developer);
+		game.setDiscount(0.);
 		Date fechaCreacion = new Date();
 		game.setFechaCreacion(fechaCreacion);
 		this.gameRepository.save(game);
@@ -150,6 +151,12 @@ public class GameService {
 	
 	public List<Game> findByPrice(Double price) {
 		List<Game> res = this.gameRepository.findByPrice(price);
+		Collections.reverse(res);
+		return res;
+	}
+	
+	public List<Game> findAllWithDiscount() {
+		List<Game> res = this.gameRepository.findAllWithDiscount();
 		Collections.reverse(res);
 		return res;
 	}

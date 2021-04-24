@@ -203,9 +203,9 @@ public class MongoDBPopulate<E> {
                     "No tiene grandes requisitos, 20 gigas de ram",
                     25.65,
                     "1618508350667_blob",
-                    true, 
+                    true,
                     dummyDeveloper,
-                    null, categorias, fecha, 18);
+                    null, categorias, fecha, 18,0.);
             gameRepository.save(game1);
             
             
@@ -217,7 +217,7 @@ public class MongoDBPopulate<E> {
                     "1618508350667_blob",
                     true, 
                     dummyDeveloper,
-                    null, categorias, fecha, 18);
+                    null, categorias, fecha, 18,0.);
             
             gameRepository.save(game2);
             
@@ -229,7 +229,7 @@ public class MongoDBPopulate<E> {
                     "1618508350667_blob",
                     true, 
                     dummyDeveloper,
-                    null, categorias, fecha, 18);
+                    null, categorias, fecha, 18,0.);
             
             gameRepository.save(game3);
 
