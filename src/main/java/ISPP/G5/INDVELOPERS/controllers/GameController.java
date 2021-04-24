@@ -211,6 +211,24 @@ public class GameController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
+	
+	@GetMapping("/findByTitleVerifiedOrCategorie/{res}")
+	public ResponseEntity<List<Game>> findByTitleVerifiedOrCategorie(@PathVariable final String res) {
+		try {
+			return ResponseEntity.ok(this.gameService.findByTitleVerifiedOrCategorie(res));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+	
+	@GetMapping("/findByPrice/{price}")
+	public ResponseEntity<List<Game>> findByPrice(@PathVariable final Double price) {
+		try {
+			return ResponseEntity.ok(this.gameService.findByPrice(price));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
 
 	@GetMapping("/findByTitleVerified/{title}")
 	public ResponseEntity<List<Game>> findGameByTitleVerified(@PathVariable final String title) {
