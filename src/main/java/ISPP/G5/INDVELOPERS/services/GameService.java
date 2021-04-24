@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.OwnedGame;
+import ISPP.G5.INDVELOPERS.models.Review;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
 import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
+import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
 import io.jsonwebtoken.lang.Assert;
 import lombok.AllArgsConstructor;
 
@@ -25,6 +27,8 @@ public class GameService {
 	private GameRepository gameRepository;
 	@Autowired
 	private OwnedGameRepository ownedGameRepository;
+	@Autowired
+	private ReviewRepository repository;
 
 	public List<Game> findAll() {
 		List<Game> res = new ArrayList<>();
@@ -90,39 +94,8 @@ public class GameService {
 	}
 
 	public List<Game> findByTopSellers() {
-		Integer actual = 0;
-		Integer res = 0;
-		Boolean first = true;
-		List<Game> topSellersGames = new ArrayList<Game>();
-		List<OwnedGame> allOwnedGames = this.ownedGameRepository.findAll();
-		List<Game> allGames = gameRepository.findVerified();
-		Integer size = allGames.size();
-		for (int i = 0; i < size; i++) {
-			actual = 0;
-			first = true;
-			for (Game g : allGames) {
-				res = 0;
-
-				if (!topSellersGames.contains(g)) {
-					for (OwnedGame o : allOwnedGames) {
-						if (o.getOwnedGames() != null && o.getOwnedGames().contains(g)) {
-							res += 1;
-						}
-						if (res >= actual) {
-							if (first) {
-								topSellersGames.add(i, g);
-								first = false;
-							} else {
-								topSellersGames.remove(i);
-								topSellersGames.add(i, g);
-							}
-							actual = res;
-						}
-					}
-				}
-			}
-		}
-		return topSellersGames;
+		
+		return findVerified().stream().filter(g -> mediaReviews(g) >= 4).collect(Collectors.toList());
 
 	}
 
@@ -159,4 +132,14 @@ public class GameService {
 
 		return result;
 	}
+	
+	public Double mediaReviews (Game g) {
+		Double res = 0.0;
+		List<Review> reviews = this.repository.findAllByGameId(g.getId());
+		for (Review r: reviews) {
+			res += r.getScore();
+		}
+		res = res / reviews.size();
+		return res;
+		}
 }
