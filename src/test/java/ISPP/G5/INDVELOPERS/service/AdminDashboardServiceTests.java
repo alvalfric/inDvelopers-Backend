@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.jupiter.api.DisplayName;
@@ -55,8 +56,10 @@ class AdminDashboardServiceTests {
 	@Test
 	@DisplayName("Showing Dashboard")
 	void testShow() throws DataAccessException, IllegalAccessException {
-		Developer admin = new Developer("admin", "admin", "admin@gmail.com", null, Set.of(UserRole.ADMIN) , null, "admin", null, null, null);
-		
+		Set<UserRole> setRole2 = new HashSet<UserRole>();
+		setRole2.add(UserRole.USER);
+		setRole2.add(UserRole.ADMIN);
+		Developer admin = new Developer("admin", "admin", "admin@gmail.com", null, setRole2, null, "admin", null, null, null);
 		when(gameRepo.findAll()).thenReturn(new ArrayList<Game>());
 		when(publicationRepo.findAll()).thenReturn(new ArrayList<Publication>());
 		when(reviewRepo.findAll()).thenReturn(new ArrayList<Review>());
