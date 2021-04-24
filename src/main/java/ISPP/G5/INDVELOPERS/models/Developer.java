@@ -64,7 +64,7 @@ public class Developer extends BaseEntity implements UserDetails{
 	@NotBlank
 	private Date dateOfBirth;
 	
-	@DBRef
+	@DBRef(lazy = true)
 	private List<Developer> following;
 
 	@Override

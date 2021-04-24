@@ -56,9 +56,15 @@ class DeveloperControllerTests {
 
 		Set<UserRole> setRole1 = new HashSet<UserRole>();
 		setRole1.add(UserRole.USER);
+		Set<UserRole> setRole2 = new HashSet<UserRole>();
+		setRole2.add(UserRole.USER);
+		setRole2.add(UserRole.ADMIN);
+
 		developer1 = new Developer("developer1", "password", "email1@gmail.com", null, setRole1, null, null, null, formatter.parse("1999-05-05"), new ArrayList<Developer>());
 		developer1.setId("id1");
-		developer2 = new Developer("developer2", "password", "email2@gmail.com", null, Set.of(UserRole.USER), null, null, null, formatter.parse("1999-05-05"), new ArrayList<Developer>());
+		developer2 = new Developer("developer2", "password", "email2@gmail.com", null, setRole2, null, null, null, formatter.parse("1999-05-05"), new ArrayList<Developer>());
+		developer2.getRoles().add(UserRole.ADMIN);
+
 	}
 
 	@Test
