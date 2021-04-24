@@ -270,6 +270,18 @@ public class GameControllerTests {
 		mvc.perform(get("/games/findNotRevised")).andExpect(status().isOk()).andExpect(jsonPath("$[0].id").value("game2Id"));
 	}
 
+	@Test
+	@DisplayName("Find by title verified games")
+	@WithMockUser(value = "spring")
+	void testFindByTitleVerifiedGames() throws Exception{
+		List<Game> games = new ArrayList<>();
+		games.add(game1);
+		
+		when(gameService.findByTitleVerified(game1.getTitle())).thenReturn(games);
+
+		mvc.perform(get("/games/findByTitleVerified/"+game1.getTitle())).andExpect(status().isOk()).andExpect(jsonPath("$[0].id").value("game1Id"));
+	}
+	
 	private String objectToJsonStringContent(final Object o) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
