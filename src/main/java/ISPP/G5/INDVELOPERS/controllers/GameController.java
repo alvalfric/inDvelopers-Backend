@@ -40,16 +40,18 @@ public class GameController {
 	private GameService gameService;
 	@Autowired
 	private DeveloperService developerService;
-  	@Autowired
+	@Autowired
 	private OwnedGameRepository ownedGameRepository;
 	@Autowired
 	private DeveloperSubscriptionService developerSubscriptionService;
+
 	@Autowired
 	public GameController(final GameService gameService, final DeveloperService developerService,
-			final OwnedGameRepository ownedGameRepository, final DeveloperSubscriptionService developerSubscriptionService) {
+			final OwnedGameRepository ownedGameRepository,
+			final DeveloperSubscriptionService developerSubscriptionService) {
 		this.gameService = gameService;
 		this.developerService = developerService;
-    	this.ownedGameRepository = ownedGameRepository;
+		this.ownedGameRepository = ownedGameRepository;
 		this.developerSubscriptionService = developerSubscriptionService;
 	}
 
@@ -226,6 +228,28 @@ public class GameController {
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
+	}
+
+	@GetMapping("/findByTitleVerified/{title}")
+	public ResponseEntity<List<Game>> findGameByTitleVerified(@PathVariable final String title) {
+		try {
+			return ResponseEntity.ok(gameService.findByTitleVerified(title));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+
+	@GetMapping("/gamesByDevelopersFollowed")
+	public ResponseEntity<List<Game>> gamesByDevelopersFollowed() {
+		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			Developer developer = developerService.findByUsername(userDetails.getUsername());
+			return ResponseEntity.ok(gameService.gamesByDevelopersFollowed(developer));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+
 	}
 
 }

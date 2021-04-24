@@ -27,7 +27,7 @@ public class AdminDashboardController {
 	}
 
 	@GetMapping("/show")
-	public ResponseEntity<AdminDashboard> show() throws NotFoundException {
+	public ResponseEntity<AdminDashboard> show() throws NotFoundException, IllegalAccessException {
 		try {
 			return ResponseEntity.ok(this.adminDashboardService.show());
 		} catch (IllegalArgumentException e) {

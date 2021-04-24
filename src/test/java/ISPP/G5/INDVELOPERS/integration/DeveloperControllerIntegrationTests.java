@@ -50,9 +50,9 @@ class DeveloperControllerIntegrationTests {
 	void init() {
 		setRole1 = new HashSet<UserRole>();
 		setRole1.add(UserRole.USER);
-		developer1 = new Developer("developer1", "password", "email1@gmail.com", null, setRole1, null, null, null, new ArrayList<Developer>());
+		developer1 = new Developer("developer1", "password", "email1@gmail.com", null, setRole1, null, null, null, null, new ArrayList<Developer>());
 		repo.save(developer1);
-		developer2 = new Developer("developer2", "password", "email2@gmail.com", null, setRole1, null, null, null, new ArrayList<Developer>());
+		developer2 = new Developer("developer2", "password", "email2@gmail.com", null, setRole1, null, null, null, null, new ArrayList<Developer>());
 	}
 
 	@Test
@@ -88,7 +88,7 @@ class DeveloperControllerIntegrationTests {
 	@Test
 	@DisplayName("Login as developer")
 	void loginDeveloper() throws Exception {
-		Developer developer3 = new Developer("developer3", "password", "email3@gmail.com", null, setRole1, null, null, null, new ArrayList<Developer>());
+		Developer developer3 = new Developer("developer3", "password", "email3@gmail.com", null, setRole1, null, null, null, null, new ArrayList<Developer>());
 		repo.save(developer3);
 		mockMvc.perform(post("/developers/login?username=dummyDeveloper&password=dummyDeveloper")).andExpect(status().isOk());
 		repo.delete(developer1);
@@ -118,6 +118,46 @@ class DeveloperControllerIntegrationTests {
 	void deleteDeveloper() throws Exception {
 		String id = repo.findByUsername("dummyDeveloper2").get().getId();
 		mockMvc.perform(delete("/developers/delete/" + id)).andExpect(status().isOk());
+	}
+	
+	/* Followers feature tests */
+	
+	@Test
+	@WithMockUser(username = "master2", authorities = {
+		"USER", "ADMIN"
+	})
+	@DisplayName("Follow developer test")
+	void followDeveloper() throws Exception {
+		String id = repo.findByUsername("dummyDeveloper2").get().getId();
+		mockMvc.perform(put("/developers/follow/" + id)).andExpect(status().isOk());
+	}
+	
+	@Test
+	@WithMockUser(username = "master2", authorities = {
+		"USER", "ADMIN"
+	})
+	@DisplayName("Unfollow developer test")
+	void unfollowDeveloper() throws Exception {
+		String id = repo.findByUsername("dummyDeveloper2").get().getId();
+		mockMvc.perform(put("/developers/unfollow/" + id)).andExpect(status().isOk());
+	}
+	
+	@Test
+	@WithMockUser(username = "master2", authorities = {
+		"USER", "ADMIN"
+	})
+	@DisplayName("My followers test")
+	void myFollowers() throws Exception {
+		mockMvc.perform(get("/developers/me/myFollowers")).andExpect(status().isOk());
+	}
+	
+	@Test
+	@WithMockUser(username = "master2", authorities = {
+		"USER", "ADMIN"
+	})
+	@DisplayName("My followers test")
+	void myFollowed() throws Exception {
+		mockMvc.perform(get("/developers/me/myFollowed")).andExpect(status().isOk());
 	}
 
 }

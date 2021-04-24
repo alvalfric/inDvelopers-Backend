@@ -22,5 +22,19 @@ public class DeveloperDashboard {
 	private Integer numGamesOwned;
 	
 	private Double moneyEarned;
+	
+	private Integer totalFollowers;
+	
+	private Integer gamesNotVerified;
+	
+	private Integer gamesVerified;
+	
+	private Integer totalIncident;
+	
+	private Integer incidentsNotSolved;
+	
+	private Integer incidentsSolved;
+
+	private Double reviewsMean;
 
 }
