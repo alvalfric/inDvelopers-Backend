@@ -32,7 +32,7 @@ class AdminDashboardControllerUnitTests {
 	@DisplayName("Show Test")
 	@WithMockUser(value = "spring")
 	void testShow() throws Exception {
-		when(service.show()).thenReturn(new AdminDashboard(10, 30, 10, 34, 310.));
+		when(service.show()).thenReturn(new AdminDashboard(10, 30, 10, 34, 310., 100,5, 5, 10, 5, 5, 50, 50));
 
 		mvc.perform(get("/adminDashboard/show")).andExpect(status().isOk());
 

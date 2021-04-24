@@ -1,6 +1,7 @@
 package ISPP.G5.INDVELOPERS.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,7 +9,9 @@ import org.springframework.stereotype.Service;
 import ISPP.G5.INDVELOPERS.models.AdminDashboard;
 import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.OwnedGame;
+import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
+import ISPP.G5.INDVELOPERS.repositories.IncidentRepository;
 import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
 import ISPP.G5.INDVELOPERS.repositories.PublicationRepository;
 import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
@@ -30,6 +33,11 @@ public class AdminDashboardService {
 	@Autowired
 	private OwnedGameRepository ownedGameRepository;
 	
+	@Autowired
+	private DeveloperRepository developerRepository;
+	
+	@Autowired
+	private IncidentRepository incidentRepository;
 	
 	public AdminDashboard show() {
 		
@@ -40,7 +48,15 @@ public class AdminDashboardService {
 		dashboard.setTotalReviewsCreated(this.reviewRepository.findAll().size());
 		dashboard.setTotalGamesPurchased(this.gamesPurchased());
 		dashboard.setTotalMoneyEarnedByDevelopers(this.moneyEarned());
-		
+		dashboard.setTotalDevelopers(this.developerRepository.findAll().size());
+		dashboard.setGamesVerified(this.gameRepository.findVerified().size());
+		dashboard.setGamesNotVerified(this.gameRepository.findAll().stream().filter(x->!x.getIsNotMalware()).collect(Collectors.toList()).size());
+		dashboard.setTotalIncident(this.incidentRepository.findAll().size());
+		dashboard.setIncidentsSolved(this.incidentRepository.findAll().stream().filter(x->x.isSolved()).collect(Collectors.toList()).size());
+		dashboard.setIncidentsNotSolved(this.incidentRepository.findNotSolved().size());
+		dashboard.setTotalPremiumUsers(this.developerRepository.findAll().stream().filter(x->x.getIsPremium()).collect(Collectors.toList()).size());
+		dashboard.setTotalNotPremiumUsers(this.developerRepository.findAll().stream().filter(x->!x.getIsPremium()).collect(Collectors.toList()).size());
+
 		return dashboard;
 	}
 	
