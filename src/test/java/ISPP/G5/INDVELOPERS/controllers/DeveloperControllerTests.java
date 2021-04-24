@@ -10,8 +10,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.mockito.ArgumentMatchers.any;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,7 +30,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-
+import ISPP.G5.INDVELOPERS.dtos.GetDeveloperDTO;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
@@ -47,12 +50,14 @@ class DeveloperControllerTests {
 
 
 	@BeforeEach
-	void init() {
+	void init() throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
 		Set<UserRole> setRole1 = new HashSet<UserRole>();
 		setRole1.add(UserRole.USER);
-		developer1 = new Developer("developer1", "password", "email1@gmail.com", null, setRole1, null, null, null, new ArrayList<Developer>());
+		developer1 = new Developer("developer1", "password", "email1@gmail.com", null, setRole1, null, null, null, formatter.parse("1999-05-05"), new ArrayList<Developer>());
 		developer1.setId("id1");
-		developer2 = new Developer("developer2", "password", "email2@gmail.com", null, setRole1, null, null, null, new ArrayList<Developer>());
+		developer2 = new Developer("developer2", "password", "email2@gmail.com", null, setRole1, null, null, null, formatter.parse("1999-05-05"), new ArrayList<Developer>());
 	}
 
 	@Test
@@ -109,6 +114,42 @@ class DeveloperControllerTests {
 	@WithMockUser(value = "spring")
 	void deleteDeveloper() throws Exception {
 		mockMvc.perform(delete("/developers/delete/" + developer1.getId())).andExpect(status().isOk());
+	}
+	
+	/* Followers feature tests */
+	
+	@Test
+	@DisplayName("Follow developer test")
+	@WithMockUser(value = "spring")
+	void followDeveloper() throws Exception {
+		when(this.developerService.followDeveloper(any(String.class))).thenReturn("Followed Correctly");
+		mockMvc.perform(put("/developers/follow/someone")).andExpect(status().isOk());
+	}
+	
+	@Test
+	@DisplayName("Unfollow developer test")
+	@WithMockUser(value = "spring")
+	void unfollowDeveloper() throws Exception {
+		when(this.developerService.unfollowDeveloper(any(String.class))).thenReturn("Unfollowed Correctly");
+		mockMvc.perform(put("/developers/unfollow/someone")).andExpect(status().isOk());
+	}
+	
+	@Test
+	@DisplayName("My followers test")
+	@WithMockUser(value = "spring")
+	void myFollowers() throws Exception {
+		List<GetDeveloperDTO> ls = new ArrayList<GetDeveloperDTO>();
+		when(this.developerService.getMyFollowersDTO(any(String.class))).thenReturn(ls);
+		mockMvc.perform(get("/developers/me/myFollowers")).andExpect(status().isOk());
+	}
+	
+	@Test
+	@DisplayName("My followed test")
+	@WithMockUser(value = "spring")
+	void myFollowed() throws Exception {
+		List<GetDeveloperDTO> ls = new ArrayList<GetDeveloperDTO>();
+		when(this.developerService.getMyFollowedDTO(any(String.class))).thenReturn(ls);
+		mockMvc.perform(get("/developers/me/myFollowed")).andExpect(status().isOk());
 	}
 
 }

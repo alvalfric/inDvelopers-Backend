@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -21,7 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.security.test.context.support.WithMockUser;
 
+import ISPP.G5.INDVELOPERS.dtos.GetDeveloperDTO;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
@@ -43,7 +46,7 @@ class DeveloperServiceIntegrationTests {
 	@BeforeEach
 	void initAll() {
 		sizeBefore = developerService.getAll().size();
-		d1 = new Developer("developer1", "password1", "email1@gmail.com", null, null, "description1", null, null, new ArrayList<Developer>());
+		d1 = new Developer("developer1", "password1", "email1@gmail.com", null, null, "description1", null, null, null, new ArrayList<Developer>());
 		repo.save(d1);
 	}
 
@@ -102,7 +105,7 @@ class DeveloperServiceIntegrationTests {
 	@Test
 	@DisplayName("Create a new developer")
 	void testCreateDeveloper() {
-		Developer res = new Developer("developer2", "password2", "email2@gmail.com", null, null , null, "description2", null, null);
+		Developer res = new Developer("developer2", "password2", "email2@gmail.com", null, null , null, "description2", null, null, null);
 		
 		this.developerService.createDeveloper(res);
 		assertThat(this.developerService.findByUsername("developer2")).isNotNull();
@@ -111,7 +114,7 @@ class DeveloperServiceIntegrationTests {
 	@Test
 	@DisplayName("Change developer to Admin")
 	void testDeveloperToAdmin() {
-		Developer d3 = new Developer("developer3", "password3", "email3@gmail.com", null , Stream.of(UserRole.USER).collect(Collectors.toSet()), "description3", null, null, new ArrayList<Developer>());
+		Developer d3 = new Developer("developer3", "password3", "email3@gmail.com", null , Stream.of(UserRole.USER).collect(Collectors.toSet()), "description3", null, null, null, new ArrayList<Developer>());
 		this.repo.save(d3);
 		Developer res = this.developerService.changeToAdmin(d3.getId());
 		
@@ -122,7 +125,7 @@ class DeveloperServiceIntegrationTests {
 	@Test
 	@DisplayName("Change Admin to developer")
 	void testAdminToDeveloper() {
-		Developer d4 = new Developer("developer4", "password4", "email4@gmail.com", null , Stream.of(UserRole.ADMIN).collect(Collectors.toSet()), "description4", null, null, new ArrayList<Developer>());
+		Developer d4 = new Developer("developer4", "password4", "email4@gmail.com", null , Stream.of(UserRole.ADMIN).collect(Collectors.toSet()), "description4", null, null, null, new ArrayList<Developer>());
 		this.repo.save(d4);
 		Developer res = this.developerService.changeToUser(d4.getId());
 		
@@ -134,10 +137,56 @@ class DeveloperServiceIntegrationTests {
 	@Test
 	@DisplayName("Update a developer")
 	void testUpdateDeveloper() {
-		Developer res = new Developer("developer2", "password2", "email2@gmail.com", null, null , null, "description2", null, null);
+		Developer res = new Developer("developer2", "password2", "email2@gmail.com", null, null , null, "description2", null, null, null);
 		
 		this.developerService.updateDeveloper(res);
 		assertThat(this.developerService.findByUsername("developer2")).isNotNull();
+	}
+	
+	/* Followers feature tests */
+	
+	@Test
+	@DisplayName("Follow a developer")
+	@WithMockUser(value="developer1")
+	void testFollowDeveloper() {
+		Developer dev3 = new Developer("developer3", "password3", "email3@gmail.com", null, null, "description3", null, null, null, new ArrayList<Developer>());
+		repo.save(dev3);
+		Developer dev = repo.findByUsername("developer3").get();
+		
+		assertThat(this.developerService.followDeveloper(dev.getUsername())).isEqualTo("You are now following developer3");
+	}
+	
+	@Test
+	@DisplayName("Unfollow a developer")
+	@WithMockUser(value="developer1")
+	void testUnfollowDeveloper() {
+		Developer dev3 = new Developer("developer3", "password3", "email3@gmail.com", null, null, "description3", null, null, null, new ArrayList<Developer>());
+		repo.save(dev3);
+		Developer dev = repo.findByUsername("developer3").get();
+		this.developerService.followDeveloper(dev.getUsername());
+		
+		assertThat(this.developerService.unfollowDeveloper(dev.getUsername())).isEqualTo("You are not following developer3 anymore");
+	}
+	
+	@Test
+	@DisplayName("Get my followers")
+	@WithMockUser(value="developer1")
+	void testGetMyFollowers() {
+		assertThat(this.developerService.getMyFollowers("developer1")).isEqualTo(new ArrayList<Developer>());
+	}
+	
+	@Test
+	@DisplayName("Get my followers DTO")
+	@WithMockUser(value="developer1")
+	void testGetMyFollowersDTO() {
+		assertThat(this.developerService.getMyFollowersDTO("developer1")).isEqualTo(new ArrayList<GetDeveloperDTO>());
+	}
+	
+	@Test
+	@DisplayName("Get my followed DTO")
+	@WithMockUser(value="developer1")
+	void testGetMyFollowedDTO() {
+		assertThat(this.developerService.getMyFollowedDTO("developer1")).isEqualTo(new ArrayList<GetDeveloperDTO>());
 	}
 
 }
