@@ -60,16 +60,11 @@ public class AdminDashboardService {
 		dashboard.setTotalMoneyEarnedByDevelopers(this.moneyEarned());
 		dashboard.setTotalDevelopers(totalDevelopers);
 		dashboard.setGamesVerified(totalGamesVerified);
-		System.out.println("-");
 		dashboard.setGamesNotVerified(this.gameRepository.findAll().stream().filter(x->!x.getIsNotMalware()).collect(Collectors.toList()).size());
-		System.out.println("--");
 		dashboard.setTotalIncident(totalIncidents);
-		System.out.println("---");
 		dashboard.setIncidentsSolved(this.incidentRepository.findAll().stream().filter(x->x.isSolved()).collect(Collectors.toList()).size());
 		dashboard.setIncidentsNotSolved(totalIncidentsNotSolved);
-		System.out.println("----");
 		dashboard.setTotalPremiumUsers(this.developerRepository.findAll().stream().filter(x->x.getIsPremium()).collect(Collectors.toList()).size());
-		System.out.println("-----");
 		dashboard.setTotalNotPremiumUsers(this.developerRepository.findAll().stream().filter(x->!x.getIsPremium()).collect(Collectors.toList()).size());
 
 		return dashboard;
