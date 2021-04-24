@@ -2,8 +2,11 @@
 
 ## Faces and meaning
 :smiley: (Meaning that I feel happy)
+
 :neutral_face: (Meaning that I feel neutral)
+
 :worried: (Meaning that I do not feel so well)
+
 :fearful: (Meaning that I feel bad)
 
 
