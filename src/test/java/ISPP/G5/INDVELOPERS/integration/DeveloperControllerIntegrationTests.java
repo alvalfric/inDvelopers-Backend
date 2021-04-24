@@ -119,5 +119,45 @@ class DeveloperControllerIntegrationTests {
 		String id = repo.findByUsername("dummyDeveloper2").get().getId();
 		mockMvc.perform(delete("/developers/delete/" + id)).andExpect(status().isOk());
 	}
+	
+	/* Followers feature tests */
+	
+	@Test
+	@WithMockUser(username = "master2", authorities = {
+		"USER", "ADMIN"
+	})
+	@DisplayName("Follow developer test")
+	void followDeveloper() throws Exception {
+		String id = repo.findByUsername("dummyDeveloper2").get().getId();
+		mockMvc.perform(put("/developers/follow/" + id)).andExpect(status().isOk());
+	}
+	
+	@Test
+	@WithMockUser(username = "master2", authorities = {
+		"USER", "ADMIN"
+	})
+	@DisplayName("Unfollow developer test")
+	void unfollowDeveloper() throws Exception {
+		String id = repo.findByUsername("dummyDeveloper2").get().getId();
+		mockMvc.perform(put("/developers/unfollow/" + id)).andExpect(status().isOk());
+	}
+	
+	@Test
+	@WithMockUser(username = "master2", authorities = {
+		"USER", "ADMIN"
+	})
+	@DisplayName("My followers test")
+	void myFollowers() throws Exception {
+		mockMvc.perform(get("/developers/me/myFollowers")).andExpect(status().isOk());
+	}
+	
+	@Test
+	@WithMockUser(username = "master2", authorities = {
+		"USER", "ADMIN"
+	})
+	@DisplayName("My followers test")
+	void myFollowed() throws Exception {
+		mockMvc.perform(get("/developers/me/myFollowed")).andExpect(status().isOk());
+	}
 
 }
