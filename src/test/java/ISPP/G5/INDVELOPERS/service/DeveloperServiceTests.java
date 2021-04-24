@@ -252,4 +252,63 @@ class DeveloperServiceTests {
 		assertThat(res).isEqualTo(followedDTO);
 	}
 
+	/* Tests Sprint 3 - Coverage Actual 77% */
+	
+	@Test
+	@DisplayName("Create a new developer with username duplicated")
+	void testCreateDeveloperWithTheSameUsername() {
+		Developer d2 = new Developer("developer2", "password2", "email2@gmail.com", null, null , null, "description2", null, null, null);
+		Developer d3 = new Developer("developer2", "newpassword", "newemail@gmail.com", null, null , null, "description2", null, null, null);
+		Developer res = this.developerService.createDeveloper(d2);
+
+		when(this.repo.save(d2)).thenReturn(d2);
+		when(this.repo.findByUsername("developer2")).thenReturn(Optional.of(d3));
+
+		assertTrue(d2.getUsername().equals(res.getUsername()));
+		assertThrows(IllegalArgumentException.class,()->this.developerService.createDeveloper(d3));
+	}
+	
+	@Test
+	@DisplayName("Create a new developer with email duplicated")
+	void testCreateDeveloperWithTheSameEmail() {
+		Developer d2 = new Developer("developer2", "password2", "email2@gmail.com", null, null , null, "description2", null, null, null);
+		Developer d3 = new Developer("developer3", "newpassword", "email2@gmail.com", null, null , null, "description2", null, null, null);
+		Developer res = this.developerService.createDeveloper(d2);
+
+		when(this.repo.save(d2)).thenReturn(d2);
+		when(this.repo.findByEmail("email2@gmail.com")).thenReturn(Optional.of(d3));
+
+		assertTrue(d2.getUsername().equals(res.getUsername()));
+		assertThrows(IllegalArgumentException.class,()->this.developerService.createDeveloper(d3));
+	}
+	
+	@Test
+	@DisplayName("Change developer to Admin not found")
+	void testDeveloperToAdminNotFound() {
+		assertThrows(IllegalArgumentException.class,()->this.developerService.changeToAdmin("IdPrueba3"));
+	}
+	
+	@Test
+	@DisplayName("Change Admin to Admin")
+	void testChangeAdminToAdmin() {
+		Developer d3 = new Developer("developer3", "newpassword", "email2@gmail.com", null, Stream.of(UserRole.ADMIN).collect(Collectors.toSet()), null, "description2", null, null, null);
+		d3.setId("IdPrueba3");
+		
+		when(this.repo.findById("IdPrueba3")).thenReturn(Optional.of(d3));
+		when(this.repo.save(d3)).thenReturn(d3);
+				
+		assertThrows(IllegalArgumentException.class,()->this.developerService.changeToAdmin("IdPrueba3"));
+	}
+		
+	@Test
+	@DisplayName("Find by email")
+	void testFindbyEmail() {
+		Developer developer = new Developer("developer", "developer", "developer@gmail.com", null, Stream.of(UserRole.USER).collect(Collectors.toSet()), null, "description2", null, null, null);
+		developer.setId("developer");
+		this.repo.save(developer);
+		
+		when(this.repo.findByEmail(developer.getEmail())).thenReturn(Optional.of(developer));
+
+		assertThat(this.developerService.findByEmail(developer.getEmail())).isEqualTo(developer);
+	}
 }

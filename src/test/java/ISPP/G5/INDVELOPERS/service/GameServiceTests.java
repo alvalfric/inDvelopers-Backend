@@ -3,6 +3,7 @@ package ISPP.G5.INDVELOPERS.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
@@ -239,5 +240,22 @@ public class GameServiceTests {
 	@DisplayName("Fail check if there's a game with inexistent title")
 	void shouldNotCheckTitle() {
 		assertThat(this.gameService.checkGameTitle("Untituloquenoexiste")).isFalse();
+	}
+	
+	@Test
+	@DisplayName("Show games by title verified")
+	void shouldFindGameByTitleVerified() {
+		Game testGame = new Game("testGame", "testGameDescription", "testGameRequirements", 0.0, "testGameIdCloud",
+				true, null, null, null, null, 18);
+		this.gameService.addGame(testGame, developer1);
+		assertThat(this.gameService.findByTitle("testGame").get(0)).isEqualTo(testGame);
+	}
+	
+	@Test
+	@DisplayName("Show games by developer followed")
+	void shouldFindGameByDevelopersFollowed() {
+		developer2.getFollowing().add(developer1);
+		
+		assertThat(this.gameService.gamesByDevelopersFollowed(developer2).get(0).getTitle()).isEqualTo("Game1");
 	}
 }

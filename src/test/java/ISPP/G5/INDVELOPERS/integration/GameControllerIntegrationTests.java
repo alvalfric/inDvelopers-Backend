@@ -65,7 +65,8 @@ public class GameControllerIntegrationTests {
 
 		Developer dev2 = new Developer("developer2", "developer2", "developer2Developer@gmail.com", null,
 				Stream.of(UserRole.USER).collect(Collectors.toSet()), null, null, true, null, new ArrayList<Developer>());
-
+		dev2.getFollowing().add(dev1);
+		
 		developerRepository.save(dev2);
 
 		Game firstGame = new Game("Game1", "Description1", "Requirements1", 0.0, "idCloud1", true, dev1,
@@ -262,7 +263,23 @@ public class GameControllerIntegrationTests {
 		Assertions.assertEquals(responseListGame.getBody().get(0).getTitle(), "Game2");
 	}
 	
-	
+	@Test
+	@DisplayName("Find verified games by title")
+	@WithMockUser(username = "developer1", authorities = { "USER" })
+	void testFindVerifiedGamesByTitle() throws Exception{
+		ResponseEntity<List<Game>> responseListGame = this.gameController.findGameByTitleVerified("G");
+		Assertions.assertEquals(responseListGame.getStatusCodeValue(), 200);
+		Assertions.assertNotNull(responseListGame.getBody());
+		Assertions.assertEquals(responseListGame.getBody().get(0).getTitle(), "Game1");
+	}
 
-
+	@Test
+	@DisplayName("Find games by developer followed")
+	@WithMockUser(username = "developer2", authorities = { "USER" })
+	void testFindGamesByDeveloperFollowd() throws Exception{
+		ResponseEntity<List<Game>> responseListGame = this.gameController.gamesByDevelopersFollowed();
+		Assertions.assertEquals(responseListGame.getStatusCodeValue(), 200);
+		Assertions.assertNotNull(responseListGame.getBody());
+		Assertions.assertEquals(responseListGame.getBody().get(0).getTitle(), "Game1");
+	}
 }

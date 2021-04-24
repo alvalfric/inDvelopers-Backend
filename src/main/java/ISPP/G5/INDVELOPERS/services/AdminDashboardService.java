@@ -3,12 +3,18 @@ package ISPP.G5.INDVELOPERS.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import ISPP.G5.INDVELOPERS.models.AdminDashboard;
+import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.OwnedGame;
+import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
 import ISPP.G5.INDVELOPERS.repositories.IncidentRepository;
@@ -37,9 +43,16 @@ public class AdminDashboardService {
 	private DeveloperRepository developerRepository;
 	
 	@Autowired
+	private DeveloperService developerService;
+	
+	@Autowired
 	private IncidentRepository incidentRepository;
 	
-	public AdminDashboard show() {
+	public AdminDashboard show() throws IllegalAccessException {
+		if (!this.developerService.findCurrentDeveloper().getRoles().contains(UserRole.ADMIN)) {
+			throw new IllegalAccessException("You are not and admin");
+		}
+		
 		AdminDashboard dashboard = new AdminDashboard();
 		
 		Integer totalGamesCreated = this.gameRepository.findAll() == null ? 0 : this.gameRepository.findAll().size();

@@ -19,6 +19,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.util.Lists;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,7 +58,7 @@ class DeveloperControllerTests {
 		setRole1.add(UserRole.USER);
 		developer1 = new Developer("developer1", "password", "email1@gmail.com", null, setRole1, null, null, null, formatter.parse("1999-05-05"), new ArrayList<Developer>());
 		developer1.setId("id1");
-		developer2 = new Developer("developer2", "password", "email2@gmail.com", null, setRole1, null, null, null, formatter.parse("1999-05-05"), new ArrayList<Developer>());
+		developer2 = new Developer("developer2", "password", "email2@gmail.com", null, Set.of(UserRole.USER), null, null, null, formatter.parse("1999-05-05"), new ArrayList<Developer>());
 	}
 
 	@Test
@@ -151,5 +152,14 @@ class DeveloperControllerTests {
 		when(this.developerService.getMyFollowedDTO(any(String.class))).thenReturn(ls);
 		mockMvc.perform(get("/developers/me/myFollowed")).andExpect(status().isOk());
 	}
-
+	
+	@Test
+	@DisplayName("test")
+	@WithMockUser(value = "spring")
+	void test() throws Exception {
+		ObjectMapper om = new ObjectMapper();
+		developer1.setUsername(null);
+		String json = om.writeValueAsString(null);
+		mockMvc.perform(post("/developers/sign-up").contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().is4xxClientError());
+	}
 }
