@@ -276,6 +276,15 @@ public class MongoDBPopulate<E> {
             
             dummyDeveloper.getFollowing().add(fernando);
             developerRepository.save(dummyDeveloper);
+            
+        	userEntityRepository.deleteAll();
+            developerRepository.deleteAll();
+            gameRepository.deleteAll();
+            reviewRepository.deleteAll();
+            ownedGameRepository.deleteAll();
+            publicationRepository.deleteAll();
+            developerSubscriptionRepository.deleteAll();
+            orderRepository.deleteAll();
         };
 
     }

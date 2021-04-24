@@ -12,6 +12,9 @@ import ISPP.G5.INDVELOPERS.models.Incident;
 @Repository
 public interface IncidentRepository extends MongoRepository<Incident, String> {
 
+	@Override
+	List<Incident> findAll();
+	
 	@Query("{'solved':false}")
 	List<Incident> findNotSolved();
 

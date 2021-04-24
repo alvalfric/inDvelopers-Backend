@@ -35,7 +35,6 @@ public class DeveloperService {
 
 	public List<Developer> getAll() {
 		return this.developerRepository.findAll();
-
 	}
 
 	public Developer createDeveloper(Developer developer) {
