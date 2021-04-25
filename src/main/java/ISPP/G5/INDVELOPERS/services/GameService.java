@@ -9,10 +9,12 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ISPP.G5.INDVELOPERS.models.Category;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.OwnedGame;
 import ISPP.G5.INDVELOPERS.models.Review;
+import ISPP.G5.INDVELOPERS.repositories.CategoriaRepository;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
 import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
 import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
@@ -27,6 +29,8 @@ public class GameService {
 	private GameRepository gameRepository;
 	@Autowired
 	private OwnedGameRepository ownedGameRepository;
+	@Autowired
+	private CategoriaRepository categoriaRepository;
 	@Autowired
 	private ReviewRepository repository;
 
@@ -143,7 +147,15 @@ public class GameService {
 		return res;
 		}
 	public List<Game> findByTitleVerifiedOrCategorie(String input) {
-		List<Game> res = this.gameRepository.findByTitleVerifiedOrCategorie(input);
+		
+		List<Game> res = this.gameRepository.findByTitleVerified(input);
+		for (Game g: this.findVerified()) {
+			for (Category c: g.getCategorias()) {
+				if (c.getTitle().toLowerCase().contains(input.toLowerCase()) && !res.contains(g)) {
+					res.add(g);
+				}
+			}
+		}
 		Collections.reverse(res);
 		return res;
 	}
@@ -153,4 +165,5 @@ public class GameService {
 		Collections.reverse(res);
 		return res;
 	}
+	
 }
