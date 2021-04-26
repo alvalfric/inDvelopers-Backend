@@ -14,9 +14,9 @@
 
 | Day           |     Álvaro    |     David     |     Marta     |     Elena     |     Gonzalo   |    Gonzalo    |Francisco Javier|   Alejandro   |     Luis      |  Juan Pablo   |    Moises     |   Fernando    |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | -------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-| April 24      |   :smiley:    |               |               |               |               |               |   :smiley:     |               |       😃      |               |               |               |
-| April 25      |:neutral_face: |               |               |               |               |               |                |               | :neutral_face:|               |               |               | 
-| April 26      |:neutral_face: |               |               |               |               |               |                |               |               |               |               |               |
+| April 24      |   :smiley:    |   :worried:   |               |               |               |               |   :smiley:     |               |       😃      |               |               |               |
+| April 25      |:neutral_face: | :neutral_face:|               |               |               |               |                |               | :neutral_face:|               |               |               | 
+| April 26      |:neutral_face: |   :smiley:    |               |               |               |               |                |               |               |               |               |               |
 | April 27      |               |               |               |               |               |               |                |               |               |               |               |               |
 | April 28      |               |               |               |               |               |               |                |               |               |               |               |               |
 | April 29      |               |               |               |               |               |               |                |               |               |               |               |               |
