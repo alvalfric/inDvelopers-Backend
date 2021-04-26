@@ -14,9 +14,9 @@
 
 | Day           |     Álvaro    |     David     |     Marta     |     Elena     |    Gonzalo    |Francisco Javier|   Alejandro   |     Luis      |  Juan Pablo   |    Moises     |   Fernando    |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | -------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-| April 24      |   :smiley:    |   :worried:   |               |               |               |   :smiley:     |   :worried:   |       😃      |               |               |               |
-| April 25      |:neutral_face: | :neutral_face:|               |               |               |                | :neutral_face:| :neutral_face:|               |               |               | 
-| April 26      |:neutral_face: |   :smiley:    |               |               |               |                | :neutral_face:|               |               |               |               |
+| April 24      |   :smiley:    |   :worried:   |               |               |               |   :smiley:     |   :worried:   |       😃      |               |               |   :neutral_face:            |
+| April 25      |:neutral_face: | :neutral_face:|               |               |               |                | :neutral_face:| :neutral_face:|               |               |    :neutral_face:           | 
+| April 26      |:neutral_face: |   :smiley:    |               |               |               |                | :neutral_face:|               |               |               |    :neutral_face:           |
 | April 27      |               |               |               |               |               |                |               |               |               |               |               |
 | April 28      |               |               |               |               |               |                |               |               |               |               |               |
 | April 29      |               |               |               |               |               |                |               |               |               |               |               |
