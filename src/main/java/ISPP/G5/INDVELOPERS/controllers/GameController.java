@@ -124,6 +124,8 @@ public class GameController {
 				gameData.setIsNotMalware(game.getIsNotMalware());
 				gameData.setIdCloud(game.getIdCloud());
 				gameData.setImagen(game.getImagen());
+				gameData.setCategorias(game.getCategorias());
+				gameData.setPegi(game.getPegi());
 				return new ResponseEntity<>(gameService.updateGame(gameData), HttpStatus.OK);
 			} else {
 				throw new IllegalArgumentException("Only the creator of the game or an admin can update it");
