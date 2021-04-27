@@ -217,7 +217,7 @@ public class MongoDBPopulate<E> {
                     "1618508350667_blob",
                     true, 
                     dummyDeveloper,
-                    null, categorias, fecha, 18,0.);
+                    null, categorias, fecha, 18,0.3);
             
             gameRepository.save(game2);
             
@@ -229,7 +229,7 @@ public class MongoDBPopulate<E> {
                     "1618508350667_blob",
                     true, 
                     dummyDeveloper,
-                    null, categorias, fecha, 18,0.);
+                    null, categorias, fecha, 18,0.3);
             
             gameRepository.save(game3);
 

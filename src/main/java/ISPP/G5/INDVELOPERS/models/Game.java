@@ -54,7 +54,7 @@ public class Game extends BaseEntity{
 	private Integer pegi;
 	
 	@Positive
-	@Max(1) // De 0 a 1 (100%)
+	@Max(1) // Factor percent (From 0 to 1) Ej: 0.3 equals 30%
 	private Double discount;
 	
 }
