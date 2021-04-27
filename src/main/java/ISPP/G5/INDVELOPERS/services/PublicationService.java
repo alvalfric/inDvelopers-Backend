@@ -12,6 +12,7 @@ import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.Publication;
 import ISPP.G5.INDVELOPERS.repositories.PublicationRepository;
+import io.jsonwebtoken.lang.Assert;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -53,6 +54,12 @@ public class PublicationService {
 		p.setDeveloper(d);
 		this.publicationRepository.save(p);
 		return "Successfully added with id: " + p.getId();
+	}
+	
+	public String updatePublication(Publication publication) {
+		Assert.notNull(publication);
+		this.publicationRepository.save(publication);
+		return "Updated publication with id:" + publication.getId();
 	}
 
 	public String deletePublication(Publication p, Developer developer) {
