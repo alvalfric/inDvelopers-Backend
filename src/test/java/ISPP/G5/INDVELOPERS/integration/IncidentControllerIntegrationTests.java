@@ -1,6 +1,7 @@
 
 package ISPP.G5.INDVELOPERS.integration;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -17,10 +18,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.web.servlet.MockMvc;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Incident;
 import ISPP.G5.INDVELOPERS.models.UserRole;
@@ -81,19 +86,20 @@ class IncidentControllerIntegrationTests {
 
 	}
 
-//Esto da un error 400 y no sé por qué
-//	@Test
-//	@WithMockUser(username = "alvaro", authorities = {
-//			"USER"
-//		})
-//	@DisplayName("Create incident")
-//	void createIncident() throws Exception {
-//		ObjectMapper om = new ObjectMapper();
-//		String json = om.writeValueAsString(incident2);
-//		mockMvc.perform(post("/incidents/add").contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().isCreated());
-//		irepo.delete(incident2);
-//
-//	}
+
+	@Test
+	@WithMockUser(username = "alvaro", authorities = {
+			"USER"
+		})
+	@DisplayName("Create incident")
+	void createIncident() throws Exception {
+		Incident incident = new Incident("I can't buy a membership", "Don't let me buy a membership", "No button", null, null, false, null);
+		
+		ObjectMapper om = new ObjectMapper();
+		String json = om.writeValueAsString(incident);
+		mockMvc.perform(post("/incidents/add").contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().isCreated());
+
+	}
 
 	@Test
 	@WithMockUser(username = "master2", authorities = {

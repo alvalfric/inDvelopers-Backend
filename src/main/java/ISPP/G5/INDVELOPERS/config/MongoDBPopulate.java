@@ -28,6 +28,7 @@ import ISPP.G5.INDVELOPERS.repositories.CategoriaRepository;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperSubscriptionRepository;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
+import ISPP.G5.INDVELOPERS.repositories.IncidentRepository;
 import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
 import ISPP.G5.INDVELOPERS.repositories.PublicationRepository;
 import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
@@ -43,7 +44,8 @@ public class MongoDBPopulate<E> {
     CommandLineRunner commandLineRunner(
             UserEntityRepository userEntityRepository, DeveloperRepository developerRepository,
             GameRepository gameRepository, ReviewRepository reviewRepository, OwnedGameRepository ownedGameRepository, PublicationRepository publicationRepository,
-            DeveloperSubscriptionRepository developerSubscriptionRepository, OrderRepository orderRepository, CategoriaRepository categoriaRepository) {
+            DeveloperSubscriptionRepository developerSubscriptionRepository, OrderRepository orderRepository, CategoriaRepository categoriaRepository,
+            IncidentRepository incidentRepository) {
         return strings -> {
         	userEntityRepository.deleteAll();
             developerRepository.deleteAll();
@@ -54,6 +56,7 @@ public class MongoDBPopulate<E> {
             developerSubscriptionRepository.deleteAll();
             orderRepository.deleteAll();
             categoriaRepository.deleteAll();
+            incidentRepository.deleteAll();
 			
             /*
                 ================= USERS =================
