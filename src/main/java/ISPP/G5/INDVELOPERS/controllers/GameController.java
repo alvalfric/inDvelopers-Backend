@@ -116,7 +116,7 @@ public class GameController {
 			if (allGames.stream().anyMatch(g -> g.getTitle().equals(game.getTitle())))
 				throw new IllegalArgumentException("There's alredy a game with that title");
 
-			if (game.getCreator().getId().equals(developer.getId()) || developer.getRoles().contains(UserRole.ADMIN)) {
+			if (gameData.getCreator().getId().equals(developer.getId()) || developer.getRoles().contains(UserRole.ADMIN)) {
 				gameData.setTitle(game.getTitle());
 				gameData.setDescription(game.getDescription());
 				gameData.setRequirements(game.getRequirements());
@@ -126,6 +126,7 @@ public class GameController {
 				gameData.setImagen(game.getImagen());
 				gameData.setCategorias(game.getCategorias());
 				gameData.setPegi(game.getPegi());
+				gameData.setDiscount(game.getDiscount());
 				return new ResponseEntity<>(gameService.updateGame(gameData), HttpStatus.OK);
 			} else {
 				throw new IllegalArgumentException("Only the creator of the game or an admin can update it");
