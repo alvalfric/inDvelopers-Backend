@@ -84,7 +84,7 @@ public class IncidentController {
 	}
 
 	@PostMapping("/add")
-	public ResponseEntity<String> addReview(@RequestBody final Incident incident) {
+	public ResponseEntity<String> addIncident(@RequestBody final Incident incident) {
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
