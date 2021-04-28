@@ -253,5 +253,14 @@ public class GameController {
 		}
 
 	}
+	
+	@GetMapping("/findAllWithDiscount")
+	public ResponseEntity<List<Game>> findAllWithDiscount() {
+		try {
+			return ResponseEntity.ok(this.gameService.findAllWithDiscount());
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
 
 }

@@ -3,8 +3,10 @@ package ISPP.G5.INDVELOPERS.models;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -50,5 +52,9 @@ public class Game extends BaseEntity{
 	private Date fechaCreacion;
 	
 	private Integer pegi;
+	
+	@Positive
+	@Max(1) // Factor percent (From 0 to 1) Ej: 0.3 equals 30%
+	private Double discount;
 	
 }
