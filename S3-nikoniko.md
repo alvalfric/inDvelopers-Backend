@@ -17,8 +17,8 @@
 | April 24      |   :smiley:    |   :worried:   |               |               |               |   :smiley:     |   :worried:   |       😃      |               |               |   :neutral_face:            |
 | April 25      |:neutral_face: | :neutral_face:|               |               |               |                | :neutral_face:| :neutral_face:|               |               |    :neutral_face:           | 
 | April 26      |:neutral_face: |   :smiley:    |               |               |               |                | :neutral_face:|               |               |               |    :neutral_face:           |
-| April 27      |               |               |               |               |               |                |               |               |               |               |               |
-| April 28      |               |               |               |               |               |                |               |               |               |               |               |
+| April 27      |               | :neutral_face:|               |               |               |                |               |               |               |               |               |
+| April 28      |               |   :smiley:    |               |               |               |                |               |               |               |               |               |
 | April 29      |               |               |               |               |               |                |               |               |               |               |               |
 | April 30      |               |               |               |               |               |                |               |               |               |               |               |
 | May 1         |               |               |               |               |               |                |               |               |               |               |               |
