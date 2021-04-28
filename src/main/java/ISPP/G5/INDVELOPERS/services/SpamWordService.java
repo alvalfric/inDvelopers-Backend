@@ -48,7 +48,7 @@ public class SpamWordService {
 			}
 		}
 		Float actualThreshold = (float) spamCount / text.length();
-		if(actualThreshold > 0.125) {
+		if(actualThreshold > 0.2) {
 			res = true;
 		}
 		for (SpamWord s : findAllNotAllowed()) {

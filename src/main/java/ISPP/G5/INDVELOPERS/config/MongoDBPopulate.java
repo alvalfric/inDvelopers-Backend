@@ -316,6 +316,8 @@ public class MongoDBPopulate<E> {
             SpamWord spam7 = new SpamWord("basura", true);
             SpamWord spam8 = new SpamWord("dinero", true);
             SpamWord spam9 = new SpamWord("gana gratis", false);
+            SpamWord spam10 = new SpamWord("paja", false);
+            SpamWord spam11 = new SpamWord("ganar dinero", false);
             
             spamWordRepository.save(spam1);
             spamWordRepository.save(spam2);
@@ -326,6 +328,8 @@ public class MongoDBPopulate<E> {
             spamWordRepository.save(spam7);
             spamWordRepository.save(spam8);
             spamWordRepository.save(spam9);
+            spamWordRepository.save(spam10);
+            spamWordRepository.save(spam11);
             
             
         };
