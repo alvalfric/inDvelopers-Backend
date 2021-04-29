@@ -23,6 +23,6 @@ public interface DeveloperRepository extends MongoRepository<Developer, String>{
 	@Query("{ 'following.id' : ?0 }")
 	List<Developer> findMyFollowers(String id);
 	
-	@Query("{_id: ObjectId('?0'), roles: 'ADMIN'}")
+	@Query("{'id': ?0, 'roles': 'ADMIN'}")
 	Optional<Developer> checkDeveloperIsAdmin(String id);
 }
