@@ -73,8 +73,14 @@ public class PaypalController {
 		try {
 			Game game = gameService.findById(gameId);
 			String email = game.getCreator().getEmail();
-			Order order = new Order(game.getPrice(), "EUR", "Paypal", "Sale", "This is a pay for a game.", email,
-					gameId);
+			Order order;
+			if(game.getDiscount()==0.) {
+				order = new Order(game.getPrice(), "EUR", "Paypal", "Sale", "This is a pay for a game.", email,
+						gameId);
+			}else {
+				order = new Order(Math.ceil(game.getPrice()-game.getPrice()*game.getDiscount()), "EUR", "Paypal", "Sale", "This is a pay for a game.", email,
+						gameId);
+			}
 			this.orderService.save(order);
 			return ResponseEntity.ok(order);
 		} catch (IllegalArgumentException e) {
