@@ -37,6 +37,11 @@ public class ReviewService {
 	public Review findById(final String id) {
 		return repository.findById(id).orElse(null);
 	}
+	
+	public Review findByIdAndCreatorId(final String id, String creatorId) {
+		return repository.findByIdAndCreatorId(id, creatorId).orElse(null);
+	}
+
 
 	public String addReview(final Review review, final Game game, final Developer developer) {
 		Assert.notNull(review);

@@ -14,8 +14,6 @@ import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.DeveloperSubscription;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
 import ISPP.G5.INDVELOPERS.services.DeveloperSubscriptionService;
-import ISPP.G5.INDVELOPERS.services.GameService;
-import ISPP.G5.INDVELOPERS.services.OwnedGameService;
 
 @CrossOrigin("*")
 @RestController
