@@ -33,14 +33,13 @@ import ISPP.G5.INDVELOPERS.services.ReviewService;
 public class ReviewController {
 
 	@Autowired
-	private ReviewService		service;
+	private ReviewService service;
 
 	@Autowired
-	private DeveloperService	developerService;
+	private DeveloperService developerService;
 
 	@Autowired
-	private GameService			gameService;
-
+	private GameService gameService;
 
 	@GetMapping("/game/{gameId}")
 	public ResponseEntity<List<Review>> findAllByGame(@PathVariable("gameId") final String gameId) {
@@ -50,6 +49,7 @@ public class ReviewController {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Review> findById(@PathVariable("id") final String id) {
 		try {
@@ -58,8 +58,10 @@ public class ReviewController {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
+
 	@PostMapping("/game/{gameId}/add")
-	public ResponseEntity<String> addReview(@RequestBody final Review review, @PathVariable("gameId") final String gameId) throws NotFoundException {
+	public ResponseEntity<String> addReview(@RequestBody final Review review,
+			@PathVariable("gameId") final String gameId) throws NotFoundException {
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -71,20 +73,25 @@ public class ReviewController {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
+
 	@PutMapping("/edit/{id}")
-	public ResponseEntity<String> editReview(@RequestBody final Review review, @PathVariable("id") final String id) throws NotFoundException {
+	public ResponseEntity<String> editReview(@RequestBody final Review review, @PathVariable("id") final String id)
+			throws NotFoundException {
 		try {
-    Review oldReview = service.findById(id);
-	  List<Review> gameReviews = service.findAllByGameId(id);
-	  for (Review r : gameReviews) {
-	  	if(r.getDeveloper().getUsername().equals(review.getDeveloper().getUsername()))
-	  		oldReview = r;
-	  }
-      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-      UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-      Developer developer = developerService.findByUsername(userDetails.getUsername());
-      if (!oldReview.getDeveloper().getId().equals(developer.getId()))
-        throw new IllegalArgumentException("Only the creator of the review can edit a review!");
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			Developer developer = developerService.findByUsername(userDetails.getUsername());
+			
+			Review oldReview = service.findByIdAndCreatorId(id,developer.getId());
+
+			List<Review> gameReviews = service.findAllByGameId(id);
+			for (Review r : gameReviews) {
+				if (r.getDeveloper().getUsername().equals(review.getDeveloper().getUsername()))
+					oldReview = r;
+			}
+
+			if (!oldReview.getDeveloper().getId().equals(developer.getId()))
+				throw new IllegalArgumentException("Only the creator of the review can edit a review!");
 			oldReview.setScore(review.getScore());
 			oldReview.setText(review.getText());
 			oldReview.setEdited(review.getEdited());
@@ -93,6 +100,7 @@ public class ReviewController {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
+
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<String> deleteReview(@PathVariable("id") final String id) throws NotFoundException {
 		try {

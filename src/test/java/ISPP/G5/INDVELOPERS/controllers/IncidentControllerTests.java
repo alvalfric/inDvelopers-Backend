@@ -77,6 +77,7 @@ class IncidentControllerTests {
 
 		when(incidentService.findAll()).thenReturn(Lists.list(incident1, incident2));
 		when(developerService.findByUsername(any(String.class))).thenReturn(developer1);
+		when(this.developerService.checkDeveloperIsAdmin(developer1)).thenReturn(true);
 		mockMvc.perform(get("/incidents")).andExpect(status().isOk()).andExpect(jsonPath("$[0].title").value(incident1.getTitle())).andExpect(jsonPath("$[1].title").value(incident2.getTitle()));
 	}
 
@@ -87,6 +88,8 @@ class IncidentControllerTests {
 
 		when(incidentService.findById("333")).thenReturn(incident1);
 		when(developerService.findByUsername(any(String.class))).thenReturn(developer1);
+		when(this.developerService.checkDeveloperIsAdmin(developer1)).thenReturn(true);
+
 		mockMvc.perform(get("/incidents/" + "333")).andExpect(status().isOk()).andExpect(jsonPath("$.cause").value(incident1.getCause()));
 	}
 

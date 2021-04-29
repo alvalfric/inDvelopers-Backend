@@ -44,7 +44,7 @@ public class IncidentController {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			Developer developer = developerService.findByUsername(userDetails.getUsername());
-			if (!developer.getRoles().contains(UserRole.ADMIN))
+			if (!this.developerService.checkDeveloperIsAdmin(developer))
 				throw new IllegalArgumentException("Only an admin can access this list");
 
 			return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
@@ -59,7 +59,7 @@ public class IncidentController {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			Developer developer = developerService.findByUsername(userDetails.getUsername());
-			if (!developer.getRoles().contains(UserRole.ADMIN))
+			if (!this.developerService.checkDeveloperIsAdmin(developer))
 				throw new IllegalArgumentException("Only an admin can access this list");
 
 			return new ResponseEntity<>(service.findNotSolved(), HttpStatus.OK);
@@ -74,7 +74,7 @@ public class IncidentController {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			Developer developer = developerService.findByUsername(userDetails.getUsername());
-			if (!developer.getRoles().contains(UserRole.ADMIN))
+			if (!this.developerService.checkDeveloperIsAdmin(developer))
 				throw new IllegalArgumentException("Only an admin can access the details of a Incident");
 
 			return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
@@ -102,7 +102,7 @@ public class IncidentController {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			Developer developer = developerService.findByUsername(userDetails.getUsername());
-			if (!developer.getRoles().contains(UserRole.ADMIN))
+			if (!this.developerService.checkDeveloperIsAdmin(developer))
 				throw new IllegalArgumentException("Only an admin can set an incident as Solved");
 
 			return new ResponseEntity<>(service.setIncidentAsSolved(id), HttpStatus.OK);
@@ -117,7 +117,7 @@ public class IncidentController {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			Developer developer = developerService.findByUsername(userDetails.getUsername());
-			if (!developer.getRoles().contains(UserRole.ADMIN))
+			if (!this.developerService.checkDeveloperIsAdmin(developer))
 				throw new IllegalArgumentException("Only an admin can delete an incident");
 
 			return new ResponseEntity<>(service.deleteIncident(id), HttpStatus.OK);
