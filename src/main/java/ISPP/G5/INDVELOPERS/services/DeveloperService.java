@@ -149,9 +149,9 @@ public class DeveloperService {
 	}
 
 	public boolean checkDeveloperIsAdmin(Developer developer) {
-		boolean result = !this.developerRepository.checkDeveloperIsAdmin(developer.getId()).isPresent();
-		System.out.println("entra - " + result);
-		return !this.developerRepository.checkDeveloperIsAdmin(developer.getId()).isPresent();
+		boolean result = this.developerRepository.checkDeveloperIsAdmin(developer.getId()).isPresent();
+
+		return result;
 	}
 	
 	/* Following users implementation */
