@@ -48,7 +48,7 @@ public class SpamWordController {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
-	@GetMapping("/developer")
+	@GetMapping("/signupDeveloper")
 	public ResponseEntity<Boolean> AnalyzeDeveloper(@RequestBody Developer developer){
 		try {
 			return new ResponseEntity<>(service.CheckDeveloper(developer),HttpStatus.OK);
@@ -56,7 +56,7 @@ public class SpamWordController {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
-	@GetMapping("/developer")
+	@GetMapping("/editDeveloper")
 	public ResponseEntity<Boolean> AnalyzeGetDeveloperDTO(@RequestBody GetDeveloperDTO developerDTO){
 		try {
 			return new ResponseEntity<>(service.CheckGetDeveloperDTO(developerDTO),HttpStatus.OK);
