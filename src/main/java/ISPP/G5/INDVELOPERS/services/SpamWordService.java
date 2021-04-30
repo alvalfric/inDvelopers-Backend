@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ISPP.G5.INDVELOPERS.dtos.GetDeveloperDTO;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.Publication;
@@ -84,4 +85,16 @@ public class SpamWordService {
 		}
 		return res;
 	}
+	public Boolean CheckGetDeveloperDTO(GetDeveloperDTO developerDTO) {
+		Boolean res=false;
+		if(isSpam(developerDTO.getDescription())) {
+			res=true;
+		}else if(isSpam(developerDTO.getTechnologies())) {
+			res=true;
+		}else if(isSpam(developerDTO.getUsername())) {
+			res=true;
+		}
+		return res;
+	}
+	
 }
