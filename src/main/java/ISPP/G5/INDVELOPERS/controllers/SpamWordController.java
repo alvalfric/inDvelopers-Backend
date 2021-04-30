@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +25,7 @@ public class SpamWordController {
 	@Autowired
 	private SpamWordService service;
 	
-	@GetMapping("/game")
+	@PostMapping("/game")
 	public ResponseEntity<Boolean> AnalyzeGame(@RequestBody Game game){
 		try {
 			return new ResponseEntity<>(service.CheckGame(game),HttpStatus.OK);
@@ -32,7 +33,7 @@ public class SpamWordController {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
-	@GetMapping("/review")
+	@PostMapping("/review")
 	public ResponseEntity<Boolean> AnalyzeReview(@RequestBody Review review){
 		try {
 			return new ResponseEntity<>(service.CheckReview(review),HttpStatus.OK);
@@ -40,7 +41,7 @@ public class SpamWordController {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
-	@GetMapping("/publication")
+	@PostMapping("/publication")
 	public ResponseEntity<Boolean> AnalyzePublication(@RequestBody Publication publication){
 		try {
 			return new ResponseEntity<>(service.CheckPublication(publication),HttpStatus.OK);
@@ -48,7 +49,7 @@ public class SpamWordController {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
-	@GetMapping("/signupDeveloper")
+	@PostMapping("/signupDeveloper")
 	public ResponseEntity<Boolean> AnalyzeDeveloper(@RequestBody Developer developer){
 		try {
 			return new ResponseEntity<>(service.CheckDeveloper(developer),HttpStatus.OK);
@@ -56,7 +57,7 @@ public class SpamWordController {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
-	@GetMapping("/editDeveloper")
+	@PostMapping("/editDeveloper")
 	public ResponseEntity<Boolean> AnalyzeGetDeveloperDTO(@RequestBody GetDeveloperDTO developerDTO){
 		try {
 			return new ResponseEntity<>(service.CheckGetDeveloperDTO(developerDTO),HttpStatus.OK);
