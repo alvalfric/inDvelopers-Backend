@@ -1,8 +1,11 @@
 package ISPP.G5.INDVELOPERS.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +29,7 @@ public class SpamWordService {
 		return res;
 	}
 	
-	
+	/*
 	public Boolean isSpam(String text) {
 		Boolean res = false;
 		String texto = text.toLowerCase().trim().replace("\\s+", " ");
@@ -41,6 +44,32 @@ public class SpamWordService {
 			res = true;
 		}
 		return res;
+	}
+	*/
+	public Boolean isSpam(String text) {
+		boolean isSpam = false;
+
+		List<String> splitted = Arrays.asList(text.split("\\s|\\p{Punct}"));
+
+		splitted = splitted.stream().filter(s -> s != "").collect(Collectors.toList());
+
+		int n = splitted.size();
+		int count = 0;
+
+		List<SpamWord> spam = findAllNoAllowed();
+
+		String lowerCaseString = text.toLowerCase().replaceAll("\\s+{2,}", " ");
+
+		for (SpamWord s : spam) {
+			s.setWord(s.getWord().trim());
+			count += StringUtils.countMatches(lowerCaseString, s.getWord());
+			isSpam = count >= 0.2 * n;
+			if (isSpam) {
+				break;
+			}
+		}
+
+		return isSpam;
 	}
 	public Boolean CheckGame(Game game) {
 		Boolean res=false;
