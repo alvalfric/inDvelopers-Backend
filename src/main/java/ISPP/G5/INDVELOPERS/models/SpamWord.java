@@ -19,5 +19,4 @@ public class SpamWord  extends BaseEntity{
 	@NotBlank
 	private String word;
 	
-	private Boolean isAllowed;
 }

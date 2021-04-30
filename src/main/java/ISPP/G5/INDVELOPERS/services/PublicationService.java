@@ -20,9 +20,6 @@ public class PublicationService {
 	@Autowired
 	private PublicationRepository publicationRepository;
 	
-	@Autowired 
-	private SpamWordService spamService;
-	
 
 	public List<Publication> findAll() {
 		List<Publication> res = new ArrayList<>();
@@ -54,18 +51,12 @@ public class PublicationService {
 	}
 
 	public String addPublication(Publication p, Developer d) {
-		if(spamService.isSpam(p.getText())) {
-			throw new IllegalArgumentException("This text contains words not allowed.");
-		}
 		p.setDeveloper(d);
 		this.publicationRepository.save(p);
 		return "Successfully added with id: " + p.getId();
 	}
 	
 	public String updatePublication(Publication publication) {
-		if(spamService.isSpam(publication.getText())) {
-			throw new IllegalArgumentException("This text contains words not allowed.");
-		}
 		Assert.notNull(publication);
 		this.publicationRepository.save(publication);
 		return "Updated publication with id:" + publication.getId();

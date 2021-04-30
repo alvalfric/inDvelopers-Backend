@@ -20,8 +20,6 @@ public class ReviewService {
 	@Autowired
 	private ReviewRepository repository;
 	
-	@Autowired 
-	private SpamWordService spamService;
 
 	public List<Review> findAll() {
 		List<Review> res = new ArrayList<>();
@@ -43,9 +41,6 @@ public class ReviewService {
 
 	public String addReview(final Review review, final Game game, final Developer developer) {
 		Assert.notNull(review);
-		if(spamService.isSpam(review.getText())) {
-			throw new IllegalArgumentException("This text contains words not allowed.");
-		}
 		review.setDeveloper(developer);
 		review.setGame(game);
 		List<Review> allReviews = findAllByGameId(game.getId());
@@ -62,9 +57,6 @@ public class ReviewService {
 	public String updateReview(final Review review) {
 		if (!repository.findById(review.getId()).isPresent())
 			throw new IllegalArgumentException("Error Id: Review with id " + review.getId() + " do not exist");
-		if(spamService.isSpam(review.getText())) {
-			throw new IllegalArgumentException("This text contains words not allowed.");
-		}
 		repository.save(review);
 		return "Updated Review with Id: " + review.getId();
 	}

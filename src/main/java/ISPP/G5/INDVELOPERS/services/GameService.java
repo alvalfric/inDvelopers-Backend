@@ -34,8 +34,6 @@ public class GameService {
 	@Autowired
 	private ReviewRepository repository;
 	
-	@Autowired 
-	private SpamWordService spamService;
 
 	public List<Game> findAll() {
 		List<Game> res = new ArrayList<>();
@@ -60,9 +58,7 @@ public class GameService {
 
 	public String addGame(Game game, Developer developer) {
 		Assert.notNull(game);
-		if((spamService.isSpam(game.getDescription())) || (spamService.isSpam(game.getTitle())) || (spamService.isSpam(game.getRequirements()))) {
-			throw new IllegalArgumentException("This text contains words not allowed.");
-		}
+		
 		game.setCreator(developer);
 		game.setDiscount(0.);
 		Date fechaCreacion = new Date();

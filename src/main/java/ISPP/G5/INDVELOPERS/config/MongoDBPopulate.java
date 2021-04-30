@@ -307,17 +307,17 @@ public class MongoDBPopulate<E> {
             /*
             ================= Spam Words =================
              */
-            SpamWord spam1 = new SpamWord("sex", false);
-            SpamWord spam2 = new SpamWord("gratis", false);
-            SpamWord spam3 = new SpamWord("handjob", false);
-            SpamWord spam4 = new SpamWord("porn", false);
-            SpamWord spam5 = new SpamWord("nigger", false);
-            SpamWord spam6 = new SpamWord("negra", false);
-            SpamWord spam7 = new SpamWord("basura", true);
-            SpamWord spam8 = new SpamWord("dinero", true);
-            SpamWord spam9 = new SpamWord("gana gratis", false);
-            SpamWord spam10 = new SpamWord("paja", false);
-            SpamWord spam11 = new SpamWord("ganar dinero", false);
+            SpamWord spam1 = new SpamWord("sex");
+            SpamWord spam2 = new SpamWord("gratis");
+            SpamWord spam3 = new SpamWord("handjob");
+            SpamWord spam4 = new SpamWord("porn");
+            SpamWord spam5 = new SpamWord("nigger");
+            SpamWord spam6 = new SpamWord("negra");
+            SpamWord spam7 = new SpamWord("basura");
+            SpamWord spam8 = new SpamWord("dinero");
+            SpamWord spam9 = new SpamWord("gana gratis");
+            SpamWord spam10 = new SpamWord("paja");
+            SpamWord spam11 = new SpamWord("ganar dinero");
             
             spamWordRepository.save(spam1);
             spamWordRepository.save(spam2);
