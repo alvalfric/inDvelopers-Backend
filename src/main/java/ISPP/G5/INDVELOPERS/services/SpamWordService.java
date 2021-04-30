@@ -40,12 +40,6 @@ public class SpamWordService {
 		if(actualThreshold > 0.2) {
 			res = true;
 		}
-		for (SpamWord s : findAllNoAllowed()) {
-			if (texto.contains(s.getWord())) {
-				res = true;
-				break;
-			}
-		}
 		return res;
 	}
 	public Boolean CheckGame(Game game) {
