@@ -21,6 +21,7 @@ import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.Order;
 import ISPP.G5.INDVELOPERS.models.OwnedGame;
 import ISPP.G5.INDVELOPERS.models.Review;
+import ISPP.G5.INDVELOPERS.models.SpamWord;
 import ISPP.G5.INDVELOPERS.models.UserEntity;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.paypal.OrderRepository;
@@ -32,6 +33,7 @@ import ISPP.G5.INDVELOPERS.repositories.IncidentRepository;
 import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
 import ISPP.G5.INDVELOPERS.repositories.PublicationRepository;
 import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
+import ISPP.G5.INDVELOPERS.repositories.SpamWordRepository;
 import ISPP.G5.INDVELOPERS.repositories.UserEntityRepository;
 
 @Configuration
@@ -45,7 +47,7 @@ public class MongoDBPopulate<E> {
             UserEntityRepository userEntityRepository, DeveloperRepository developerRepository,
             GameRepository gameRepository, ReviewRepository reviewRepository, OwnedGameRepository ownedGameRepository, PublicationRepository publicationRepository,
             DeveloperSubscriptionRepository developerSubscriptionRepository, OrderRepository orderRepository, CategoriaRepository categoriaRepository,
-            IncidentRepository incidentRepository) {
+            IncidentRepository incidentRepository, SpamWordRepository spamWordRepository) {
         return strings -> {
         	userEntityRepository.deleteAll();
             developerRepository.deleteAll();
@@ -57,6 +59,7 @@ public class MongoDBPopulate<E> {
             orderRepository.deleteAll();
             categoriaRepository.deleteAll();
             incidentRepository.deleteAll();
+            spamWordRepository.deleteAll();
 			
             /*
                 ================= USERS =================
@@ -309,6 +312,35 @@ public class MongoDBPopulate<E> {
             
             dummyDeveloper.getFollowing().add(fernando);
             developerRepository.save(dummyDeveloper);
+            
+            /*
+            ================= Spam Words =================
+             */
+            SpamWord spam1 = new SpamWord("sex");
+            SpamWord spam2 = new SpamWord("gratis");
+            SpamWord spam3 = new SpamWord("handjob");
+            SpamWord spam4 = new SpamWord("porn");
+            SpamWord spam5 = new SpamWord("nigger");
+            SpamWord spam6 = new SpamWord("negra");
+            SpamWord spam7 = new SpamWord("basura");
+            SpamWord spam8 = new SpamWord("dinero");
+            SpamWord spam9 = new SpamWord("gana gratis");
+            SpamWord spam10 = new SpamWord("paja");
+            SpamWord spam11 = new SpamWord("ganar dinero");
+            
+            spamWordRepository.save(spam1);
+            spamWordRepository.save(spam2);
+            spamWordRepository.save(spam3);
+            spamWordRepository.save(spam4);
+            spamWordRepository.save(spam5);
+            spamWordRepository.save(spam6);
+            spamWordRepository.save(spam7);
+            spamWordRepository.save(spam8);
+            spamWordRepository.save(spam9);
+            spamWordRepository.save(spam10);
+            spamWordRepository.save(spam11);
+            
+            
         };
 
     }

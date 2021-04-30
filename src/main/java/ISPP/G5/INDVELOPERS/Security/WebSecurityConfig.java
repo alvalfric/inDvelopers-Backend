@@ -52,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/developers/login").permitAll()
             .antMatchers("/games/findVerified").permitAll()
             .antMatchers("/games/*").permitAll()
+            .antMatchers("/spam/**").permitAll()
             .antMatchers("/reviews/game/*").permitAll()
             .antMatchers("/publications/**").permitAll()
             .antMatchers("/categories/**").permitAll()

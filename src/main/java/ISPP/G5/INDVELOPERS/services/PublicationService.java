@@ -13,11 +13,13 @@ import ISPP.G5.INDVELOPERS.models.Publication;
 import ISPP.G5.INDVELOPERS.repositories.PublicationRepository;
 import io.jsonwebtoken.lang.Assert;
 
+
 @Service
 public class PublicationService {
 
 	@Autowired
 	private PublicationRepository publicationRepository;
+	
 
 	public List<Publication> findAll() {
 		List<Publication> res = new ArrayList<>();
@@ -70,5 +72,8 @@ public class PublicationService {
 		}
 
 	}
+	
+
+	
 
 }

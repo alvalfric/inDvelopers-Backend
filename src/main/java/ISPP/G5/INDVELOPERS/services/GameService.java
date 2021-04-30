@@ -26,6 +26,7 @@ public class GameService {
 	private GameRepository gameRepository;
 	@Autowired
 	private ReviewRepository repository;
+	
 
 	public List<Game> findAll() {
 		List<Game> res = new ArrayList<>();
@@ -50,6 +51,7 @@ public class GameService {
 
 	public String addGame(Game game, Developer developer) {
 		Assert.notNull(game);
+		
 		game.setCreator(developer);
 		game.setDiscount(0.);
 		Date fechaCreacion = new Date();
