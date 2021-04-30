@@ -277,7 +277,7 @@ public class GameControllerIntegrationTests {
 	@DisplayName("Find games by developer followed")
 	@WithMockUser(username = "developer2", authorities = { "USER" })
 	void testFindGamesByDeveloperFollowd() throws Exception{
-		ResponseEntity<List<Game>> responseListGame = this.gameController.gamesByDevelopersFollowed();
+		ResponseEntity<List<Game>> responseListGame = this.gameController.getGamesByFollowedDeveloper();
 		Assertions.assertEquals(responseListGame.getStatusCodeValue(), 200);
 		Assertions.assertNotNull(responseListGame.getBody());
 		Assertions.assertEquals(responseListGame.getBody().get(0).getTitle(), "Game1");

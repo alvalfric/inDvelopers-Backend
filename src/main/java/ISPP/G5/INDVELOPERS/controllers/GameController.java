@@ -177,7 +177,17 @@ public class GameController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-
+	@GetMapping("/findGamesByFollowedDeveloper")
+	public ResponseEntity<List<Game>> getGamesByFollowedDeveloper() {
+		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			Developer developer = developerService.findByUsername(userDetails.getUsername());
+			return ResponseEntity.ok(gameService.gamesByDevelopersFollowed(developer));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
 	@GetMapping("/{id}")
 	public ResponseEntity<Game> getGameById(@PathVariable final String id) throws NotFoundException {
 		try {
@@ -233,18 +243,6 @@ public class GameController {
 		}
 	}
 
-	@GetMapping("/gamesByDevelopersFollowed")
-	public ResponseEntity<List<Game>> gamesByDevelopersFollowed() {
-		try {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-			Developer developer = developerService.findByUsername(userDetails.getUsername());
-			return ResponseEntity.ok(gameService.gamesByDevelopersFollowed(developer));
-		} catch (IllegalArgumentException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-		}
-
-	}
 
 	@GetMapping("/findAllWithDiscount")
 	public ResponseEntity<List<Game>> findAllWithDiscount() {
