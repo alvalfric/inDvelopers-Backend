@@ -29,12 +29,12 @@ public class CategoriaService {
 	
 	public Category findByTitle(String title) {
 		Category categoria = null;
-		List<Category> categorias = repository.findAll();
-		for(Category c: categorias) {
-			if(c.getTitle().contentEquals(title)) {
-				categoria = c;
-			}
+		List<Category> categorias = repository.findByTitle(title);
+
+		if(!categorias.isEmpty()) {
+			categoria = categorias.get(0);
 		}
+		
 		return categoria;
 	}
 	

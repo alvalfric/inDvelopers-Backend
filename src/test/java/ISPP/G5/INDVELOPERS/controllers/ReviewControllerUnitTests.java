@@ -119,8 +119,9 @@ public class ReviewControllerUnitTests {
 		when(service.updateReview(any(Review.class))).thenReturn("Edited Review");
 		when(service.findById("ID")).thenReturn(r1);
 		when(devService.findByUsername("spring")).thenReturn(developer);
-
-		mvc.perform(put("/reviews/edit/ID").contentType(MediaType.APPLICATION_JSON).content(bodyContent))
+		when(service.findByIdAndCreatorId(r1.getId(),developer.getId())).thenReturn(r1);
+		
+		mvc.perform(put("/reviews/edit/"+r1.getId()).contentType(MediaType.APPLICATION_JSON).content(bodyContent))
 				.andExpect(status().isOk()).andExpect(content().string("Edited Review"));
 	}
 

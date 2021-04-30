@@ -148,6 +148,12 @@ public class DeveloperService {
 		return developer;
 	}
 
+	public boolean checkDeveloperIsAdmin(Developer developer) {
+		boolean result = this.developerRepository.checkDeveloperIsAdmin(developer.getId()).isPresent();
+
+		return result;
+	}
+	
 	/* Following users implementation */
 
 	public String followDeveloper(String username) {

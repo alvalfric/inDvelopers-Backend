@@ -34,7 +34,7 @@ public class OwnedGameController {
 
 	@Autowired
 	public OwnedGameController(final DeveloperService developerService, final GameService gameService,
-		final OwnedGameService ownedGameService) {
+			final OwnedGameService ownedGameService) {
 		this.developerService = developerService;
 		this.ownedGameService = ownedGameService;
 		this.gameService = gameService;
@@ -43,8 +43,7 @@ public class OwnedGameController {
 	@GetMapping("/findOwnedGames")
 	public ResponseEntity<List<Game>> findAll() {
 		try {
-			List<Game> ownedGames = ownedGameService
-				.findAllMyOwnedGames(developerService.findCurrentDeveloper());
+			List<Game> ownedGames = ownedGameService.findAllMyOwnedGames(developerService.findCurrentDeveloper());
 
 			if (ownedGames == null) {
 				ownedGames = new ArrayList<Game>();
@@ -70,7 +69,7 @@ public class OwnedGameController {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
 			return ResponseEntity.status(HttpStatus.CREATED)
-				.body(ownedGameService.buyGameByDeveloperAndGameId(developer, gameId));
+					.body(ownedGameService.buyGameByDeveloperAndGameId(developer, gameId));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
@@ -79,8 +78,8 @@ public class OwnedGameController {
 	@GetMapping("/checkGameOwned/{gameId}")
 	public ResponseEntity<Boolean> checkGameOwned(@PathVariable String gameId) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(
-				ownedGameService.checkGameOwned(developerService.findCurrentDeveloper(), gameId));
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(ownedGameService.checkGameOwned(developerService.findCurrentDeveloper(), gameId));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}

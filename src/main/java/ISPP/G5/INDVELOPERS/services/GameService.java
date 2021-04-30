@@ -12,11 +12,8 @@ import org.springframework.stereotype.Service;
 import ISPP.G5.INDVELOPERS.models.Category;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
-import ISPP.G5.INDVELOPERS.models.OwnedGame;
 import ISPP.G5.INDVELOPERS.models.Review;
-import ISPP.G5.INDVELOPERS.repositories.CategoriaRepository;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
-import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
 import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
 import io.jsonwebtoken.lang.Assert;
 import lombok.AllArgsConstructor;
@@ -27,10 +24,6 @@ public class GameService {
 
 	@Autowired
 	private GameRepository gameRepository;
-	@Autowired
-	private OwnedGameRepository ownedGameRepository;
-	@Autowired
-	private CategoriaRepository categoriaRepository;
 	@Autowired
 	private ReviewRepository repository;
 	
@@ -69,7 +62,7 @@ public class GameService {
 
 	public List<Game> findByTitle(String title) {
 		List<Game> res = new ArrayList<>();
-		res = findAll().stream().filter(g -> g.getTitle().contains(title)).collect(Collectors.toList());
+		res = this.gameRepository.findByTitle(title);
 		Collections.reverse(res);
 		return res;
 	}
@@ -101,9 +94,7 @@ public class GameService {
 	}
 
 	public List<Game> findByTopSellers() {
-		
 		return findVerified().stream().filter(g -> mediaReviews(g) >= 4).collect(Collectors.toList());
-
 	}
 
 	public String updateGame(Game game) {
@@ -131,29 +122,33 @@ public class GameService {
 	public boolean checkGameTitle(String gameTitle) {
 		boolean result = false;
 
-		for (Game game : this.gameRepository.findAll()) {
-			if (game.getTitle().equals(gameTitle)) {
-				result = true;
-			}
+		if (!this.gameRepository.findByTitle(gameTitle).isEmpty()) {
+			result = true;
 		}
+
+//		for (Game game : this.gameRepository.findAll()) {
+//			if (game.getTitle().equals(gameTitle)) {
+//				result = true;
+//			}
+//		}
 
 		return result;
 	}
-	
-	public Double mediaReviews (Game g) {
+
+	public Double mediaReviews(Game g) {
 		Double res = 0.0;
 		List<Review> reviews = this.repository.findAllByGameId(g.getId());
-		for (Review r: reviews) {
+		for (Review r : reviews) {
 			res += r.getScore();
 		}
 		res = res / reviews.size();
 		return res;
-		}
+	}
+
 	public List<Game> findByTitleVerifiedOrCategorie(String input) {
-		
 		List<Game> res = this.gameRepository.findByTitleVerified(input);
-		for (Game g: this.findVerified()) {
-			for (Category c: g.getCategorias()) {
+		for (Game g : this.findVerified()) {
+			for (Category c : g.getCategorias()) {
 				if (c.getTitle().toLowerCase().contains(input.toLowerCase()) && !res.contains(g)) {
 					res.add(g);
 				}
@@ -162,13 +157,12 @@ public class GameService {
 		Collections.reverse(res);
 		return res;
 	}
-	
+
 	public List<Game> findByPrice(Double price) {
 		List<Game> res = this.gameRepository.findByPrice(price);
 		Collections.reverse(res);
 		return res;
 	}
-	
 
 	public List<Game> findAllWithDiscount() {
 		List<Game> res = this.gameRepository.findAllWithDiscount();

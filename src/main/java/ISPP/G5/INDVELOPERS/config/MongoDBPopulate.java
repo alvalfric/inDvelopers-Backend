@@ -198,9 +198,18 @@ public class MongoDBPopulate<E> {
             Category categoria5 = new Category("Simulacion");
             categoriaRepository.save(categoria5);
             
-            List<Category> categorias = new ArrayList<Category>();
-            categorias.add(categoria1);
-            categorias.add(categoria5);
+            List<Category> categorias1 = new ArrayList<Category>();
+            List<Category> categorias2 = new ArrayList<Category>();
+            List<Category> categorias3 = new ArrayList<Category>();
+
+            categorias1.add(categoria1);
+            categorias1.add(categoria5);
+            
+            categorias2.add(categoria2);
+            categorias2.add(categoria3);
+            
+            categorias3.add(categoria4);
+            categorias3.add(categoria5);
             
             Date fecha = new Date();
             
@@ -211,7 +220,7 @@ public class MongoDBPopulate<E> {
                     "1618508350667_blob",
                     true,
                     dummyDeveloper,
-                    null, categorias, fecha, 18,0.);
+                    null, categorias1, fecha, 18,0.);
             gameRepository.save(game1);
             
             
@@ -223,7 +232,7 @@ public class MongoDBPopulate<E> {
                     "1618508350667_blob",
                     true, 
                     dummyDeveloper,
-                    null, categorias, fecha, 18,0.3);
+                    null, categorias2, fecha, 18,0.3);
             
             gameRepository.save(game2);
             
@@ -235,7 +244,7 @@ public class MongoDBPopulate<E> {
                     "1618508350667_blob",
                     true, 
                     dummyDeveloper,
-                    null, categorias, fecha, 18,0.3);
+                    null, categorias3, fecha, 18,0.3);
             
             gameRepository.save(game3);
 

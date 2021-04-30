@@ -30,11 +30,10 @@ import ISPP.G5.INDVELOPERS.services.PublicationService;
 public class PublicationController {
 
 	@Autowired
-	private PublicationService	publicationService;
+	private PublicationService publicationService;
 
 	@Autowired
-	private DeveloperService	developService;
-
+	private DeveloperService developService;
 
 	@GetMapping("/findAll")
 	public ResponseEntity<List<Publication>> getPublications() {
@@ -80,10 +79,10 @@ public class PublicationController {
 		}
 
 	}
-	
+
 	@PutMapping("/edit/{id}")
-	public ResponseEntity<String> updatePublication(@PathVariable final String id, @RequestBody final Publication publication)
-			throws NotFoundException {
+	public ResponseEntity<String> updatePublication(@PathVariable final String id,
+			@RequestBody final Publication publication) throws NotFoundException {
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
