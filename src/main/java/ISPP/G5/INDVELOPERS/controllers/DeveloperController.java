@@ -64,6 +64,15 @@ public class DeveloperController {
 		}
 	}
 
+	@GetMapping
+	public ResponseEntity<Developer> getDeveloperByEmail(@RequestParam String email) {
+		try {
+			return ResponseEntity.ok(developerService.findByEmail(email));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+
 //	@GetMapping("/{username}")
 //	public ResponseEntity<Developer> getProfileByUserName(@PathVariable String username) {
 //		try {
