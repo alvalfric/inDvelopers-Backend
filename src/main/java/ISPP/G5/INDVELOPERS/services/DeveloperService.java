@@ -48,6 +48,7 @@ public class DeveloperService {
 
 		developer.setPassword(new BCryptPasswordEncoder(12).encode(developer.getPassword()));
 		developer.setRoles(Stream.of(UserRole.USER).collect(Collectors.toSet()));
+		developer.setFollowing(new ArrayList<Developer>());
 		this.developerRepository.save(developer);
 
 		return developer;
