@@ -2,6 +2,8 @@
 package ISPP.G5.INDVELOPERS.controllers;
 import java.util.List;
 
+import ISPP.G5.INDVELOPERS.models.Game;
+import ISPP.G5.INDVELOPERS.models.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
@@ -79,15 +81,14 @@ public class PublicationController {
 		}
 
 	}
-
 	@PutMapping("/edit/{id}")
-	public ResponseEntity<String> updatePublication(@PathVariable final String id,
-			@RequestBody final Publication publication) throws NotFoundException {
+	public ResponseEntity<String> updateGame(@PathVariable final String id, @RequestBody final Publication publication){
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			Developer developer = developService.findByUsername(userDetails.getUsername());
 			Publication publicationData = publicationService.findById(id);
+
 			if (publicationData.getDeveloper().getId().equals(developer.getId())) {
 				publicationData.setImagen(publication.getImagen());
 				publicationData.setText(publication.getText());
@@ -104,19 +105,18 @@ public class PublicationController {
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Void> deletePublicationById(@PathVariable final String id) {
+	public ResponseEntity<HttpStatus> deletePublicationById(@PathVariable("id") final String id) throws NotFoundException {
 		try {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			UserDetails userDetails = (UserDetails) auth.getPrincipal();
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			String user = userDetails.getUsername();
-			Developer developer = developService.findByUsername(user);
+			Developer developer = developService.findByUsername(userDetails.getUsername());
 			Publication p = publicationService.findById(id);
 			publicationService.deletePublication(p, developer);
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-
 	}
 
 }
