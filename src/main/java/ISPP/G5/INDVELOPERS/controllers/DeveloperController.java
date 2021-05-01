@@ -64,15 +64,6 @@ public class DeveloperController {
 		}
 	}
 
-	@GetMapping
-	public ResponseEntity<Developer> getDeveloperByEmail(@RequestParam String email) {
-		try {
-			return ResponseEntity.ok(developerService.findByEmail(email));
-		} catch (IllegalArgumentException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-		}
-	}
-
 //	@GetMapping("/{username}")
 //	public ResponseEntity<Developer> getProfileByUserName(@PathVariable String username) {
 //		try {
@@ -206,4 +197,25 @@ public class DeveloperController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
+
+	/* Recover password */
+
+	@GetMapping("/recoverPasswordByEmail")
+	public ResponseEntity<Developer> recoverPassByEmail(@RequestParam String email) {
+		try {
+			return ResponseEntity.ok(developerService.findByEmail(email));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+
+	@PutMapping("/restorePassword/{id}")
+	public ResponseEntity<Developer> restorePass(@PathVariable String id, @RequestParam String password) {
+		try {
+			return ResponseEntity.ok(this.developerService.updatePassword(id, password));
+		} catch (IllegalArgumentException e) {
+			return new ResponseEntity<Developer>(HttpStatus.BAD_REQUEST);
+		}
+	}
+
 }
