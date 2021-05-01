@@ -219,4 +219,12 @@ public class DeveloperService {
 
 		return myFollowersDTO;
 	}
+
+	/* Recover password */
+	public Developer updatePassword(String id, String password) {
+		Developer developer = this.findById(id);
+		developer.setPassword(new BCryptPasswordEncoder(12).encode(password));
+		return this.developerRepository.save(developer);
+	}
+
 }
