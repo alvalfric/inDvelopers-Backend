@@ -2,9 +2,7 @@ package ISPP.G5.INDVELOPERS.config;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -198,9 +196,9 @@ public class MongoDBPopulate<E> {
             Category categoria5 = new Category("Simulacion");
             categoriaRepository.save(categoria5);
             
-            List<Category> categorias1 = new ArrayList<Category>();
-            List<Category> categorias2 = new ArrayList<Category>();
-            List<Category> categorias3 = new ArrayList<Category>();
+            Set<Category> categorias1 = new HashSet<Category>();
+            Set<Category> categorias2 = new HashSet<Category>();
+            Set<Category> categorias3 = new HashSet<Category>();
 
             categorias1.add(categoria1);
             categorias1.add(categoria5);

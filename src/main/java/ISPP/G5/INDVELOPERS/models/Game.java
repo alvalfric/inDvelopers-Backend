@@ -2,6 +2,7 @@ package ISPP.G5.INDVELOPERS.models;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
@@ -47,7 +48,7 @@ public class Game extends BaseEntity{
 	private String imagen;
 	
 	@DBRef
-	private List<Category> categorias;
+	private Set<Category> categorias;
 	
 	private Date fechaCreacion;
 	

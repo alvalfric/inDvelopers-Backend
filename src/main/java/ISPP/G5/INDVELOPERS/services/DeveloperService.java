@@ -48,6 +48,7 @@ public class DeveloperService {
 
 		developer.setPassword(new BCryptPasswordEncoder(12).encode(developer.getPassword()));
 		developer.setRoles(Stream.of(UserRole.USER).collect(Collectors.toSet()));
+		developer.setFollowing(new ArrayList<Developer>());
 		this.developerRepository.save(developer);
 
 		return developer;
@@ -218,4 +219,12 @@ public class DeveloperService {
 
 		return myFollowersDTO;
 	}
+
+	/* Recover password */
+	public Developer updatePassword(String id, String password) {
+		Developer developer = this.findById(id);
+		developer.setPassword(new BCryptPasswordEncoder(12).encode(password));
+		return this.developerRepository.save(developer);
+	}
+
 }
