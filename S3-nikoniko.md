@@ -14,14 +14,14 @@
 
 | Day           |     Álvaro    |     David     |     Marta     |     Elena     |    Gonzalo    |Francisco Javier|   Alejandro   |     Luis      |  Juan Pablo   |    Moises     |   Fernando    |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | -------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-| April 24      |   :smiley:    |   :worried:   |               |               |               |   :smiley:     |   :worried:   |       😃      |               |               |   :neutral_face:            |
-| April 25      |:neutral_face: | :neutral_face:|               |               |               |                | :neutral_face:| :neutral_face:|               |               |    :neutral_face:           | 
-| April 26      |:neutral_face: |   :smiley:    |               |               |               |                | :neutral_face:|               |               |               |    :neutral_face:           |
-| April 27      |:worried:      | :neutral_face:|               |               |               |                |               |               |               |               |        :neutral_face:        |
-| April 28      | :smiley:      |   :smiley:    |               |               |               |                |               |               |               |               |        :smiley:       |
-| April 29      | :smiley:      |               |               |               |               |                |               |               |               |               |        :neutral_face:        |
-| April 30      |:worried:      |               |               |               |               |                |               |               |               |               |               |
-| May 1         |:worried:      |               |               |               |               |                |               |               |               |               |               |
-| May 2         |               |               |               |               |               |                |               |               |               |               |               |
+| April 24      |   :smiley:    |   :worried:   |               |               | :neutral_face:|   :smiley:     |   :worried:   |       😃      |               |               |   :neutral_face:            |
+| April 25      |:neutral_face: | :neutral_face:|               |               | :neutral_face:|                | :neutral_face:| :neutral_face:|               |               |    :neutral_face:           | 
+| April 26      |:neutral_face: |   :smiley:    |               |               |    :smiley:   |                | :neutral_face:|               |               |               |    :neutral_face:           |
+| April 27      |:worried:      | :neutral_face:|               |               | :neutral_face:|                |               |               |               |               |        :neutral_face:        |
+| April 28      | :smiley:      |   :smiley:    |               |               |   :worried:   |                |               |               |               |               |        :smiley:       |
+| April 29      | :smiley:      |               |               |               | :neutral_face:|                |               |               |               |               |        :neutral_face:        |
+| April 30      |:worried:      |               |               |               |   :worried:   |                |               |               |               |               |               |
+| May 1         |:worried:      |               |               |               |   :worried:   |                |               |               |               |               |               |
+| May 2         |               |               |               |               |   :worried:   |                |               |               |               |               |               |
 | May 3         |               |               |               |               |               |                |               |               |               |               |               |
 
