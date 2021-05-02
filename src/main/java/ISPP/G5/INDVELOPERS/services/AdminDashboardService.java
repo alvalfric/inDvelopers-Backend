@@ -64,8 +64,15 @@ public class AdminDashboardService {
 		Integer totalIncidents = this.incidentRepository.findAll() == null ? 0 : this.incidentRepository.findAll().size();
 		Integer totalIncidentsSolved=this.incidentRepository.findAll().stream().filter(x->x.isSolved()).collect(Collectors.toList())==null?0:this.incidentRepository.findAll().stream().filter(x->x.isSolved()).collect(Collectors.toList()).size();
 		Integer totalIncidentsNotSolved = this.incidentRepository.findNotSolved() == null ? 0 : this.incidentRepository.findNotSolved().size();
-		Integer totalPremiumUsers=this.developerRepository.findAll().stream().filter(x->x.getIsPremium()).collect(Collectors.toList())==null?0:this.developerRepository.findAll().stream().filter(x->x.getIsPremium()).collect(Collectors.toList()).size();
-		Integer totalNonPremiumUsers=this.developerRepository.findAll().stream().filter(x->!x.getIsPremium()).collect(Collectors.toList())==null?0:this.developerRepository.findAll().stream().filter(x->!x.getIsPremium()).collect(Collectors.toList()).size();
+		Integer totalPremiumUsers;
+		Integer totalNonPremiumUsers;
+		try {
+			totalPremiumUsers=this.developerRepository.findAll().stream().filter(x->x.getIsPremium()).collect(Collectors.toList())==null?0:this.developerRepository.findAll().stream().filter(x->x.getIsPremium()).collect(Collectors.toList()).size();
+			totalNonPremiumUsers=this.developerRepository.findAll().stream().filter(x->!x.getIsPremium()).collect(Collectors.toList())==null?0:this.developerRepository.findAll().stream().filter(x->!x.getIsPremium()).collect(Collectors.toList()).size();
+		}catch(NullPointerException e) {
+			totalPremiumUsers=0;
+			totalNonPremiumUsers=0;
+		}
 		
 		dashboard.setTotalGamesCreated(totalGamesCreated);
 		dashboard.setTotalPublicationsCreated(totalPublicationsCreated);
