@@ -92,13 +92,16 @@ public class AdminDashboardService {
 	}
 	
 	private Integer gamesPurchased() {
-		List<OwnedGame> ownedGames = this.ownedGameRepository.findAll();
 		Integer purchasedGames = 0;
 		
+		try {
+		List<OwnedGame> ownedGames = this.ownedGameRepository.findAll();
 		for (int i = 0; i < ownedGames.size(); i++) {
 			purchasedGames += ownedGames.get(i).getOwnedGames().size();
 		}
-		
+		}catch(NullPointerException e) {
+			purchasedGames=0;
+		}
 		return purchasedGames;
 	}
 
