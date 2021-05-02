@@ -106,10 +106,14 @@ public class AdminDashboardService {
 		List<OwnedGame> ownedGames = this.ownedGameRepository.findAll();
 		Double moneyEarned = 0.0;
 		
+		try {
 		for(OwnedGame og: ownedGames) {
 			for(Game g: og.getOwnedGames()) {
 				moneyEarned += g.getPrice();
 			}
+		}
+		}catch(NullPointerException e) {
+			moneyEarned=0.0;
 		}
 		
 		return moneyEarned;
