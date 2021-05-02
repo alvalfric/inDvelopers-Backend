@@ -23,5 +23,5 @@
 | April 30      |:worried:      |   :worried:   |    :worried:  | :worried:     |   :worried:   |   :worried:    |   :smiley:    |               | :neutral_face:|:smiley:                |         :worried:      |
 | May 1         |:worried:      |   :worried:   | :neutral_face:|    :worried:  |   :worried:   | :neutral_face: | :neutral_face:|               |  :smiley:     |:smiley:                |         :worried:     |
 | May 2         |  :smiley:     | :neutral_face:|  :smiley:     |   :smiley:    |   :worried:   |    :smiley:    | :neutral_face:|               | :neutral_face:|:smiley:                |       :smiley:        |
-| May 3         |               |               |   :smiley:    |               |               |                |               |               |               |               |               |
+| May 3         |               |               |   :smiley:    |               |               |                |               |               |               |:smiley:                 |               |
 
