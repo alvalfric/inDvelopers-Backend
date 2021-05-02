@@ -20,8 +20,8 @@
 | April 27      |:worried:      | :neutral_face:|   :worried:   |    :smiley:   | :neutral_face:| :neutral_face: |               |               |   :smiley:    |               |        :neutral_face:        |
 | April 28      | :smiley:      |   :smiley:    |    :smiley:   |:neutral_face: |   :worried:   | :neutral_face: |               |               |   :smiley:    |               |        :smiley:       |
 | April 29      | :smiley:      |   :smiley:    |   :smiley:    | :neutral_face:| :neutral_face:| :neutral_face: |               |               | :neutral_face:|               |        :neutral_face:        |
-| April 30      |:worried:      |   :worried:   |    :worried:  | :worried:     |   :worried:   |   :worried:    |               |               | :neutral_face:|               |               |
-| May 1         |:worried:      |   :worried:   | :neutral_face:|    :worried:  |   :worried:   | :neutral_face: |               |               |  :smiley:     |               |               |
-| May 2         |               | :neutral_face:|  :smiley:     |   :smiley:    |   :worried:   |    :smiley:    |               |               | :neutral_face:|               |               |
+| April 30      |:worried:      |   :worried:   |    :worried:  | :worried:     |   :worried:   |   :worried:    |               |               | :neutral_face:|               |         :smiley:      |
+| May 1         |:worried:      |   :worried:   | :neutral_face:|    :worried:  |   :worried:   | :neutral_face: |               |               |  :smiley:     |               |         :smiley:      |
+| May 2         |               | :neutral_face:|  :smiley:     |   :smiley:    |   :worried:   |    :smiley:    |               |               | :neutral_face:|               |       :smiley:        |
 | May 3         |               |               |   :smiley:    |               |               |                |               |               |               |               |               |
 
