@@ -17,11 +17,11 @@
 | April 24      |   :smiley:    |   :worried:   |               |               |               |   :smiley:     |   :worried:   |       😃      |               |               |   :neutral_face:            |
 | April 25      |:neutral_face: | :neutral_face:|               |               |               |                | :neutral_face:| :neutral_face:|               |               |    :neutral_face:           | 
 | April 26      |:neutral_face: |   :smiley:    |               |               |               |                | :neutral_face:|               |               |               |    :neutral_face:           |
-| April 27      |               | :neutral_face:|               |               |               |                |               |               |               |               |        :neutral_face:        |
-| April 28      |               |   :smiley:    |               |               |               |                |               |               |               |               |        :smiley:       |
-| April 29      |               |               |               |               |               |                |               |               |               |               |        :neutral_face:        |
-| April 30      |               |               |               |               |               |                |               |               |               |               |               |
-| May 1         |               |               |               |               |               |                |               |               |               |               |               |
+| April 27      |:worried:      | :neutral_face:|               |               |               |                |               |               |               |               |        :neutral_face:        |
+| April 28      | :smiley:      |   :smiley:    |               |               |               |                |               |               |               |               |        :smiley:       |
+| April 29      | :smiley:      |               |               |               |               |                |               |               |               |               |        :neutral_face:        |
+| April 30      |:worried:      |               |               |               |               |                |               |               |               |               |               |
+| May 1         |:worried:      |               |               |               |               |                |               |               |               |               |               |
 | May 2         |               |               |               |               |               |                |               |               |               |               |               |
 | May 3         |               |               |               |               |               |                |               |               |               |               |               |
 
