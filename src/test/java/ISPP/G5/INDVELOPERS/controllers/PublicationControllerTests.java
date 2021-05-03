@@ -148,7 +148,7 @@ public class PublicationControllerTests {
 	@Test
 	void testProcessDeletePublicationSuccess() throws Exception {
 		when(this.publicationService.deletePublication(publication1, developer1)).thenReturn("Delete publication with id: " + publication1.getId());
-		this.mockMvc.perform(delete("/publications/delete/TEST_PUBLICATION1_ID")).andExpect(status().isOk());
+		this.mockMvc.perform(delete("/publications/delete/TEST_PUBLICATION1_ID")).andExpect(status().is2xxSuccessful());
 	}
 
 	private String objectToJsonStringContent(final Object o) throws JsonProcessingException {
