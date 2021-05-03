@@ -1,8 +1,9 @@
 package ISPP.G5.INDVELOPERS.models;
 
 
-import java.awt.Image;
+import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,7 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import ISPP.G5.INDVELOPERS.Utils.CustomAuthorityDeserializer;
-import ISPP.G5.INDVELOPERS.models.UserEntity.UserEntityBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,8 +48,6 @@ public class Developer extends BaseEntity implements UserDetails{
 	@Email
 	private String email;
 	
-	private List<String> gameList;
-	
 	private String userImage;
 	
 	private Set<UserRole> roles;
@@ -60,6 +59,12 @@ public class Developer extends BaseEntity implements UserDetails{
 	private String technologies;
 	
 	private Boolean isPremium;
+	
+	@NotBlank
+	private Date dateOfBirth;
+	
+	@DBRef(lazy = true)
+	private List<Developer> following;
 
 	@Override
 	@JsonDeserialize(using = CustomAuthorityDeserializer.class)

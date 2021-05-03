@@ -1,9 +1,9 @@
 cloud:
   aws:
     credentials:
-      access-key: AKIAR2TANKCF4ZAMEHYZ
+      access-key: AKIA3XNIOKKCALTMB7Z6
       secret-key: 
-      secret-key-encoded: djZNSjFpd1JNQmhuRkxIek5RVjY2U0V3MFBLcWN5VjcwKzZLVVJTNQ==
+      secret-key-encoded: eW5xVGpuR05VMmI4QzIyZGlaQ3REKytBUGRmL01JUEk2NDIrWElINg==
     region:
       static: eu-west-3
     stack:
@@ -11,7 +11,7 @@ cloud:
 
 application:
   bucket:
-    name: indvelopers
+    name: level3-indvelopers
 
 spring:
   servlet:

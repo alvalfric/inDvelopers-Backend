@@ -50,10 +50,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             //.antMatchers("/**").permitAll()
             .antMatchers("/developers/sign-up").permitAll()
             .antMatchers("/developers/login").permitAll()
+            .antMatchers("/developers/recoverPasswordByEmail").permitAll()
+            .antMatchers("/developers/restorePassword/*").permitAll()
             .antMatchers("/games/findVerified").permitAll()
             .antMatchers("/games/*").permitAll()
+            .antMatchers("/games/findByPrice/**").permitAll()
+            .antMatchers("/games/findByTitleVerifiedOrCategorie/**").permitAll()
+            .antMatchers("/spam/**").permitAll()
             .antMatchers("/reviews/game/*").permitAll()
-            .antMatchers("/publications/findAll").permitAll()
+            .antMatchers("/publications/**").permitAll()
+            .antMatchers("/categories/**").permitAll()
             .anyRequest().authenticated();
 
     // If a user try to access a resource without having enough permissions

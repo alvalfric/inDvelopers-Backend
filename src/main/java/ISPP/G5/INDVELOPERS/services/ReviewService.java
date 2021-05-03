@@ -19,6 +19,7 @@ public class ReviewService {
 
 	@Autowired
 	private ReviewRepository repository;
+	
 
 	public List<Review> findAll() {
 		List<Review> res = new ArrayList<>();
@@ -37,6 +38,11 @@ public class ReviewService {
 	public Review findById(final String id) {
 		return repository.findById(id).orElse(null);
 	}
+	
+	public Review findByIdAndCreatorId(final String id, String creatorId) {
+		return repository.findByIdAndCreatorId(id, creatorId).orElse(null);
+	}
+
 
 	public String addReview(final Review review, final Game game, final Developer developer) {
 		Assert.notNull(review);
@@ -56,7 +62,6 @@ public class ReviewService {
 	public String updateReview(final Review review) {
 		if (!repository.findById(review.getId()).isPresent())
 			throw new IllegalArgumentException("Error Id: Review with id " + review.getId() + " do not exist");
-
 		repository.save(review);
 		return "Updated Review with Id: " + review.getId();
 	}

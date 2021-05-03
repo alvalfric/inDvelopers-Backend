@@ -1,5 +1,6 @@
 package ISPP.G5.INDVELOPERS.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,7 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ISPP.G5.INDVELOPERS.Security.JwtTokenProvider;
-import ISPP.G5.INDVELOPERS.cloud.CloudStorageService;
+import ISPP.G5.INDVELOPERS.dtos.GetDeveloperDTO;
+import ISPP.G5.INDVELOPERS.mappers.DeveloperDTOConverter;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
@@ -30,10 +32,9 @@ public class DeveloperService {
 	private JwtTokenProvider jwtTokenProvider;
 	private AuthenticationManager authenticationManager;
 	private DeveloperRepository developerRepository;
-	
+
 	public List<Developer> getAll() {
 		return this.developerRepository.findAll();
-
 	}
 
 	public Developer createDeveloper(Developer developer) {
@@ -47,6 +48,7 @@ public class DeveloperService {
 
 		developer.setPassword(new BCryptPasswordEncoder(12).encode(developer.getPassword()));
 		developer.setRoles(Stream.of(UserRole.USER).collect(Collectors.toSet()));
+		developer.setFollowing(new ArrayList<Developer>());
 		this.developerRepository.save(developer);
 
 		return developer;
@@ -104,7 +106,6 @@ public class DeveloperService {
 	}
 
 	public Developer findByUsername(String username) {
-
 		return developerRepository.findByUsername(username).orElse(null);
 	}
 
@@ -141,11 +142,89 @@ public class DeveloperService {
 		}
 	}
 
-	
 	public Developer findCurrentDeveloper() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		Developer developer = findByUsername(userDetails.getUsername());
 		return developer;
 	}
+
+	public boolean checkDeveloperIsAdmin(Developer developer) {
+		boolean result = this.developerRepository.checkDeveloperIsAdmin(developer.getId()).isPresent();
+
+		return result;
+	}
+	
+	/* Following users implementation */
+
+	public String followDeveloper(String username) {
+		Developer currentDeveloper = this.findCurrentDeveloper();
+		Developer devToFollow = this.findByUsername(username);
+		if (devToFollow == null) {
+			return "This developer doesn't exist";
+		} else if (currentDeveloper.getFollowing().contains(devToFollow)) {
+			return "You are already following this user";
+		} else if (devToFollow.equals(currentDeveloper)) {
+			return "You can't follow yourself";
+		} else {
+			currentDeveloper.getFollowing().add(devToFollow);
+			this.updateDeveloper(currentDeveloper);
+			return "You are now following " + devToFollow.getUsername();
+		}
+	}
+
+	public String unfollowDeveloper(String username) {
+		Developer currentDeveloper = this.findCurrentDeveloper();
+		Developer devToUnfollow = this.findByUsername(username);
+		if (devToUnfollow == null) {
+			return "This developer doesn't exist";
+		} else if (currentDeveloper.getFollowing().contains(devToUnfollow)) {
+			currentDeveloper.getFollowing().remove(devToUnfollow);
+			this.updateDeveloper(currentDeveloper);
+			return "You are not following " + devToUnfollow.getUsername() + " anymore";
+		} else {
+			return "You are not following " + devToUnfollow.getUsername();
+		}
+	}
+
+	public List<Developer> getMyFollowers(String username) {
+		Developer currentDeveloper = this.findByUsername(username);
+		List<Developer> myFollowers = new ArrayList<Developer>();
+
+		myFollowers.addAll(this.developerRepository.findMyFollowers(currentDeveloper.getId()));
+
+		return myFollowers;
+	}
+
+	public List<GetDeveloperDTO> getMyFollowersDTO(String username) {
+		List<Developer> myFollowers = this.getMyFollowers(username);
+		List<GetDeveloperDTO> myFollowersDTO = new ArrayList<GetDeveloperDTO>();
+
+		for (Developer dev : myFollowers) {
+			GetDeveloperDTO devToAdd = DeveloperDTOConverter.DevelopertoGetDeveloperDTO(dev);
+			myFollowersDTO.add(devToAdd);
+		}
+
+		return myFollowersDTO;
+	}
+	
+	public List<GetDeveloperDTO> getMyFollowedDTO(String username) {
+		Developer currentDeveloper = this.findByUsername(username);
+		List<GetDeveloperDTO> myFollowersDTO = new ArrayList<GetDeveloperDTO>();
+
+		for (Developer dev : currentDeveloper.getFollowing()) {
+			GetDeveloperDTO devToAdd = DeveloperDTOConverter.DevelopertoGetDeveloperDTO(dev);
+			myFollowersDTO.add(devToAdd);
+		}
+
+		return myFollowersDTO;
+	}
+
+	/* Recover password */
+	public Developer updatePassword(String id, String password) {
+		Developer developer = this.findById(id);
+		developer.setPassword(new BCryptPasswordEncoder(12).encode(password));
+		return this.developerRepository.save(developer);
+	}
+
 }

@@ -1,9 +1,12 @@
 package ISPP.G5.INDVELOPERS.dtos;
 
-import java.awt.Image;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
+import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,8 +27,6 @@ public class GetDeveloperDTO {
 
 	private String email;
 
-	private List<String> gameList;
-
 	private String userImage;
 
 	private Set<UserRole> roles;
@@ -35,4 +36,9 @@ public class GetDeveloperDTO {
 	private String technologies;
 
 	private Boolean isPremium;
+	
+	private Date dateOfBirth;
+	
+	@DBRef
+	private List<GetDeveloperDTO> following;
 }

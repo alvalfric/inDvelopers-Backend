@@ -24,5 +24,24 @@ public class AdminDashboard {
 	private Integer totalGamesPurchased;
 	
 	private Double totalMoneyEarnedByDevelopers;
+	
+	private Integer totalDevelopers;
+		
+	private Integer gamesNotVerified;
+	
+	private Integer gamesVerified;
+	
+	private Integer totalIncident;
+	
+	private Integer incidentsNotSolved;
+	
+	private Integer incidentsSolved;
+	
+	private Integer totalPremiumUsers;
+	
+	private Integer totalNotPremiumUsers;
+	
+	
+	
 
 }

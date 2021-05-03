@@ -64,15 +64,25 @@ public class DeveloperController {
 		}
 	}
 
+//	@GetMapping("/{username}")
+//	public ResponseEntity<Developer> getProfileByUserName(@PathVariable String username) {
+//		try {
+//			return ResponseEntity.ok(developerService.findByUsername(username));
+//		} catch (IllegalArgumentException e) {
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//		}
+//	}
+
 	@GetMapping("/{username}")
-	public ResponseEntity<Developer> getProfileByUserName(@PathVariable String username) {
+	public ResponseEntity<GetDeveloperDTO> getProfileByUserName(@PathVariable String username) {
 		try {
-			return ResponseEntity.ok(developerService.findByUsername(username));
+			return ResponseEntity.ok(DeveloperDTOConverter
+					.DevelopertoGetDeveloperDTO(developerService.findByUsername(username)));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
-
+	
 	@DeleteMapping("/delete/{developerId}")
 	public ResponseEntity<String> deleteDeveloperById(@PathVariable("developerId") String developerId)
 			throws NotFoundException {
@@ -93,7 +103,7 @@ public class DeveloperController {
 			developer2.setTechnologies(developerDTO.getTechnologies());
 			developer2.setDescription(developerDTO.getDescription());
 			developer2.setEmail(developerDTO.getEmail());
-//			return new ResponseEntity<GetDeveloperDTO>(DeveloperDTOConverter.DevelopertoGetDeveloperDTO(this.developerService.updateDeveloper(developer2)), HttpStatus.OK);
+			developer2.setDateOfBirth(developerDTO.getDateOfBirth());
 			return ResponseEntity.ok(DeveloperDTOConverter
 					.DevelopertoGetDeveloperDTO(this.developerService.updateDeveloper(developer2)));
 		} catch (IllegalArgumentException e) {
@@ -127,7 +137,6 @@ public class DeveloperController {
 			if (!admin.getRoles().contains(UserRole.ADMIN)) {
 				throw new IllegalArgumentException("Only an admin can downgrade an user to user");
 			}
-//			return new ResponseEntity<GetDeveloperDTO>(DeveloperDTOConverter.DevelopertoGetDeveloperDTO(this.developerService.updateDeveloper(developer2)), HttpStatus.OK);
 			return ResponseEntity
 					.ok(DeveloperDTOConverter.DevelopertoGetDeveloperDTO(this.developerService.changeToUser(id)));
 		} catch (IllegalArgumentException e) {
@@ -144,6 +153,68 @@ public class DeveloperController {
 					.DevelopertoGetDeveloperDTO(developerService.findByUsername(principal.getUsername())));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+	
+	/* Following users implementation*/
+	
+	@PutMapping("/follow/{username}")
+	public ResponseEntity<String> followUsername(
+			@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, @PathVariable String username) {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(developerService.followDeveloper(username));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+
+	@PutMapping("/unfollow/{username}")
+	public ResponseEntity<String> unfollowUsername(
+			@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, @PathVariable String username) {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(developerService.unfollowDeveloper(username));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+	
+	@GetMapping("/me/myFollowers")
+	public ResponseEntity<List<GetDeveloperDTO>> myFollowers(
+			@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal) {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(this.developerService.getMyFollowersDTO(principal.getUsername()));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+	
+	@GetMapping("/me/myFollowed")
+	public ResponseEntity<List<GetDeveloperDTO>> myFollowed(
+			@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal) {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(this.developerService.getMyFollowedDTO(principal.getUsername()));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+
+	/* Recover password */
+
+	@GetMapping("/recoverPasswordByEmail")
+	public ResponseEntity<Developer> recoverPassByEmail(@RequestParam String email) {
+		try {
+			return ResponseEntity.ok(developerService.findByEmail(email));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+
+	@PutMapping("/restorePassword/{id}")
+	public ResponseEntity<Developer> restorePass(@PathVariable String id, @RequestParam String password) {
+		try {
+			return ResponseEntity.ok(this.developerService.updatePassword(id, password));
+		} catch (IllegalArgumentException e) {
+			return new ResponseEntity<Developer>(HttpStatus.BAD_REQUEST);
 		}
 	}
 

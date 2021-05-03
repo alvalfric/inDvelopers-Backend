@@ -1,9 +1,11 @@
 
 package ISPP.G5.INDVELOPERS.controllers;
-
 import java.util.List;
 
+import ISPP.G5.INDVELOPERS.models.Game;
+import ISPP.G5.INDVELOPERS.models.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,11 +32,10 @@ import ISPP.G5.INDVELOPERS.services.PublicationService;
 public class PublicationController {
 
 	@Autowired
-	private PublicationService	publicationService;
+	private PublicationService publicationService;
 
 	@Autowired
-	private DeveloperService	developService;
-
+	private DeveloperService developService;
 
 	@GetMapping("/findAll")
 	public ResponseEntity<List<Publication>> getPublications() {
@@ -79,21 +81,42 @@ public class PublicationController {
 		}
 
 	}
-
-	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Void> deletePublicationById(@PathVariable final String id) {
+	@PutMapping("/edit/{id}")
+	public ResponseEntity<String> updateGame(@PathVariable final String id, @RequestBody final Publication publication){
 		try {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			UserDetails userDetails = (UserDetails) auth.getPrincipal();
-			String user = userDetails.getUsername();
-			Developer developer = developService.findByUsername(user);
-			Publication p = publicationService.findById(id);
-			publicationService.deletePublication(p, developer);
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			Developer developer = developService.findByUsername(userDetails.getUsername());
+			Publication publicationData = publicationService.findById(id);
+
+			if (publicationData.getDeveloper().getId().equals(developer.getId())) {
+				publicationData.setImagen(publication.getImagen());
+				publicationData.setText(publication.getText());
+				publicationData.setUsername(publication.getUsername());
+				publicationData.setUserPicture(publication.getUserPicture());
+				return new ResponseEntity<>(publicationService.updatePublication(publicationData), HttpStatus.OK);
+			} else {
+				throw new IllegalArgumentException("Only the creator of the publication can edit it");
+			}
+
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
+	}
 
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<HttpStatus> deletePublicationById(@PathVariable("id") final String id) throws NotFoundException {
+		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			String user = userDetails.getUsername();
+			Developer developer = developService.findByUsername(userDetails.getUsername());
+			Publication p = publicationService.findById(id);
+			publicationService.deletePublication(p, developer);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (IllegalArgumentException e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 
 }

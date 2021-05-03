@@ -9,16 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
-import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.Publication;
 import ISPP.G5.INDVELOPERS.repositories.PublicationRepository;
-import lombok.AllArgsConstructor;
+import io.jsonwebtoken.lang.Assert;
+
 
 @Service
 public class PublicationService {
 
 	@Autowired
 	private PublicationRepository publicationRepository;
+	
 
 	public List<Publication> findAll() {
 		List<Publication> res = new ArrayList<>();
@@ -54,6 +55,12 @@ public class PublicationService {
 		this.publicationRepository.save(p);
 		return "Successfully added with id: " + p.getId();
 	}
+	
+	public String updatePublication(Publication publication) {
+		Assert.notNull(publication);
+		this.publicationRepository.save(publication);
+		return "Updated publication with id:" + publication.getId();
+	}
 
 	public String deletePublication(Publication p, Developer developer) {
 		if (developer.getUsername().contentEquals(p.getUsername())) {
@@ -65,5 +72,8 @@ public class PublicationService {
 		}
 
 	}
+	
+
+	
 
 }
