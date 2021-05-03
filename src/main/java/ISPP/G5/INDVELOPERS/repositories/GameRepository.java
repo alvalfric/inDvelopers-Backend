@@ -37,7 +37,7 @@ public interface GameRepository extends MongoRepository<Game, String> {
 	@Query("{'title': {'$regex': ?0, '$options': 'i'}, 'isNotMalware':true}")
 	List<Game> findByTitleVerified(String res);
 	
-	@Query("{'price': {'$lt': ?0}, 'isNotMalware':true}")
+	@Query("{'price': {'$lte': ?0}, 'isNotMalware':true}")
 	List<Game> findByPrice(Double price);
 	
 	@Query("{'discount': {'$ne': 0}, 'isNotMalware':true}")

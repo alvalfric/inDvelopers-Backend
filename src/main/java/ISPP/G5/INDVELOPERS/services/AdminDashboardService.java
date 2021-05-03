@@ -60,9 +60,20 @@ public class AdminDashboardService {
 		Integer totalReviewsCreated = this.reviewRepository.findAll() == null ? 0 : this.reviewRepository.findAll().size();
 		Integer totalDevelopers = this.developerRepository.findAll() == null ? 0 : this.developerRepository.findAll().size();
 		Integer totalGamesVerified = this.gameRepository.findVerified() == null ? 0 : this.gameRepository.findVerified().size();
+		Integer totalGamesNonVerified=this.gameRepository.findAll().stream().filter(x->!x.getIsNotMalware()).collect(Collectors.toList())==null?0:this.gameRepository.findAll().stream().filter(x->!x.getIsNotMalware()).collect(Collectors.toList()).size();
 		Integer totalIncidents = this.incidentRepository.findAll() == null ? 0 : this.incidentRepository.findAll().size();
+		Integer totalIncidentsSolved=this.incidentRepository.findAll().stream().filter(x->x.isSolved()).collect(Collectors.toList())==null?0:this.incidentRepository.findAll().stream().filter(x->x.isSolved()).collect(Collectors.toList()).size();
 		Integer totalIncidentsNotSolved = this.incidentRepository.findNotSolved() == null ? 0 : this.incidentRepository.findNotSolved().size();
-
+		Integer totalPremiumUsers;
+		Integer totalNonPremiumUsers;
+		try {
+			totalPremiumUsers=this.developerRepository.findAll().stream().filter(x->x.getIsPremium()).collect(Collectors.toList())==null?0:this.developerRepository.findAll().stream().filter(x->x.getIsPremium()).collect(Collectors.toList()).size();
+			totalNonPremiumUsers=this.developerRepository.findAll().stream().filter(x->!x.getIsPremium()).collect(Collectors.toList())==null?0:this.developerRepository.findAll().stream().filter(x->!x.getIsPremium()).collect(Collectors.toList()).size();
+		}catch(NullPointerException e) {
+			totalPremiumUsers=0;
+			totalNonPremiumUsers=0;
+		}
+		
 		dashboard.setTotalGamesCreated(totalGamesCreated);
 		dashboard.setTotalPublicationsCreated(totalPublicationsCreated);
 		dashboard.setTotalReviewsCreated(totalReviewsCreated);
@@ -70,24 +81,27 @@ public class AdminDashboardService {
 		dashboard.setTotalMoneyEarnedByDevelopers(this.moneyEarned());
 		dashboard.setTotalDevelopers(totalDevelopers);
 		dashboard.setGamesVerified(totalGamesVerified);
-		dashboard.setGamesNotVerified(this.gameRepository.findAll().stream().filter(x->!x.getIsNotMalware()).collect(Collectors.toList()).size());
+		dashboard.setGamesNotVerified(totalGamesNonVerified);
 		dashboard.setTotalIncident(totalIncidents);
-		dashboard.setIncidentsSolved(this.incidentRepository.findAll().stream().filter(x->x.isSolved()).collect(Collectors.toList()).size());
+		dashboard.setIncidentsSolved(totalIncidentsSolved);
 		dashboard.setIncidentsNotSolved(totalIncidentsNotSolved);
-		dashboard.setTotalPremiumUsers(this.developerRepository.findAll().stream().filter(x->x.getIsPremium()).collect(Collectors.toList()).size());
-		dashboard.setTotalNotPremiumUsers(this.developerRepository.findAll().stream().filter(x->!x.getIsPremium()).collect(Collectors.toList()).size());
+		dashboard.setTotalPremiumUsers(totalPremiumUsers);
+		dashboard.setTotalNotPremiumUsers(totalNonPremiumUsers);
 
 		return dashboard;
 	}
 	
 	private Integer gamesPurchased() {
-		List<OwnedGame> ownedGames = this.ownedGameRepository.findAll();
 		Integer purchasedGames = 0;
 		
+		try {
+		List<OwnedGame> ownedGames = this.ownedGameRepository.findAll();
 		for (int i = 0; i < ownedGames.size(); i++) {
 			purchasedGames += ownedGames.get(i).getOwnedGames().size();
 		}
-		
+		}catch(NullPointerException e) {
+			purchasedGames=0;
+		}
 		return purchasedGames;
 	}
 
@@ -95,10 +109,14 @@ public class AdminDashboardService {
 		List<OwnedGame> ownedGames = this.ownedGameRepository.findAll();
 		Double moneyEarned = 0.0;
 		
+		try {
 		for(OwnedGame og: ownedGames) {
 			for(Game g: og.getOwnedGames()) {
 				moneyEarned += g.getPrice();
 			}
+		}
+		}catch(NullPointerException e) {
+			moneyEarned=0.0;
 		}
 		
 		return moneyEarned;

@@ -48,7 +48,6 @@ public class Developer extends BaseEntity implements UserDetails{
 	@Email
 	private String email;
 	
-	
 	private String userImage;
 	
 	private Set<UserRole> roles;
