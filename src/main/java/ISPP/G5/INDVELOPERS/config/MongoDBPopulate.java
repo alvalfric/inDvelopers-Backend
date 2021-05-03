@@ -94,13 +94,13 @@ public class MongoDBPopulate<E> {
 
             developerRepository.save(fernando);
             
-            Developer alvaqjim = new Developer("alvaqjim",
+            Developer alvvaqjim = new Developer("alvvaqjim",
                     passwordEncoder.encode("MhPQpKKb1Ieh"),
                     "sb-uiz525914316@personal.example.com",
                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
                     "Soy un desarrollador de videojuegos", "Unreal Engine, Maya y Photoshop", true, formatter.parse("1997-03-12"), new ArrayList<Developer>());
 
-            developerRepository.save(alvaqjim);
+            developerRepository.save(alvvaqjim);
             
             /* Credenciales de los profesores */
             
@@ -235,7 +235,7 @@ public class MongoDBPopulate<E> {
                     9.99,
                     "1619011155211_blob",
                     true,
-                    alvaqjim,
+                    alvvaqjim,
                     null, 
                     iceSecretCategories, fecha, 12,0.);
             gameRepository.save(iceSecret);
@@ -250,7 +250,7 @@ public class MongoDBPopulate<E> {
                     2.0,
                     "1619011221431_blob",
                     true,
-                    alvaqjim,
+                    alvvaqjim,
                     null, 
                     aLovelyAfternoonCategories, fecha, 18,0.);
             gameRepository.save(aLovelyAfternoon);
@@ -285,6 +285,10 @@ public class MongoDBPopulate<E> {
             DeveloperSubscription devSub3 = new DeveloperSubscription(fernando,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
             developerSubscriptionRepository.save(devSub3);
             
+            DeveloperSubscription devSub4 = new DeveloperSubscription(alvvaqjim,LocalDate.of(2000, 01, 01),LocalDate.of(2021, 9, 30));
+            developerSubscriptionRepository.save(devSub4);
+            
+            
             /* Subscripciones de los profesores */
             
             DeveloperSubscription subCarlos = new DeveloperSubscription(carlos,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
@@ -311,10 +315,10 @@ public class MongoDBPopulate<E> {
              */
             
             alvaro.getFollowing().add(fernando);
-            alvaro.getFollowing().add(alvaqjim);
+            alvaro.getFollowing().add(alvvaqjim);
             developerRepository.save(alvaro);
             
-            fernando.getFollowing().add(alvaqjim);
+            fernando.getFollowing().add(alvvaqjim);
             developerRepository.save(fernando);
             
             /*
