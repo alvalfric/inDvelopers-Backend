@@ -16,7 +16,7 @@
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | -------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
 | April 24      |   :smiley:    |   :worried:   |:neutral_face: | :neutral_face:| :neutral_face:|   :smiley:     |   :worried:   |    :smiley:  |    :smiley:   | :smiley:               |   :neutral_face:            |
 | April 25      |:neutral_face: | :neutral_face:| :smiley:      | :neutral_face:| :neutral_face:|   :smiley:     | :neutral_face:| :neutral_face:|   :worried:   |   :smiley:             |    :neutral_face:           | 
-| April 26      |:neutral_face: |   :smiley:    |   :worried:   | :neutral_face:|    :smiley:   | :neutral_face: | :neutral_face:| :neutral_face|   :fearful:   |  :smiley:              |    :neutral_face:           |
+| April 26      |:neutral_face: |   :smiley:    |   :worried:   | :neutral_face:|    :smiley:   | :neutral_face: | :neutral_face:| :neutral_face:|   :fearful:   |  :smiley:              |    :neutral_face:           |
 | April 27      |:worried:      | :neutral_face:|   :worried:   |    :smiley:   | :neutral_face:| :neutral_face: |   :worried:   | :neutral_face:|   :smiley:    |    :neutral_face:           |        :neutral_face:        |
 | April 28      | :smiley:      |   :smiley:    |    :smiley:   |:neutral_face: |   :worried:   | :neutral_face: | :neutral_face:| :neutral_face:|   :smiley:    |    :neutral_face:           |        :smiley:       |
 | April 29      | :smiley:      |   :smiley:    |   :smiley:    | :neutral_face:| :neutral_face:| :neutral_face: |   :smiley:    | :neutral_face:| :neutral_face:|   :neutral_face:            |        :neutral_face:        |
