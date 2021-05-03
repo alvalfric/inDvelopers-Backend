@@ -1,9 +1,13 @@
 package ISPP.G5.INDVELOPERS.config;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -17,11 +21,9 @@ import ISPP.G5.INDVELOPERS.models.Category;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.DeveloperSubscription;
 import ISPP.G5.INDVELOPERS.models.Game;
-import ISPP.G5.INDVELOPERS.models.Order;
 import ISPP.G5.INDVELOPERS.models.OwnedGame;
 import ISPP.G5.INDVELOPERS.models.Review;
 import ISPP.G5.INDVELOPERS.models.SpamWord;
-import ISPP.G5.INDVELOPERS.models.UserEntity;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.paypal.OrderRepository;
 import ISPP.G5.INDVELOPERS.repositories.CategoriaRepository;
@@ -66,7 +68,7 @@ public class MongoDBPopulate<E> {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             
             Developer master = new Developer("master",
-                    passwordEncoder.encode("*~/hvS<,@-\"n3Aj7"),
+                    passwordEncoder.encode("n8KVHrpYrTDj"),
                     "sb-n43pka5914239@personal.example.com",
                      null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
                     "Administrador para inDvelopers", "Java", true, formatter.parse("1996-01-12"), new ArrayList<Developer>());
@@ -77,7 +79,7 @@ public class MongoDBPopulate<E> {
             		"description", "technologies", true, formatter.parse("2000-01-01"), new ArrayList<Developer>());
             
             Developer alvaro = new Developer("alvaro",
-                    passwordEncoder.encode(",A88GpA.Dg;kp;#%"),
+                    passwordEncoder.encode("Y54Swgosb7av"),
                     "sb-n43pka5914239@personal.example.com",
                      null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
                     "Desarrollador para inDvelopers", "Java", true, formatter.parse("1996-01-12"), new ArrayList<Developer>());
@@ -85,7 +87,7 @@ public class MongoDBPopulate<E> {
             developerRepository.save(alvaro);
                         
             Developer fernando = new Developer("fernando",
-                    passwordEncoder.encode("kAj_{4reXqWHQxq8"),
+                    passwordEncoder.encode("YroS67EgOjRn"),
                     "sb-n43pka5914239@personal.example.com",
                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
                     null, null, true, formatter.parse("1997-03-12"), new ArrayList<Developer>());
@@ -93,7 +95,7 @@ public class MongoDBPopulate<E> {
             developerRepository.save(fernando);
             
             Developer alvaqjim = new Developer("alvaqjim",
-                    passwordEncoder.encode("ugjUt62aaT#y4<R>"),
+                    passwordEncoder.encode("MhPQpKKb1Ieh"),
                     "sb-uiz525914316@personal.example.com",
                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
                     "Soy un desarrollador de videojuegos", "Unreal Engine, Maya y Photoshop", true, formatter.parse("1997-03-12"), new ArrayList<Developer>());
@@ -103,38 +105,38 @@ public class MongoDBPopulate<E> {
             /* Credenciales de los profesores */
             
             Developer carlos = new Developer("carlosmuller",
-                    passwordEncoder.encode("!S6Lb\"vP+R^nUy2Z"),
+                    passwordEncoder.encode("PEfKVcDp3Dux"),
                     "sb-1yi9g5948590@business.example.com",
                     null,
                     Stream.of(UserRole.USER).collect(Collectors.toSet()),
                     "Description", "Technologies", true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
 
             Developer bedilia = new Developer("bediliaestrada",
-                    passwordEncoder.encode("7Dx<`@!y9,u4\\Tct"),
+                    passwordEncoder.encode("cfjZx47YknwD"),
                     "sb-043o1g5959188@business.example.com",
                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
                     "Description", "Technologies", true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
             
             Developer pablo = new Developer("pablofernandez",
-                    passwordEncoder.encode("xV}4$/xY$5w86KJU"),
+                    passwordEncoder.encode("Csx3fhGyWzjn"),
                     "sb-yuwre5959198@business.example.com",
                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
                     "Description", "Technologies", true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
             
             Developer cristina = new Developer("cristinacabanillas",
-                    passwordEncoder.encode("4pzV.fQu\\zT'[Sq2"),
+                    passwordEncoder.encode("3ixfVZizLbpN"),
                     "sb-szvcz5959202@business.example.com@us.es",
                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
                     "Description", "Technologies", true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
             
             Developer antonio = new Developer("antonioruiz",
-                    passwordEncoder.encode("\\UuL\"/76zU-TFTP;"),
+                    passwordEncoder.encode("GmQUfLFTyWsw"),
                     "sb-ckd7u5959194@business.example.com",
                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
                     "Description", "Technologies", true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
             
             Developer rafael = new Developer("rafaelfresno",
-                    passwordEncoder.encode("s5`YV\\6N~c2jC>dW"),
+                    passwordEncoder.encode("mlUXLwFa00cx"),
                     "sb-q27xx5959180@business.example.com",
                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
                     "Description", "Technologies", true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
@@ -226,7 +228,7 @@ public class MongoDBPopulate<E> {
             iceSecretCategories.add(arcadeCategory);
 
             Date fecha = new Date();
-
+                        
             Game iceSecret = new Game("Ice' secret",
                     "Ice was a necessity but can't be found",
                     "Dual Core and 4GB of Ram",
