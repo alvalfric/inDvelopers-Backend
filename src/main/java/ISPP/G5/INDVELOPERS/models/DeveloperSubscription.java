@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -26,6 +27,7 @@ public class DeveloperSubscription extends BaseEntity{
 
 	@NotBlank
 	@UniqueElements
+	@DBRef
 	Developer developer;
 	
 	@NotBlank

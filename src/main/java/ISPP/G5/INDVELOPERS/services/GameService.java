@@ -1,5 +1,6 @@
 package ISPP.G5.INDVELOPERS.services;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -159,7 +160,19 @@ public class GameService {
 	}
 
 	public List<Game> findByPrice(Double price) {
-		List<Game> res = this.gameRepository.findByPrice(price);
+//		List<Game> res = this.gameRepository.findByPrice(price);		
+		List<Game> res = new ArrayList<Game>();
+		List<Game> verifiedGames = this.gameRepository.findVerified();
+		
+		for(Game game: verifiedGames) {
+			DecimalFormat df2 = new DecimalFormat("#.##");
+			Double discount = Double.valueOf(df2.format(game.getPrice()*game.getDiscount()));
+			Double gamePriceWithDiscount = game.getPrice()-discount;
+			if(gamePriceWithDiscount <= price) {
+				res.add(game);
+			}
+		}
+		
 		Collections.reverse(res);
 		return res;
 	}

@@ -19,6 +19,7 @@ import lombok.ToString;
 @Builder
 public class OwnedGame extends BaseEntity{
 	
+	@DBRef
 	private Developer buyer;
 	
 	@DBRef

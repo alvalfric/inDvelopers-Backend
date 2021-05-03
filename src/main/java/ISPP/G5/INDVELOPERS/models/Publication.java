@@ -4,6 +4,7 @@ import java.awt.Image;
 
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ public class Publication extends BaseEntity {
 
 	private String imagen;
 	
+	@DBRef
 	private Developer developer;
 
 }
