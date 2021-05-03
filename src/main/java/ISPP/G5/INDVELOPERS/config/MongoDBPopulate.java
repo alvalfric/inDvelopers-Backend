@@ -47,7 +47,8 @@ public class MongoDBPopulate<E> {
             DeveloperSubscriptionRepository developerSubscriptionRepository, OrderRepository orderRepository, CategoriaRepository categoriaRepository,
             IncidentRepository incidentRepository, SpamWordRepository spamWordRepository) {
         return strings -> {
-        	userEntityRepository.deleteAll();
+
+            userEntityRepository.deleteAll();
             developerRepository.deleteAll();
             gameRepository.deleteAll();
             reviewRepository.deleteAll();
@@ -337,8 +338,6 @@ public class MongoDBPopulate<E> {
             spamWordRepository.save(spam9);
             spamWordRepository.save(spam10);
             spamWordRepository.save(spam11);
-            
-            
         };
 
     }
