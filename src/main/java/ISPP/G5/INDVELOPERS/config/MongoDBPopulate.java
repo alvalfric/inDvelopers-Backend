@@ -13,8 +13,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import ISPP.G5.INDVELOPERS.models.Category;
+import ISPP.G5.INDVELOPERS.models.Commentary;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.DeveloperSubscription;
+import ISPP.G5.INDVELOPERS.models.Forum;
 import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.Order;
 import ISPP.G5.INDVELOPERS.models.OwnedGame;
@@ -24,8 +26,10 @@ import ISPP.G5.INDVELOPERS.models.UserEntity;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.paypal.OrderRepository;
 import ISPP.G5.INDVELOPERS.repositories.CategoriaRepository;
+import ISPP.G5.INDVELOPERS.repositories.CommentaryRepository;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperSubscriptionRepository;
+import ISPP.G5.INDVELOPERS.repositories.ForumRepository;
 import ISPP.G5.INDVELOPERS.repositories.GameRepository;
 import ISPP.G5.INDVELOPERS.repositories.IncidentRepository;
 import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
@@ -45,7 +49,7 @@ public class MongoDBPopulate<E> {
             UserEntityRepository userEntityRepository, DeveloperRepository developerRepository,
             GameRepository gameRepository, ReviewRepository reviewRepository, OwnedGameRepository ownedGameRepository, PublicationRepository publicationRepository,
             DeveloperSubscriptionRepository developerSubscriptionRepository, OrderRepository orderRepository, CategoriaRepository categoriaRepository,
-            IncidentRepository incidentRepository, SpamWordRepository spamWordRepository) {
+            IncidentRepository incidentRepository, SpamWordRepository spamWordRepository, ForumRepository forumRepository, CommentaryRepository commentRepository) {
         return strings -> {
 
             userEntityRepository.deleteAll();
@@ -59,6 +63,8 @@ public class MongoDBPopulate<E> {
             categoriaRepository.deleteAll();
             incidentRepository.deleteAll();
             spamWordRepository.deleteAll();
+            forumRepository.deleteAll();
+            commentRepository.deleteAll();
 			
             /*
                 ================= USERS =================
@@ -338,6 +344,19 @@ public class MongoDBPopulate<E> {
             spamWordRepository.save(spam9);
             spamWordRepository.save(spam10);
             spamWordRepository.save(spam11);
+            
+            /*
+            ================= Forums =================
+             */
+            Date today = new Date();
+            Forum forum1 = new Forum("Nintendo", alvaro, today);
+            forumRepository.save(forum1);
+            
+            Commentary comment1 = new Commentary("I'm looking for video games for nintendo", today, false, alvaro, forum1);
+            Commentary comment2 = new Commentary("I am looking for anime games", today, false, alvaro, forum1);
+            commentRepository.save(comment1);
+            commentRepository.save(comment2);
+            
         };
 
     }
