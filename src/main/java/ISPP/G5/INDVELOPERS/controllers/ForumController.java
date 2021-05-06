@@ -76,7 +76,10 @@ public class ForumController {
 			String user = userDetails.getUsername();
 			Developer developer = developerService.findByUsername(user);
 			Forum forum = service.findById(id);
-			service.deleteForum(forum, developer);
+			String response = service.deleteForum(forum, developer);
+			if(response.equals("You don't have permissions to perform this action") ) {
+					return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			}
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

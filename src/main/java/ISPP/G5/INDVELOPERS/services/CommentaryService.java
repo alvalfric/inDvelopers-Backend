@@ -38,18 +38,20 @@ public class CommentaryService {
 	}
 
 	public List<Commentary> findByForum(String id) {
-		List<Commentary> comments = repository.findAll();
-		List<Commentary> res = new ArrayList<Commentary>();
-		for (Commentary c : comments) {
-			if (c.getForo().getId().contentEquals(id)) {
-				res.add(c);
-			}
-		}
-		if (res.size() > 0) {
-			return res;
-		} else {
-			throw new IllegalArgumentException("There are no comments in this forum yet.");
-		}
+//		List<Commentary> comments = repository.findAll();
+//		List<Commentary> res = new ArrayList<Commentary>();
+//		for (Commentary c : comments) {
+//			if (c.getForo().getId().contentEquals(id)) {
+//				res.add(c);
+//			}
+//		}
+//		if (res.size() > 0) {
+//			return res;
+//		} else {
+//			throw new IllegalArgumentException("There are no comments in this forum yet.");
+//		}
+		List<Commentary> res = repository.findByForumId(id);
+		return res;
 	}
 
 	public String addCommentary(Commentary comment, String idForum, Developer developer) {

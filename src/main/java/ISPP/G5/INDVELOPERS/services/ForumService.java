@@ -21,7 +21,6 @@ public class ForumService {
 	
 	public List<Forum> findAll(){
 		return repository.findAll();
-		
 	}
 	
 	public Forum findById(String id){
@@ -34,13 +33,14 @@ public class ForumService {
 	}
 	
 	public List<Forum> findByTitle(String title){
-		List<Forum> forums = repository.findAll();
-		List<Forum> res = new ArrayList<Forum>();
-		for(Forum f: forums) {
-			if(f.getTitle().toLowerCase().contains(title.toLowerCase())) {
-				res.add(f);
-			}
-		}
+//		List<Forum> forums = repository.findAll();
+//		List<Forum> res = new ArrayList<Forum>();
+//		for(Forum f: forums) {
+//			if(f.getTitle().toLowerCase().contains(title.toLowerCase())) {
+//				res.add(f);
+//			}
+//		}
+		List<Forum> res = repository.findByTitle(title);
 		return res;
 	}
 	
@@ -57,7 +57,7 @@ public class ForumService {
 			repository.delete(forum);
 			return "Delete forum with id: " + forum.getId();
 		} else {
-			throw new IllegalArgumentException("You don't have permissions to perform this action.");
+			return "You don't have permissions to perform this action";
 		}
 
 	}
