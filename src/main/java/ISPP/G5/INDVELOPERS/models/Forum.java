@@ -21,14 +21,11 @@ import lombok.ToString;
 public class Forum extends BaseEntity {
 
 	@NotBlank
-	private String username;
-
-	@NotBlank
 	private String title;
 
-	private Date creationDate;
-
 	@DBRef
-	private List<Commentary> comments;
+	private Developer developer;
+
+	private Date creationDate;
 
 }

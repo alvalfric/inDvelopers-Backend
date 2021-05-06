@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Forum;
+import ISPP.G5.INDVELOPERS.services.DeveloperService;
 import ISPP.G5.INDVELOPERS.services.ForumService;
 
 @RestController
@@ -28,6 +30,9 @@ public class ForumController {
 
 	@Autowired
 	private ForumService service;
+	
+	@Autowired
+	private DeveloperService developerService;
 
 	@GetMapping("/findAll")
 	public ResponseEntity<List<Forum>> findAll() {
@@ -38,14 +43,6 @@ public class ForumController {
 		}
 	}
 	
-	@GetMapping("/findById/{id}")
-	public ResponseEntity<Forum> findById(@PathVariable final String id) {
-		try {
-			return ResponseEntity.ok(service.findById(id));
-		} catch (IllegalArgumentException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-		}
-	}
 	
 	@GetMapping("/findByTitle/{title}")
 	public ResponseEntity<List<Forum>> findByTitle(@PathVariable final String title) {
@@ -63,7 +60,8 @@ public class ForumController {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) auth.getPrincipal();
 			String user = userDetails.getUsername();
-			return new ResponseEntity<>(service.addForum(forum, user), HttpStatus.OK);
+			Developer developer = developerService.findByUsername(user);
+			return new ResponseEntity<>(service.addForum(forum, developer), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
@@ -76,8 +74,9 @@ public class ForumController {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			String user = userDetails.getUsername();
+			Developer developer = developerService.findByUsername(user);
 			Forum forum = service.findById(id);
-			service.deleteForum(forum, user);
+			service.deleteForum(forum, developer);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

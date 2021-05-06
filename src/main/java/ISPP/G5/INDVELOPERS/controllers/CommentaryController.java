@@ -1,5 +1,7 @@
 package ISPP.G5.INDVELOPERS.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
@@ -18,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ISPP.G5.INDVELOPERS.models.Commentary;
+import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.services.CommentaryService;
+import ISPP.G5.INDVELOPERS.services.DeveloperService;
 
 @RestController
 @CrossOrigin("*")
@@ -29,6 +33,18 @@ public class CommentaryController {
 	@Autowired
 	private CommentaryService service;
 	
+	@Autowired
+	private DeveloperService developerService;
+	
+	@GetMapping("/findByForum/{idForum}")
+	public ResponseEntity<List<Commentary>> findForum(@PathVariable("idForum") final String id) {
+		try {
+			return ResponseEntity.ok(service.findByForum(id));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+	
 	@GetMapping("/findById/{id}")
 	public ResponseEntity<Commentary> findById(@PathVariable final String id) {
 		try {
@@ -38,26 +54,29 @@ public class CommentaryController {
 		}
 	}
 	
+	
 	@PostMapping("/add/{idForum}")
-	public ResponseEntity<String> addForum(@PathVariable final String idForum, @RequestBody final Commentary commentary) {
+	public ResponseEntity<String> addForum(@PathVariable("idForum") final String idForum,@RequestBody final Commentary commentary) {
 		try {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) auth.getPrincipal();
 			String user = userDetails.getUsername();
-			return new ResponseEntity<>(service.addCommentary(commentary, user, idForum), HttpStatus.OK);
+			Developer developer = developerService.findByUsername(user);
+			return new ResponseEntity<>(service.addCommentary(commentary,idForum, developer), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 
 	}
 	
-	@PutMapping("/edit/{idForum}")
-	public ResponseEntity<String> updateGame(@PathVariable final String idForum, @RequestBody final Commentary commentary){
+	@PutMapping("/edit/{id}")
+	public ResponseEntity<String> updateGame(@PathVariable("id") final String id, @RequestBody final Commentary commentary){
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			String user = userDetails.getUsername();
-			return new ResponseEntity<>(service.updateCommentary(commentary, idForum, user), HttpStatus.OK);
+			Developer developer = developerService.findByUsername(user);
+			return new ResponseEntity<>(service.updateCommentary(id,commentary, developer), HttpStatus.OK);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
@@ -69,7 +88,8 @@ public class CommentaryController {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			String user = userDetails.getUsername();
-			service.deleteCommentary(id, user);
+			Developer developer = developerService.findByUsername(user);
+			service.deleteCommentary(id, developer);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

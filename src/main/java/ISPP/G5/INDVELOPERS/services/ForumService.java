@@ -8,9 +8,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ISPP.G5.INDVELOPERS.models.Commentary;
+import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Forum;
-import ISPP.G5.INDVELOPERS.repositories.CommentaryRepository;
 import ISPP.G5.INDVELOPERS.repositories.ForumRepository;
 
 @Service
@@ -19,9 +18,6 @@ public class ForumService {
 	
 	@Autowired
 	private ForumRepository repository;
-	
-	@Autowired
-	private CommentaryRepository commentaryRepository;
 	
 	public List<Forum> findAll(){
 		return repository.findAll();
@@ -41,30 +37,23 @@ public class ForumService {
 		List<Forum> forums = repository.findAll();
 		List<Forum> res = new ArrayList<Forum>();
 		for(Forum f: forums) {
-			if(f.getTitle().contains(title)) {
+			if(f.getTitle().toLowerCase().contains(title.toLowerCase())) {
 				res.add(f);
 			}
 		}
 		return res;
 	}
 	
-	public String addForum(Forum f, String user) {
+	public String addForum(Forum forum, Developer developer) {
 		Date today = new Date();
-		f.setUsername(user);
-		f.setCreationDate(today);
-		repository.save(f);
-		return "Successfully added with id: " + f.getId();
+		forum.setDeveloper(developer);
+		forum.setCreationDate(today);
+		repository.save(forum);
+		return "Successfully added with id: " + forum.getId();
 	}
 	
-	public String deleteForum(Forum forum, String user) {
-		if (forum.getUsername().contentEquals(user)) {
-			List<Commentary> comments = forum.getComments();
-			forum.setComments(null);
-			if(comments.size()>0) {
-				for(Commentary c: comments) {
-					commentaryRepository.delete(c);
-				}
-			}
+	public String deleteForum(Forum forum, Developer developer) {
+		if (forum.getDeveloper().getUsername().contentEquals(developer.getUsername())) {
 			repository.delete(forum);
 			return "Delete forum with id: " + forum.getId();
 		} else {

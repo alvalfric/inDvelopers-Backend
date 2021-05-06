@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -19,13 +20,16 @@ import lombok.ToString;
 public class Commentary extends BaseEntity {
 	
 	@NotBlank
-	private String username;
-	
-	@NotBlank
 	private String description;
 	
 	private Date creationDate;
 	
 	private Boolean edited;
+	
+	@DBRef
+	private Developer developer;
+	
+	@DBRef
+	private Forum foro;
 
 }
