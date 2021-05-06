@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

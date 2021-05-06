@@ -1,7 +1,6 @@
 package ISPP.G5.INDVELOPERS.models;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 
