@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ISPP.G5.INDVELOPERS.dtos.ForumDTO;
+import ISPP.G5.INDVELOPERS.mappers.ForumDTOConverter;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Forum;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
@@ -35,9 +37,10 @@ public class ForumController {
 	private DeveloperService developerService;
 
 	@GetMapping("/findAll")
-	public ResponseEntity<List<Forum>> findAll() {
+	public ResponseEntity<List<ForumDTO>> findAll() {
 		try {
-			return ResponseEntity.ok(service.findAll());
+			return ResponseEntity.ok(ForumDTOConverter
+					.convertListForumToListForumDTO(service.findAll()));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
@@ -45,9 +48,10 @@ public class ForumController {
 	
 	
 	@GetMapping("/findByTitle/{title}")
-	public ResponseEntity<List<Forum>> findByTitle(@PathVariable final String title) {
+	public ResponseEntity<List<ForumDTO>> findByTitle(@PathVariable final String title) {
 		try {
-			return ResponseEntity.ok(service.findByTitle(title));
+			return ResponseEntity.ok(ForumDTOConverter
+					.convertListForumToListForumDTO(service.findByTitle(title)));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}

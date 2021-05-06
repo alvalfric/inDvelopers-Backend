@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ISPP.G5.INDVELOPERS.dtos.CommentaryDTO;
+import ISPP.G5.INDVELOPERS.mappers.CommentaryDTOConverter;
 import ISPP.G5.INDVELOPERS.models.Commentary;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.services.CommentaryService;
@@ -37,18 +39,20 @@ public class CommentaryController {
 	private DeveloperService developerService;
 	
 	@GetMapping("/findByForum/{idForum}")
-	public ResponseEntity<List<Commentary>> findForum(@PathVariable("idForum") final String id) {
+	public ResponseEntity<List<CommentaryDTO>> findForum(@PathVariable("idForum") final String id) {
 		try {
-			return ResponseEntity.ok(service.findByForum(id));
+			return ResponseEntity.ok(CommentaryDTOConverter
+					.convertListCommentaryToListCommentaryDTO(service.findByForum(id)));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
 	
 	@GetMapping("/findById/{id}")
-	public ResponseEntity<Commentary> findById(@PathVariable final String id) {
+	public ResponseEntity<CommentaryDTO> findById(@PathVariable final String id) {
 		try {
-			return ResponseEntity.ok(service.findById(id));
+			return ResponseEntity.ok(CommentaryDTOConverter
+					.convertCommentaryToCommentaryDTO(service.findById(id)));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
