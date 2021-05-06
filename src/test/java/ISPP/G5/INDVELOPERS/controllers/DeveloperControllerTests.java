@@ -33,6 +33,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import ISPP.G5.INDVELOPERS.dtos.GetDeveloperDTO;
 import ISPP.G5.INDVELOPERS.models.Developer;
+import ISPP.G5.INDVELOPERS.models.LoginData;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
 
@@ -98,8 +99,11 @@ class DeveloperControllerTests {
 	@DisplayName("Login as developer")
 	@WithMockUser(value = "spring")
 	void loginDeveloper() throws Exception {
+		LoginData data = new LoginData("developer1", "password");
+		ObjectMapper om = new ObjectMapper();
+		String json = om.writeValueAsString(data);
 		when(developerService.findByUsername("developer1")).thenReturn(developer1);
-		mockMvc.perform(post("/developers/login?username=developer1&password=password")).andExpect(status().isOk());
+		mockMvc.perform(post("/developers/login").contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().isOk());
 	}
 
 	/*Error test al cambiar a GetDTO*/
