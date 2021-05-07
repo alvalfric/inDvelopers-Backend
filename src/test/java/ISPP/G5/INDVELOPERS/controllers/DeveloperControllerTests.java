@@ -127,6 +127,14 @@ class DeveloperControllerTests {
 		mockMvc.perform(delete("/developers/delete/" + developer1.getId())).andExpect(status().isOk());
 	}
 	
+
+//	@Test
+//	@DisplayName("Delete developer test-fail")
+//	@WithMockUser(value = "spring")
+//	void deleteDeveloperFail() throws Exception {
+//		mockMvc.perform(delete("/developers/delete/" + "carles")).andExpect(status().isBadRequest());
+//	}
+	
 	/* Followers feature tests */
 	
 	@Test
@@ -163,6 +171,8 @@ class DeveloperControllerTests {
 		mockMvc.perform(get("/developers/me/myFollowed")).andExpect(status().isOk());
 	}
 	
+
+	
 	@Test
 	@DisplayName("test")
 	@WithMockUser(value = "spring")
@@ -172,4 +182,41 @@ class DeveloperControllerTests {
 		String json = om.writeValueAsString(null);
 		mockMvc.perform(post("/developers/sign-up").contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().is4xxClientError());
 	}
+	
+	//Recover and restore password
+	
+	
+	@Test
+	@DisplayName("Recober password - fail")
+	@WithMockUser(value = "spring")
+	void recoverPassByEmailFail() throws Exception {
+		
+		mockMvc.perform(get("/developers/recoverPasswordByEmail")).andExpect(status().isBadRequest());	}
+	
+	@Test
+	@DisplayName("Recober password")
+	@WithMockUser(value = "spring")
+	void recoverPassByEmail() throws Exception {
+		
+		when(this.developerService.findByEmail("email2@gmail.com")).thenReturn(developer2);
+		mockMvc.perform(get("/developers/recoverPasswordByEmail").param("email","email2@gmail.com")).andExpect(status().isOk());	}
+	
+	@Test
+	@DisplayName("Restore password - fail")
+	@WithMockUser(value = "spring")
+	void restorePasswordFail() throws Exception {
+		
+		mockMvc.perform(put("/developers/restorePassword/" + developer1.getId())).andExpect(status().isBadRequest());	}
+	
+	@Test
+	@DisplayName("Restore password")
+	@WithMockUser(value = "spring")
+	void restorePassword() throws Exception {
+		
+		mockMvc.perform(put("/developers/restorePassword/" + developer1.getId()).param("password","123456")).andExpect(status().isOk());  }
+	
+	
+	
+	
+	
 }
