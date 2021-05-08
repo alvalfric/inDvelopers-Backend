@@ -118,5 +118,17 @@ public class PublicationController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@GetMapping("/findPublicationsByFollowedDeveloper")
+	public ResponseEntity<List<Publication>> getPublicationsByFollowedDeveloper() {
+		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			Developer developer = developService.findByUsername(userDetails.getUsername());
+			return ResponseEntity.ok(publicationService.publicationsByFollowedDevelopers(developer));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
 
 }
