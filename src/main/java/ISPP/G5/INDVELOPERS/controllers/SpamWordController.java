@@ -1,5 +1,8 @@
 package ISPP.G5.INDVELOPERS.controllers;
 
+import ISPP.G5.INDVELOPERS.dtos.CommentaryDTO;
+import ISPP.G5.INDVELOPERS.dtos.ForumDTO;
+import ISPP.G5.INDVELOPERS.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ISPP.G5.INDVELOPERS.dtos.GetDeveloperDTO;
-import ISPP.G5.INDVELOPERS.models.Developer;
-import ISPP.G5.INDVELOPERS.models.Game;
-import ISPP.G5.INDVELOPERS.models.Publication;
-import ISPP.G5.INDVELOPERS.models.Review;
 import ISPP.G5.INDVELOPERS.services.SpamWordService;
 
 @CrossOrigin("*")
@@ -61,6 +60,24 @@ public class SpamWordController {
 	public ResponseEntity<Boolean> AnalyzeGetDeveloperDTO(@RequestBody GetDeveloperDTO developerDTO){
 		try {
 			return new ResponseEntity<>(service.CheckGetDeveloperDTO(developerDTO),HttpStatus.OK);
+		}catch(IllegalArgumentException e) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PostMapping("/forum")
+	public ResponseEntity<Boolean> AnalyzeForum(@RequestBody ForumDTO forumDTO){
+		try {
+			return new ResponseEntity<>(service.CheckForum(forumDTO),HttpStatus.OK);
+		}catch(IllegalArgumentException e) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PostMapping("/post")
+	public ResponseEntity<Boolean> AnalyzeCommentary(@RequestBody CommentaryDTO commentaryDTO){
+		try {
+			return new ResponseEntity<>(service.CheckCommentary(commentaryDTO),HttpStatus.OK);
 		}catch(IllegalArgumentException e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}

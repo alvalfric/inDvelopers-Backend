@@ -5,16 +5,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ISPP.G5.INDVELOPERS.dtos.CommentaryDTO;
+import ISPP.G5.INDVELOPERS.dtos.ForumDTO;
+import ISPP.G5.INDVELOPERS.models.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ISPP.G5.INDVELOPERS.dtos.GetDeveloperDTO;
-import ISPP.G5.INDVELOPERS.models.Developer;
-import ISPP.G5.INDVELOPERS.models.Game;
-import ISPP.G5.INDVELOPERS.models.Publication;
-import ISPP.G5.INDVELOPERS.models.Review;
-import ISPP.G5.INDVELOPERS.models.SpamWord;
 import ISPP.G5.INDVELOPERS.repositories.SpamWordRepository;
 
 @Service
@@ -116,6 +114,22 @@ public class SpamWordService {
 			res=true;
 		}else if(isSpam(developerDTO.getUsername())) {
 			res=true;
+		}
+		return res;
+	}
+
+	public Boolean CheckForum(ForumDTO forumDTO) {
+		Boolean res=false;
+		if(isSpam(forumDTO.getTitle())) {
+			res = true;
+		}
+		return res;
+	}
+
+	public Boolean CheckCommentary(CommentaryDTO commentaryDTO) {
+		Boolean res=false;
+		if(isSpam(commentaryDTO.getDescription())) {
+			res = true;
 		}
 		return res;
 	}
