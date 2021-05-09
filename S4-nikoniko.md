@@ -14,10 +14,10 @@
 
 | Day           |     Álvaro    |     David     |     Marta     |     Elena     |    Gonzalo    |    Guillermo   |Francisco Javier|   Alejandro   |     Luis      |  Juan Pablo   |    Moises     |   Fernando    |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | -------------- | -------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-| May 5         |   :smiley:    |               | :neutral_face:|               |               |                |                |               | :smiley:  |               |               |               |
-| May 6         |   :smiley:    |               | :smiley:      |               |               |                |                |               | :smiley:  |               |               |               |
-| May 7         |   :smiley:    |               |   :smiley:    |               |               |                |                |               | :smiley:  |               |               |               |
-| May 8         |   :smiley:    |               |  :smiley:     |               |               |                |                |               | :smiley:  |               |               |               |
+| May 5         |   :smiley:    |               | :neutral_face:|               |    :smiley:    |                |                |               | :smiley:  |               |               |               |
+| May 6         |   :smiley:    |               | :smiley:      |               |    :smiley:   |                |                |               | :smiley:  |               |               |               |
+| May 7         |   :smiley:    |               |   :smiley:    |               |   :smiley:    |                |                |               | :smiley:  |               |               |               |
+| May 8         |   :smiley:    |               |  :smiley:     |               | :neutral_face:|                |                |               | :smiley:  |               |               |               |
 | May 9         |               |               |               |               |               |                |                |               |               |               |               |               |
 | May 10        |               |               |               |               |               |                |                |               |               |               |               |               |
 | May 11        |               |               |               |               |               |                |                |               |               |               |               |               |
