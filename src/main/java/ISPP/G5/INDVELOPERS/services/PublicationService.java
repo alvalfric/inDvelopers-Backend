@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
+import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.Publication;
 import ISPP.G5.INDVELOPERS.repositories.PublicationRepository;
 import io.jsonwebtoken.lang.Assert;
@@ -73,7 +74,16 @@ public class PublicationService {
 
 	}
 	
+	public List<Publication> publicationsByFollowedDevelopers(Developer developer) {
 
+		List<Publication> res = new ArrayList<>();
+		List<Developer> followed = developer.getFollowing();
+		for (Developer d : followed) {
+			res.addAll(publicationRepository.findByDeveloper(d.getId()));
+		}
+		return res;
+
+	}
 	
 
 }
