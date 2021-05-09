@@ -18,7 +18,7 @@
 | May 6         |   :smiley:    |               | :smiley:      |               |    :smiley:   |                |                |               | :smiley:      |               | :smiley:      |               |
 | May 7         |   :smiley:    |               |   :smiley:    |               |   :smiley:    |                |                |               | :smiley:      |               | :smiley:      |               |
 | May 8         |   :smiley:    |               |  :smiley:     |               | :neutral_face:|                |                |               | :smiley:      |               | :smiley:      |               |
-| May 9         |   :smiley:    |               |               |               |               |                |                |               |               |               |               |               |
+| May 9         |   :smiley:    |               |   :smiley:    |               |               |                |                |               |               |               |               |               |
 | May 10        |               |               |               |               |               |                |                |               |               |               |               |               |
 | May 11        |               |               |               |               |               |                |                |               |               |               |               |               |
 | May 12        |               |               |               |               |               |                |                |               |               |               |               |               |
