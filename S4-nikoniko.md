@@ -14,11 +14,11 @@
 
 | Day           |     Álvaro    |     David     |     Marta     |     Elena     |    Gonzalo    |    Guillermo   |Francisco Javier|   Alejandro   |     Luis      |  Juan Pablo   |    Moises     |   Fernando    |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | -------------- | -------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-| May 5         |   :smiley:    |               | :neutral_face:|               |    :smiley:   |                |                |               | :smiley:      |               | :smiley:      |               |
-| May 6         |   :smiley:    |               | :smiley:      |               |    :smiley:   |                |                |               | :smiley:      |               | :smiley:      |               |
-| May 7         |   :smiley:    |               |   :smiley:    |               |   :smiley:    |                |                |               | :smiley:      |               | :smiley:      |               |
-| May 8         |   :smiley:    |               |  :smiley:     |               | :neutral_face:|                |                |               | :smiley:      |               | :smiley:      |               |
-| May 9         |   :smiley:    |               |   :smiley:    |               |               |                |                |               |               |               |               |               |
+| May 5         |   :smiley:    | :neutral_face:| :neutral_face:|               |    :smiley:   |                |                |               | :smiley:      |               | :smiley:      |               |
+| May 6         |   :smiley:    |   :smiley:    | :smiley:      |               |    :smiley:   |                |                |               | :smiley:      |               | :smiley:      |               |
+| May 7         |   :smiley:    |   :smiley:    |   :smiley:    |               |   :smiley:    |                |                |               | :smiley:      |               | :smiley:      |               |
+| May 8         |   :smiley:    | :neutral_face:|  :smiley:     |               | :neutral_face:|                |                |               | :smiley:      |               | :smiley:      |               |
+| May 9         |   :smiley:    |   :smiley:    |   :smiley:    |               |               |                |                |               |               |               |               |               |
 | May 10        |               |               |               |               |               |                |                |               |               |               |               |               |
 | May 11        |               |               |               |               |               |                |                |               |               |               |               |               |
 | May 12        |               |               |               |               |               |                |                |               |               |               |               |               |
