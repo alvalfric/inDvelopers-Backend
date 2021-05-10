@@ -19,7 +19,7 @@
 | May 7         |   :smiley:    |   :smiley:    |   :smiley:    |               |   :smiley:    |                |    :smiley:    |:neutral_face: | :smiley:      |:neutral_face: | :smiley:      |               |
 | May 8         |   :smiley:    | :neutral_face:|  :smiley:     |               | :neutral_face:|                |    :smiley:    |:neutral_face: | :smiley:      |:smiley:      | :smiley:      |               |
 | May 9         |   :smiley:    |   :smiley:    |   :smiley:    |               |               |                | :neutral_face: |   :smiley:    |               |:neutral_face: |               |               |
-| May 10        |               |               |               |               |               |                | :neutral_face: |               |               |:smiley:      |               |               |
+| May 10        |               |               |               |               |               |                |   :worried:    |               |               |:smiley:      |               |               |
 | May 11        |               |               |               |               |               |                |                |               |               |               |               |               |
 | May 12        |               |               |               |               |               |                |                |               |               |               |               |               |
 | May 13        |               |               |               |               |               |                |                |               |               |               |               |               |
