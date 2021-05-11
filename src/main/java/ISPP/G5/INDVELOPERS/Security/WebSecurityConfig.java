@@ -59,8 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/spam/**").permitAll()
             .antMatchers("/reviews/game/*").permitAll()
             .antMatchers("/publications/**").permitAll()
-            .antMatchers("/forums/**").permitAll()
-            .antMatchers("/comments/**").permitAll()
+            .antMatchers("/forums/findAll").permitAll()
+            .antMatchers("/comments/findByForum/*").permitAll()
             .antMatchers("/categories/**").permitAll()
             .anyRequest().authenticated();
 

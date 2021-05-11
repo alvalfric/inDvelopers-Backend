@@ -350,7 +350,9 @@ public class MongoDBPopulate<E> {
              */
             Date today = new Date();
             Forum forum1 = new Forum("Nintendo", alvaro, today);
+            Forum forum2 = new Forum("The Jumping Clown discussion", alvaro, today);
             forumRepository.save(forum1);
+            forumRepository.save(forum2);
             
             Commentary comment1 = new Commentary("I'm looking for video games for nintendo", today, false, alvaro, forum1);
             Commentary comment2 = new Commentary("I am looking for anime games", today, false, alvaro, forum1);

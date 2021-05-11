@@ -1,10 +1,12 @@
 package ISPP.G5.INDVELOPERS.services;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,6 @@ public class GameService {
 	private GameRepository gameRepository;
 	@Autowired
 	private ReviewRepository repository;
-	
 
 	public List<Game> findAll() {
 		List<Game> res = new ArrayList<>();
@@ -52,7 +53,7 @@ public class GameService {
 
 	public String addGame(Game game, Developer developer) {
 		Assert.notNull(game);
-		
+
 		game.setCreator(developer);
 		game.setDiscount(0.);
 		Date fechaCreacion = new Date();
@@ -163,12 +164,14 @@ public class GameService {
 //		List<Game> res = this.gameRepository.findByPrice(price);		
 		List<Game> res = new ArrayList<Game>();
 		List<Game> verifiedGames = this.gameRepository.findVerified();
-		
-		for(Game game: verifiedGames) {
-			DecimalFormat df2 = new DecimalFormat("#.##");
-			Double discount = Double.valueOf(df2.format(game.getPrice()*game.getDiscount()));
-			Double gamePriceWithDiscount = game.getPrice()-discount;
-			if(gamePriceWithDiscount <= price) {
+
+		for (Game game : verifiedGames) {
+			NumberFormat nf = NumberFormat.getNumberInstance(Locale.ENGLISH);
+			DecimalFormat df2 = (DecimalFormat) nf;
+			Double calculatedDiscount = game.getPrice() * game.getDiscount();
+			Double discount = Double.valueOf(df2.format(calculatedDiscount));
+			Double gamePriceWithDiscount = game.getPrice() - discount;
+			if (gamePriceWithDiscount <= price) {
 				res.add(game);
 			}
 		}

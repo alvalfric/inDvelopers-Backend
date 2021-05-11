@@ -119,7 +119,7 @@ public class GameController {
 				gameData.setPegi(game.getPegi());
 				gameData.setDiscount(game.getDiscount());
 				gameData.setGallery(game.getGallery());
-				gameData.setUrlVideo(gameData.getUrlVideo());
+				gameData.setUrlVideo(game.getUrlVideo());
 				return new ResponseEntity<>(gameService.updateGame(gameData), HttpStatus.OK);
 			} else {
 				throw new IllegalArgumentException("Only the creator of the game or an admin can update it");
