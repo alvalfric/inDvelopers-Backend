@@ -14,13 +14,13 @@
 
 | Day           |     Álvaro    |     David     |     Marta     |     Elena     |    Gonzalo    |    Guillermo   |Francisco Javier|   Alejandro   |     Luis      |  Juan Pablo   |    Moises     |   Fernando    |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | -------------- | -------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-| May 5         |   :smiley:    | :neutral_face:| :neutral_face:|               |    :smiley:   |                |    :smiley:    |   :smiley:    | :smiley:      |:neutral_face:  | :smiley:      |               |
-| May 6         |   :smiley:    |   :smiley:    | :smiley:      |               |    :smiley:   |                |    :smiley:    |   :worried:   | :smiley:      |:smiley:      | :smiley:      |               |
-| May 7         |   :smiley:    |   :smiley:    |   :smiley:    |               |   :smiley:    |                |    :smiley:    |:neutral_face: | :smiley:      |:neutral_face: | :smiley:      |               |
-| May 8         |   :smiley:    | :neutral_face:|  :smiley:     |               | :neutral_face:|                |    :smiley:    |:neutral_face: | :smiley:      |:smiley:      | :smiley:      |               |
-| May 9         |   :smiley:    |   :smiley:    |   :smiley:    |               |               |                | :neutral_face: |   :smiley:    |               |:neutral_face: |               |               |
-| May 10        |               |               |               |               |               |                |   :worried:    |               |               |:smiley:      |               |               |
-| May 11        |               |               |               |               |               |                |                |               |               |               |               |               |
+| May 5         |   :smiley:    | :neutral_face:| :neutral_face:| :neutral_face:|    :smiley:   |                |    :smiley:    |   :smiley:    | :smiley:      |:neutral_face:  | :smiley:      |               |
+| May 6         |   :smiley:    |   :smiley:    | :smiley:      | :neutral_face:|    :smiley:   |                |    :smiley:    |   :worried:   | :smiley:      |:smiley:      | :smiley:      |               |
+| May 7         |   :smiley:    |   :smiley:    |   :smiley:    |:neutral_face: |   :smiley:    |                |    :smiley:    |:neutral_face: | :smiley:      |:neutral_face: | :smiley:      |               |
+| May 8         |   :smiley:    | :neutral_face:|  :smiley:     | :smiley:      | :neutral_face:|                |    :smiley:    |:neutral_face: | :smiley:      |:smiley:      | :smiley:      |               |
+| May 9         |   :smiley:    |   :smiley:    |   :smiley:    |:neutral_face: |               |                | :neutral_face: |   :smiley:    |               |:neutral_face: |               |               |
+| May 10        |               |               |               | :smiley:      |               |                |   :worried:    |               |               |:smiley:      |               |               |
+| May 11        |               |               |               | :smiley:      |               |                |                |               |               |               |               |               |
 | May 12        |               |               |               |               |               |                |                |               |               |               |               |               |
 | May 13        |               |               |               |               |               |                |                |               |               |               |               |               |
 | May 14        |               |               |               |               |               |                |                |               |               |               |               |               |
