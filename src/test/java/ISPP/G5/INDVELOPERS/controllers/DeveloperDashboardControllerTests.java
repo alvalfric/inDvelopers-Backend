@@ -112,6 +112,19 @@ public class DeveloperDashboardControllerTests {
 
 		mvc.perform(get("/developerDashboard/show")).andExpect(status().isCreated()).andReturn().equals(res);
 	}
+	
+	@Test
+	@DisplayName("Show developer dashboard test - fail")
+	@WithMockUser(value = "spring")
+	void testFindAllGamesFail() throws Exception {
+		
+		when(developerDashboardService.show()).thenThrow(IllegalArgumentException.class);
+
+		mvc.perform(get("/developerDashboard/show")).andExpect(status().isBadRequest());
+	}
+	
+	
+	
 
 	@Test
 	@DisplayName("Fail show developer dashboard exception test")
