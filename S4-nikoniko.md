@@ -18,10 +18,10 @@
 | May 6         |   :smiley:    |   :smiley:    | :smiley:      | :neutral_face:|    :smiley:   |                |    :smiley:    |   :worried:   | :smiley:      |:smiley:      | :smiley:      |               |
 | May 7         |   :smiley:    |   :smiley:    |   :smiley:    |:neutral_face: |   :smiley:    |                |    :smiley:    |:neutral_face: | :smiley:      |:neutral_face: | :smiley:      |               |
 | May 8         |   :smiley:    | :neutral_face:|  :smiley:     | :smiley:      | :neutral_face:|                |    :smiley:    |:neutral_face: | :smiley:      |:smiley:      | :smiley:      |               |
-| May 9         |   :smiley:    |   :smiley:    |   :smiley:    |:neutral_face: |               |                | :neutral_face: |   :smiley:    |               |:neutral_face: |               |               |
-| May 10        |               |               |               | :smiley:      |               |                |   :worried:    |               |               |:smiley:      |               |               |
-| May 11        |               |               |               | :smiley:      |               |                |                |               |               |               |               |               |
-| May 12        |               |               |               |               |               |                |                |               |               |               |               |               |
+| May 9         |   :smiley:    |   :smiley:    |   :smiley:    |:neutral_face: | :smiley:      |                | :neutral_face: |   :smiley:    |               |:neutral_face: |               |               |
+| May 10        |               |               |               | :smiley:      | :smiley:      |                |   :worried:    |               |               |:smiley:      |               |               |
+| May 11        |               |               |               | :smiley:      | :smiley:      |                |                |               |               |               |               |               |
+| May 12        |               |               |               |               | :neutral_face:|                |                |               |               |               |               |               |
 | May 13        |               |               |               |               |               |                |                |               |               |               |               |               |
 | May 14        |               |               |               |               |               |                |                |               |               |               |               |               |
 | May 15        |               |               |               |               |               |                |                |               |               |               |               |               |
