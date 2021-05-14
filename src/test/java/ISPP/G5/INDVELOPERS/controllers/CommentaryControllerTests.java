@@ -1,4 +1,4 @@
-package ISPP.G5.INDVELOPERS.integration;
+package ISPP.G5.INDVELOPERS.controllers;
 
 import java.util.Date;
 import java.util.List;
@@ -24,7 +24,7 @@ import ISPP.G5.INDVELOPERS.services.ForumService;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CommentaryControllerIntegrationTests {
+public class CommentaryControllerTests {
 
 	@Autowired
 	private CommentaryController commentaryController;

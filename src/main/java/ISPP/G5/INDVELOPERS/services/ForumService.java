@@ -52,7 +52,9 @@ public class ForumService {
 	}
 	
 	public String deleteForum(Forum forum, Developer developer) {
-		if (forum.getDeveloper().getUsername().contentEquals(developer.getUsername())) {
+System.out.println(forum.getDeveloper());
+System.out.println(developer);
+		if (forum.getDeveloper().equals(developer)) {
 			repository.delete(forum);
 			return "Delete forum with id: " + forum.getId();
 		} else {

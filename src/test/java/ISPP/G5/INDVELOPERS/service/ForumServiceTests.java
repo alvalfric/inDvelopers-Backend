@@ -12,18 +12,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Forum;
-import ISPP.G5.INDVELOPERS.repositories.ForumRepository;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
 import ISPP.G5.INDVELOPERS.services.ForumService;
 
 @SpringBootTest
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 public class ForumServiceTests {
-
-	@Autowired
-	private ForumRepository forumRepository;
 
 	@Autowired
 	private ForumService forumService;
@@ -76,14 +75,15 @@ public class ForumServiceTests {
 		this.forumService.addForum(forum, developer);
 		
 		List<Forum> allForums = this.forumService.findAll();
-		assertThat(allForums.get(2).getTitle()).isEqualTo("Ice secret is amazing!");
+		assertThat(allForums.get(allForums.size()-1).getTitle()).isEqualTo("Ice secret is amazing!");
 	}
 	
 	@Test
 	void shouldDeleteForum() {
 		Developer developer = this.developerService.findByUsername("alvaro");
-		this.forumService.addForum(new Forum("Ice secret is amazing!", developer, new Date()), developer);
-		Forum forum = this.forumService.findByTitle("Ice secret is amazing!").get(0);
+		Forum forum = this.forumService.findAll().get(1);
+		System.out.println(forum);
+		forum.setDeveloper(developer);
 		
 		assertThat(this.forumService.deleteForum(forum, developer)).isEqualTo("Delete forum with id: " + forum.getId());
 	}
@@ -91,7 +91,8 @@ public class ForumServiceTests {
 	@Test
 	void shouldNotDeleteForum() {
 		Developer developer = this.developerService.findByUsername("fernando");
-		Forum forum = this.forumService.findByTitle("Nintendo").get(0);
+		Forum forum = this.forumService.findAll().get(0);
+		forum.setDeveloper(this.developerService.findByUsername("alvaro"));
 		
 		assertThat(this.forumService.deleteForum(forum, developer)).isEqualTo("You don't have permissions to perform this action");
 	}
