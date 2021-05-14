@@ -1,6 +1,5 @@
 package ISPP.G5.INDVELOPERS.services;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +24,7 @@ public class ForumService {
 	
 	public Forum findById(String id){
 		Optional<Forum> forum = repository.findById(id);
-		if(forum.get() !=null) {
+		if(forum.isPresent()) {
 			return forum.get();
 		}else {
 			throw new IllegalArgumentException("This forum doesn't exist.");

@@ -30,7 +30,7 @@ public class CommentaryService {
 
 	public Commentary findById(String id) {
 		Optional<Commentary> comment = repository.findById(id);
-		if (comment.get() != null) {
+		if (comment.isPresent()) {
 			return comment.get();
 		} else {
 			throw new IllegalArgumentException("This commentary doesn't exist.");

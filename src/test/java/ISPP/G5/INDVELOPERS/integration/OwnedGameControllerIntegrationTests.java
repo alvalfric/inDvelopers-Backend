@@ -25,7 +25,7 @@ import ISPP.G5.INDVELOPERS.services.GameService;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class OwnedGameControllerIntegration {
+public class OwnedGameControllerIntegrationTests {
 
 	@Autowired
 	private OwnedGameController ownedGameController;
