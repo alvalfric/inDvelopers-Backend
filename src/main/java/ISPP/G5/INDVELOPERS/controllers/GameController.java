@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
-import ISPP.G5.INDVELOPERS.models.SearchData;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
 import ISPP.G5.INDVELOPERS.services.DeveloperSubscriptionService;
@@ -223,16 +222,6 @@ public class GameController {
 	public ResponseEntity<List<Game>> findByTitleVerifiedOrCategorie(@PathVariable final String res) {
 		try {
 			return ResponseEntity.ok(this.gameService.findByTitleVerifiedOrCategorie(res));
-		} catch (IllegalArgumentException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-		}
-	}
-	
-	@GetMapping("/findByTitleVerifiedOrCategorie")
-	public ResponseEntity<List<Game>> findByTitleVerifiedOrCategorie2(@RequestBody SearchData res) {
-		try {
-			System.out.println(res);
-			return ResponseEntity.ok(this.gameService.findByTitleVerifiedOrCategorie(res.getQuery()));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
