@@ -22,8 +22,8 @@
 | May 10        |               |               |               | :smiley:      | :smiley:      |                |   :worried:    |               |               |:smiley:      |               |               |
 | May 11        |               |               |               | :smiley:      | :smiley:      |                |                |               |               |               |               |               |
 | May 12        |               |               |               |               | :neutral_face:|                |                |               |               |               |               |               |
-| May 13        |               |               |               |               |               |                |                |               |               |               |               |               |
-| May 14        |               |               |               |               |               |                |                |               |               |               |               |               |
-| May 15        |               |               |               |               |               |                |                |               |               |               |               |               |
+| May 13        |               |               |               |               | :smiley:      |                |                |               |               |               |               |               |
+| May 14        |               |               |               |               | :neutral_face:|                |                |               |               |               |               |               |
+| May 15        |               |               |               |               | :neutral_face:|                |                |               |               |               |               |               |
 | May 16        |               |               |               |               |               |                |                |               |               |               |               |               |
 | May 17        |               |               |               |               |               |                |                |               |               |               |               |               |
