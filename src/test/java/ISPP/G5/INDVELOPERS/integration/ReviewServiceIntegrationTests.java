@@ -11,6 +11,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
@@ -23,6 +25,7 @@ import ISPP.G5.INDVELOPERS.services.ReviewService;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 public class ReviewServiceIntegrationTests {
 
 	@Autowired
