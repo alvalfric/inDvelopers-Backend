@@ -82,7 +82,7 @@ public class GameController {
 			boolean isPremium = this.developerSubscriptionService.checkDeveloperHasSubscription(developer);
 			if (!gameService.findByTitle(game.getTitle()).isEmpty())
 				throw new IllegalArgumentException("There's already a game with that title");
-			if (isPremium == false && game.getPrice() != 0.0)
+			if (!developer.getRoles().contains(UserRole.ADMIN) && isPremium == false && game.getPrice() != 0.0)
 				throw new IllegalArgumentException("Only premium developers can sell non-free games");
 			if (isPremium == false && gameService.findByMyGames(developer.getId()).size() + 1 > 5)
 				throw new IllegalArgumentException(
