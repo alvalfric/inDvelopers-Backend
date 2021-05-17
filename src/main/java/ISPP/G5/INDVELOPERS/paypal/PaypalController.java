@@ -1,39 +1,28 @@
 package ISPP.G5.INDVELOPERS.paypal;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payee;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
-import com.paypal.orders.AmountWithBreakdown;
-import com.paypal.orders.ApplicationContext;
-import com.paypal.orders.OrderRequest;
-import com.paypal.orders.PurchaseUnitRequest;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Game;
 import ISPP.G5.INDVELOPERS.models.Order;
-import ISPP.G5.INDVELOPERS.models.Publication;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
 import ISPP.G5.INDVELOPERS.services.DeveloperSubscriptionService;
 import ISPP.G5.INDVELOPERS.services.GameService;
@@ -62,9 +51,9 @@ public class PaypalController {
 	@Autowired
 	private DeveloperSubscriptionService devSubscrService;
 
-//	public static final String MAIN_PAGE_DEPLOYED_URL = "https://level4-indvelopers.herokuapp.com";
+	public static final String MAIN_PAGE_DEPLOYED_URL = "https://level4-indvelopers.herokuapp.com";
 
-	public static final String MAIN_PAGE_DEPLOYED_URL = "http://localhost:3000";
+//	public static final String MAIN_PAGE_DEPLOYED_URL = "http://localhost:3000";
 
 	public static final String SUCCESS_URL = "/success";
 	public static final String CANCEL_URL = "/cancel";
