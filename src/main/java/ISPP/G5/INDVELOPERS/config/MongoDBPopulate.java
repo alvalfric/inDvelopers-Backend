@@ -66,299 +66,646 @@ public class MongoDBPopulate<E> {
             forumRepository.deleteAll();
             commentRepository.deleteAll();
 			
+//            /*
+//                ================= USERS =================
+//             */
+//            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//
+//            UserEntity master = new UserEntity("master",
+//                    passwordEncoder.encode("master123"),
+//                    "master@indvelopers.com",
+//                    Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
+//                    true);
+//
+//            userEntityRepository.save(master);
+//            
+//            Developer master2 = new Developer("master2",
+//                    passwordEncoder.encode("master212"),
+//                    "master2@indvelopers.com",
+//                    null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
+//                    null, null, true,formatter.parse("1999-05-03"), new ArrayList<Developer>());
+//
+//            developerRepository.save(master2);
+//            
+//            Developer alvaro = new Developer("alvaro",
+//                    passwordEncoder.encode("alvaro123"),
+//                    "alvaro@gmail.com",
+//                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+//                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
+//
+//            developerRepository.save(alvaro);
+//            
+//            Developer John = new Developer("JohnDoe1",
+//                    passwordEncoder.encode("JohnDoe1"),
+//                    "sb-n43pka5914239@personal.example.com",
+//                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+//                    null, null, false, formatter.parse("1994-03-06"), new ArrayList<Developer>());
+//
+//            developerRepository.save(John);
+//            
+//            Developer dummyDeveloper = new Developer("dummyDeveloper",
+//                    passwordEncoder.encode("dummyDeveloper"),
+//                    "sb-m439ui5916012@business.example.com",
+//                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+//                    null, null, true, formatter.parse("1998-03-06"), new ArrayList<Developer>());
+//
+//            developerRepository.save(dummyDeveloper);
+//            
+//            Developer dummyDeveloper2 = new Developer("dummyDeveloper2",
+//                    passwordEncoder.encode("dummyDeveloper2"),
+//                    "dummyDeveloper2@gmail.com",
+//                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+//                    null, null, false, formatter.parse("1997-07-14"), new ArrayList<Developer>());
+//
+//            developerRepository.save(dummyDeveloper2);
+//            
+//            Developer fernando = new Developer("fernando",
+//                    passwordEncoder.encode("fernando"),
+//                    "fernando@gmail.com",
+//                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+//                    null, null, true, formatter.parse("1997-03-12"), new ArrayList<Developer>());
+//
+//            developerRepository.save(fernando);
+//
+//            Developer asdf = new Developer("asdf",
+//                    passwordEncoder.encode("asdfasdf"),
+//                    "asdf@asdf.com",
+//                    null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
+//                    null, null, true, formatter.parse("1991-03-06"), new ArrayList<Developer>());
+//
+//            developerRepository.save(asdf);
+//
+//            Developer asdfasdf = new Developer("asdfasdf",
+//                    passwordEncoder.encode("asdfasdf"),
+//                    "asdf@asdf.com",
+//                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+//                    null, null, false, formatter.parse("1990-03-06"), new ArrayList<Developer>());
+//
+//            developerRepository.save(asdfasdf);
+//            
+//            /* Credenciales de los profesores */
+//            
+//            Developer carlos = new Developer("carlosmuller",
+//                    passwordEncoder.encode("carlosmuller"),
+//                    "cmuller@us.es",
+//                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+//                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
+//
+//            Developer bedilia = new Developer("bediliaestrada",
+//                    passwordEncoder.encode("bediliaestrada"),
+//                    "iestrada@us.es",
+//                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+//                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
+//            
+//            Developer pablo = new Developer("pablofernandez",
+//                    passwordEncoder.encode("pablofernandez"),
+//                    "pablofm@us.es",
+//                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+//                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
+//            
+//            Developer cristina = new Developer("cristinacabanillas",
+//                    passwordEncoder.encode("cristinacabanillas"),
+//                    "cristinacabanillas@us.es",
+//                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+//                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
+//            
+//            Developer antonio = new Developer("antonioruiz",
+//                    passwordEncoder.encode("antonioruiz"),
+//                    "aruiz@us.es",
+//                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+//                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
+//            
+//            Developer rafael = new Developer("rafaelfresno",
+//                    passwordEncoder.encode("rafaelfresno"),
+//                    "rfrenos@us.es",
+//                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+//                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
+//            
+//            developerRepository.save(carlos);
+//            developerRepository.save(bedilia);
+//            developerRepository.save(pablo);
+//            developerRepository.save(cristina);
+//            developerRepository.save(antonio);
+//            developerRepository.save(rafael);
+//
+//            /*
+//            ================= GAMES =================
+//             */
+//         
+//            Category categoria1 = new Category("Accion");
+//            categoriaRepository.save(categoria1);
+//            Category categoria2 = new Category("Arcade");
+//            categoriaRepository.save(categoria2);
+//            Category categoria3 = new Category("Deportivo");
+//            categoriaRepository.save(categoria3);
+//            Category categoria4 = new Category("Estrategia");
+//            categoriaRepository.save(categoria4);
+//            Category categoria5 = new Category("Simulacion");
+//            categoriaRepository.save(categoria5);
+//            
+//            Set<Category> categorias1 = new HashSet<Category>();
+//            Set<Category> categorias2 = new HashSet<Category>();
+//            Set<Category> categorias3 = new HashSet<Category>();
+//
+//            categorias1.add(categoria1);
+//            categorias1.add(categoria5);
+//            
+//            categorias2.add(categoria2);
+//            categorias2.add(categoria3);
+//            
+//            categorias3.add(categoria4);
+//            categorias3.add(categoria5);
+//            
+//            Date fecha = new Date();
+//            
+//            Game game1 = new Game("25 caminos oscuros",
+//                    "Es un juego en el que elijas el camino que elijas pierdes",
+//                    "No tiene grandes requisitos, 20 gigas de ram",
+//                    25.65,
+//                    "1618508350667_blob",
+//                    true,
+//                    dummyDeveloper,
+//                    null, categorias1, fecha, 18,0., null, null);
+//            gameRepository.save(game1);
+//            
+//            
+//            
+//            Game game2 = new Game("Payaso que salta",
+//                    "No intentes que el payaso se quede quieto, siempre salta",
+//                    "Con tener ordenador ya te tira",
+//                    21.43,
+//                    "1618508350667_blob",
+//                    true, 
+//                    dummyDeveloper,
+//                    null, categorias2, fecha, 18,0.3, null, null);
+//            
+//            gameRepository.save(game2);
+//            
+//           
+//            Game game3 = new Game("Almas oscuras",
+//                    "Juego super complicado que no podras pasarte",
+//                    "Requiere de una grafica de ultima generacion",
+//                    39.99,
+//                    "1618508350667_blob",
+//                    true, 
+//                    dummyDeveloper,
+//                    null, categorias3, fecha, 18,0.3, null, null);
+//            
+//            gameRepository.save(game3);
+//
+//            /*
+//            ================= REVIEWS =================
+//            */
+//          
+//          	Review r1 = new Review("text", 2., false, game1, master2);
+//			      reviewRepository.save(r1);
+//          
+//            /*
+//            ================= OWNED-GAMES =================
+//             */
+//            
+//            List<Game> gamesOfDeveloperAlvaro = new ArrayList<Game>();
+//            gamesOfDeveloperAlvaro.add(game1);
+//            OwnedGame ownedGame1 = new OwnedGame(alvaro, gamesOfDeveloperAlvaro);
+//            
+//            ownedGameRepository.save(ownedGame1);
+//            
+//            /*
+//            ================= SUBSCRIPTIONS =================
+//             */
+//            
+//            DeveloperSubscription devSub1 = new DeveloperSubscription(master2,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+//            developerSubscriptionRepository.save(devSub1);
+//            
+//            DeveloperSubscription devSub2 = new DeveloperSubscription(dummyDeveloper,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+//            developerSubscriptionRepository.save(devSub2);
+//            
+//            DeveloperSubscription devSub3 = new DeveloperSubscription(dummyDeveloper2,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+//            developerSubscriptionRepository.save(devSub3);
+//            
+//            DeveloperSubscription devSub4 = new DeveloperSubscription(alvaro,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+//            developerSubscriptionRepository.save(devSub4);
+//            
+//            /* Subscripciones de los profesores */
+//            
+//            DeveloperSubscription subCarlos = new DeveloperSubscription(carlos,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+//            
+//            DeveloperSubscription subBedilia = new DeveloperSubscription(bedilia,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+//            
+//            DeveloperSubscription subPablo = new DeveloperSubscription(pablo,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+//            
+//            DeveloperSubscription subCristina = new DeveloperSubscription(cristina,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+//            
+//            DeveloperSubscription subAntonio = new DeveloperSubscription(antonio,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+//            
+//            DeveloperSubscription subRafael = new DeveloperSubscription(rafael,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+//            
+//            developerSubscriptionRepository.save(subCarlos);
+//            developerSubscriptionRepository.save(subBedilia);
+//            developerSubscriptionRepository.save(subPablo);
+//            developerSubscriptionRepository.save(subCristina);
+//            developerSubscriptionRepository.save(subAntonio);
+//            developerSubscriptionRepository.save(subRafael);
+//            
+//            /*
+//            ================= FOLLOWERS =================
+//             */
+//            
+//            alvaro.getFollowing().add(fernando);
+//            alvaro.getFollowing().add(dummyDeveloper);
+//            developerRepository.save(alvaro);
+//            
+//            dummyDeveloper.getFollowing().add(fernando);
+//            developerRepository.save(dummyDeveloper);
+//            
+//            /*
+//            ================= Spam Words =================
+//             */
+//            SpamWord spam1 = new SpamWord("sex");
+//            SpamWord spam2 = new SpamWord("gratis");
+//            SpamWord spam3 = new SpamWord("handjob");
+//            SpamWord spam4 = new SpamWord("porn");
+//            SpamWord spam5 = new SpamWord("nigger");
+//            SpamWord spam6 = new SpamWord("negra");
+//            SpamWord spam7 = new SpamWord("basura");
+//            SpamWord spam8 = new SpamWord("dinero");
+//            SpamWord spam9 = new SpamWord("gana gratis");
+//            SpamWord spam10 = new SpamWord("paja");
+//            SpamWord spam11 = new SpamWord("ganar dinero");
+//            
+//            spamWordRepository.save(spam1);
+//            spamWordRepository.save(spam2);
+//            spamWordRepository.save(spam3);
+//            spamWordRepository.save(spam4);
+//            spamWordRepository.save(spam5);
+//            spamWordRepository.save(spam6);
+//            spamWordRepository.save(spam7);
+//            spamWordRepository.save(spam8);
+//            spamWordRepository.save(spam9);
+//            spamWordRepository.save(spam10);
+//            spamWordRepository.save(spam11);
+//            
+//            /*
+//            ================= Forums =================
+//             */
+//            Date today = new Date();
+//            Forum forum1 = new Forum("Nintendo", alvaro, today);
+//            Forum forum2 = new Forum("The Jumping Clown discussion", alvaro, today);
+//            forumRepository.save(forum1);
+//            forumRepository.save(forum2);
+//            
+//            Commentary comment1 = new Commentary("I'm looking for video games for nintendo", today, false, alvaro, forum1);
+//            Commentary comment2 = new Commentary("I am looking for anime games", today, false, alvaro, forum1);
+//            commentRepository.save(comment1);
+//            commentRepository.save(comment2);
+            
+            /* ------------------------------------------------------------------------------------------------------------------ */
+            
             /*
-                ================= USERS =================
-             */
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            ================= USERS =================
+         */
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        
+        Developer master = new Developer("master",
+                passwordEncoder.encode("n8KVHrpYrTDj"),
+                "sb-n43pka5914239@personal.example.com",
+                 null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
+                "Administrador para inDvelopers", "Java", true, formatter.parse("1996-01-12"), new ArrayList<Developer>());
 
-            UserEntity master = new UserEntity("master",
-                    passwordEncoder.encode("master123"),
-                    "master@indvelopers.com",
-                    Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
-                    true);
-
-            userEntityRepository.save(master);
-            
-            Developer master2 = new Developer("master2",
-                    passwordEncoder.encode("master212"),
-                    "master2@indvelopers.com",
-                    null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
-                    null, null, true,formatter.parse("1999-05-03"), new ArrayList<Developer>());
-
-            developerRepository.save(master2);
-            
-            Developer alvaro = new Developer("alvaro",
-                    passwordEncoder.encode("alvaro123"),
-                    "alvaro@gmail.com",
-                     null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
-
-            developerRepository.save(alvaro);
-            
-            Developer John = new Developer("JohnDoe1",
-                    passwordEncoder.encode("JohnDoe1"),
-                    "sb-n43pka5914239@personal.example.com",
-                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, false, formatter.parse("1994-03-06"), new ArrayList<Developer>());
-
-            developerRepository.save(John);
-            
-            Developer dummyDeveloper = new Developer("dummyDeveloper",
-                    passwordEncoder.encode("dummyDeveloper"),
-                    "sb-m439ui5916012@business.example.com",
-                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true, formatter.parse("1998-03-06"), new ArrayList<Developer>());
-
-            developerRepository.save(dummyDeveloper);
-            
-            Developer dummyDeveloper2 = new Developer("dummyDeveloper2",
-                    passwordEncoder.encode("dummyDeveloper2"),
-                    "dummyDeveloper2@gmail.com",
-                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, false, formatter.parse("1997-07-14"), new ArrayList<Developer>());
-
-            developerRepository.save(dummyDeveloper2);
-            
-            Developer fernando = new Developer("fernando",
-                    passwordEncoder.encode("fernando"),
-                    "fernando@gmail.com",
-                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true, formatter.parse("1997-03-12"), new ArrayList<Developer>());
-
-            developerRepository.save(fernando);
-
-            Developer asdf = new Developer("asdf",
-                    passwordEncoder.encode("asdfasdf"),
-                    "asdf@asdf.com",
-                    null, Stream.of(UserRole.USER, UserRole.ADMIN).collect(Collectors.toSet()),
-                    null, null, true, formatter.parse("1991-03-06"), new ArrayList<Developer>());
-
-            developerRepository.save(asdf);
-
-            Developer asdfasdf = new Developer("asdfasdf",
-                    passwordEncoder.encode("asdfasdf"),
-                    "asdf@asdf.com",
-                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, false, formatter.parse("1990-03-06"), new ArrayList<Developer>());
-
-            developerRepository.save(asdfasdf);
-            
-            /* Credenciales de los profesores */
-            
-            Developer carlos = new Developer("carlosmuller",
-                    passwordEncoder.encode("carlosmuller"),
-                    "cmuller@us.es",
-                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
-
-            Developer bedilia = new Developer("bediliaestrada",
-                    passwordEncoder.encode("bediliaestrada"),
-                    "iestrada@us.es",
-                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
-            
-            Developer pablo = new Developer("pablofernandez",
-                    passwordEncoder.encode("pablofernandez"),
-                    "pablofm@us.es",
-                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
-            
-            Developer cristina = new Developer("cristinacabanillas",
-                    passwordEncoder.encode("cristinacabanillas"),
-                    "cristinacabanillas@us.es",
-                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
-            
-            Developer antonio = new Developer("antonioruiz",
-                    passwordEncoder.encode("antonioruiz"),
-                    "aruiz@us.es",
-                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
-            
-            Developer rafael = new Developer("rafaelfresno",
-                    passwordEncoder.encode("rafaelfresno"),
-                    "rfrenos@us.es",
-                    null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
-                    null, null, true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
-            
-            developerRepository.save(carlos);
-            developerRepository.save(bedilia);
-            developerRepository.save(pablo);
-            developerRepository.save(cristina);
-            developerRepository.save(antonio);
-            developerRepository.save(rafael);
-
-            /*
-            ================= GAMES =================
-             */
-         
-            Category categoria1 = new Category("Accion");
-            categoriaRepository.save(categoria1);
-            Category categoria2 = new Category("Arcade");
-            categoriaRepository.save(categoria2);
-            Category categoria3 = new Category("Deportivo");
-            categoriaRepository.save(categoria3);
-            Category categoria4 = new Category("Estrategia");
-            categoriaRepository.save(categoria4);
-            Category categoria5 = new Category("Simulacion");
-            categoriaRepository.save(categoria5);
-            
-            Set<Category> categorias1 = new HashSet<Category>();
-            Set<Category> categorias2 = new HashSet<Category>();
-            Set<Category> categorias3 = new HashSet<Category>();
-
-            categorias1.add(categoria1);
-            categorias1.add(categoria5);
-            
-            categorias2.add(categoria2);
-            categorias2.add(categoria3);
-            
-            categorias3.add(categoria4);
-            categorias3.add(categoria5);
-            
-            Date fecha = new Date();
-            
-            Game game1 = new Game("25 caminos oscuros",
-                    "Es un juego en el que elijas el camino que elijas pierdes",
-                    "No tiene grandes requisitos, 20 gigas de ram",
-                    25.65,
-                    "1618508350667_blob",
-                    true,
-                    dummyDeveloper,
-                    null, categorias1, fecha, 18,0., null, null);
-            gameRepository.save(game1);
-            
-            
-            
-            Game game2 = new Game("Payaso que salta",
-                    "No intentes que el payaso se quede quieto, siempre salta",
-                    "Con tener ordenador ya te tira",
-                    21.43,
-                    "1618508350667_blob",
-                    true, 
-                    dummyDeveloper,
-                    null, categorias2, fecha, 18,0.3, null, null);
-            
-            gameRepository.save(game2);
-            
+        developerRepository.save(master);
            
-            Game game3 = new Game("Almas oscuras",
-                    "Juego super complicado que no podras pasarte",
-                    "Requiere de una grafica de ultima generacion",
-                    39.99,
-                    "1618508350667_blob",
-                    true, 
-                    dummyDeveloper,
-                    null, categorias3, fecha, 18,0.3, null, null);
-            
-            gameRepository.save(game3);
+        new Developer("username", "password", "email", "image", Stream.of(UserRole.USER).collect(Collectors.toSet()),
+        		"description", "technologies", true, formatter.parse("2000-01-01"), new ArrayList<Developer>());
+        
+        Developer alvaro = new Developer("alvaro",
+                passwordEncoder.encode("Y54Swgosb7av"),
+                "sb-n43pka5914239@personal.example.com",
+                 null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                "Desarrollador para inDvelopers", "Java", true, formatter.parse("1996-01-12"), new ArrayList<Developer>());
 
-            /*
-            ================= REVIEWS =================
-            */
-          
-          	Review r1 = new Review("text", 2., false, game1, master2);
-			      reviewRepository.save(r1);
-          
-            /*
-            ================= OWNED-GAMES =================
-             */
-            
-            List<Game> gamesOfDeveloperAlvaro = new ArrayList<Game>();
-            gamesOfDeveloperAlvaro.add(game1);
-            OwnedGame ownedGame1 = new OwnedGame(alvaro, gamesOfDeveloperAlvaro);
-            
-            ownedGameRepository.save(ownedGame1);
-            
-            /*
-            ================= SUBSCRIPTIONS =================
-             */
-            
-            DeveloperSubscription devSub1 = new DeveloperSubscription(master2,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
-            developerSubscriptionRepository.save(devSub1);
-            
-            DeveloperSubscription devSub2 = new DeveloperSubscription(dummyDeveloper,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
-            developerSubscriptionRepository.save(devSub2);
-            
-            DeveloperSubscription devSub3 = new DeveloperSubscription(dummyDeveloper2,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
-            developerSubscriptionRepository.save(devSub3);
-            
-            DeveloperSubscription devSub4 = new DeveloperSubscription(alvaro,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
-            developerSubscriptionRepository.save(devSub4);
-            
-            /* Subscripciones de los profesores */
-            
-            DeveloperSubscription subCarlos = new DeveloperSubscription(carlos,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
-            
-            DeveloperSubscription subBedilia = new DeveloperSubscription(bedilia,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
-            
-            DeveloperSubscription subPablo = new DeveloperSubscription(pablo,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
-            
-            DeveloperSubscription subCristina = new DeveloperSubscription(cristina,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
-            
-            DeveloperSubscription subAntonio = new DeveloperSubscription(antonio,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
-            
-            DeveloperSubscription subRafael = new DeveloperSubscription(rafael,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
-            
-            developerSubscriptionRepository.save(subCarlos);
-            developerSubscriptionRepository.save(subBedilia);
-            developerSubscriptionRepository.save(subPablo);
-            developerSubscriptionRepository.save(subCristina);
-            developerSubscriptionRepository.save(subAntonio);
-            developerSubscriptionRepository.save(subRafael);
-            
-            /*
-            ================= FOLLOWERS =================
-             */
-            
-            alvaro.getFollowing().add(fernando);
-            alvaro.getFollowing().add(dummyDeveloper);
-            developerRepository.save(alvaro);
-            
-            dummyDeveloper.getFollowing().add(fernando);
-            developerRepository.save(dummyDeveloper);
-            
-            /*
-            ================= Spam Words =================
-             */
-            SpamWord spam1 = new SpamWord("sex");
-            SpamWord spam2 = new SpamWord("gratis");
-            SpamWord spam3 = new SpamWord("handjob");
-            SpamWord spam4 = new SpamWord("porn");
-            SpamWord spam5 = new SpamWord("nigger");
-            SpamWord spam6 = new SpamWord("negra");
-            SpamWord spam7 = new SpamWord("basura");
-            SpamWord spam8 = new SpamWord("dinero");
-            SpamWord spam9 = new SpamWord("gana gratis");
-            SpamWord spam10 = new SpamWord("paja");
-            SpamWord spam11 = new SpamWord("ganar dinero");
-            
-            spamWordRepository.save(spam1);
-            spamWordRepository.save(spam2);
-            spamWordRepository.save(spam3);
-            spamWordRepository.save(spam4);
-            spamWordRepository.save(spam5);
-            spamWordRepository.save(spam6);
-            spamWordRepository.save(spam7);
-            spamWordRepository.save(spam8);
-            spamWordRepository.save(spam9);
-            spamWordRepository.save(spam10);
-            spamWordRepository.save(spam11);
-            
-            /*
-            ================= Forums =================
-             */
-            Date today = new Date();
-            Forum forum1 = new Forum("Nintendo", alvaro, today);
-            Forum forum2 = new Forum("The Jumping Clown discussion", alvaro, today);
-            forumRepository.save(forum1);
-            forumRepository.save(forum2);
-            
-            Commentary comment1 = new Commentary("I'm looking for video games for nintendo", today, false, alvaro, forum1);
-            Commentary comment2 = new Commentary("I am looking for anime games", today, false, alvaro, forum1);
-            commentRepository.save(comment1);
-            commentRepository.save(comment2);
-            
+        developerRepository.save(alvaro);
+                    
+        Developer fernando = new Developer("fernando",
+                passwordEncoder.encode("YroS67EgOjRn"),
+                "sb-n43pka5914239@personal.example.com",
+                null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                null, null, true, formatter.parse("1997-03-12"), new ArrayList<Developer>());
+
+        developerRepository.save(fernando);
+        
+        Developer alvvaqjim = new Developer("alvvaqjim",
+                passwordEncoder.encode("MhPQpKKb1Ieh"),
+                "sb-uiz525914316@personal.example.com",
+                null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                "Soy un desarrollador de videojuegos", "Unreal Engine, Maya y Photoshop", true, formatter.parse("1997-03-12"), new ArrayList<Developer>());
+
+        developerRepository.save(alvvaqjim);
+        
+        /* Credenciales de los profesores */
+        
+        Developer carlos = new Developer("carlosmuller",
+                passwordEncoder.encode("PEfKVcDp3Dux"),
+                "sb-1yi9g5948590@business.example.com",
+                null,
+                Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                "Description", "Technologies", true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
+
+        Developer bedilia = new Developer("bediliaestrada",
+                passwordEncoder.encode("cfjZx47YknwD"),
+                "sb-043o1g5959188@business.example.com",
+                null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                "Description", "Technologies", true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
+        
+        Developer pablo = new Developer("pablofernandez",
+                passwordEncoder.encode("Csx3fhGyWzjn"),
+                "sb-yuwre5959198@business.example.com",
+                null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                "Description", "Technologies", true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
+        
+        Developer cristina = new Developer("cristinacabanillas",
+                passwordEncoder.encode("3ixfVZizLbpN"),
+                "sb-szvcz5959202@business.example.com@us.es",
+                null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                "Description", "Technologies", true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
+        
+        Developer antonio = new Developer("antonioruiz",
+                passwordEncoder.encode("GmQUfLFTyWsw"),
+                "sb-ckd7u5959194@business.example.com",
+                null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                "Description", "Technologies", true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
+        
+        Developer rafael = new Developer("rafaelfresno",
+                passwordEncoder.encode("mlUXLwFa00cx"),
+                "sb-q27xx5959180@business.example.com",
+                null, Stream.of(UserRole.USER).collect(Collectors.toSet()),
+                "Description", "Technologies", true, formatter.parse("1997-03-06"), new ArrayList<Developer>());
+        
+        developerRepository.save(carlos);
+        developerRepository.save(bedilia);
+        developerRepository.save(pablo);
+        developerRepository.save(cristina);
+        developerRepository.save(antonio);
+        developerRepository.save(rafael);
+
+        /*
+        ================= CATEGORIES =================
+         */
+     
+        List<Category> categories = new ArrayList<Category>();
+        Category actionCategory = new Category("Action");
+        Category adventureCategory = new Category("Adventure");
+        Category casualCategory = new Category("Casual");
+        Category simulatorCategory = new Category("Simulator");
+        Category strategyCategory = new Category("Strategy");
+        Category rolCategory = new Category("Rol");
+        Category singlePlayerCategory = new Category("Single Player");
+        Category freeToPlayCategory = new Category("Free to Play");
+        Category twoDimensionCategory = new Category("2D");
+        Category violentCategory = new Category("Gore");
+        Category sportsCategory = new Category("Sports");
+        Category multiplayerCategory = new Category("Multiplayer");
+        Category puzzlesCategory = new Category("Puzzles");
+        Category racingCategory = new Category("Racing");
+        Category fantasyCategory = new Category("Fantasy");
+        Category threeDimensionCategory = new Category("3D");
+        Category nudityCategory = new Category("Nudity");
+        Category animeCategory = new Category("Anime");
+        Category pixelCategory = new Category("Pixel");
+        Category firstPersonCategory = new Category("First Person");
+        Category funCategory = new Category("Fun");
+        Category scienceFictionCategory = new Category("Science Fiction");
+        Category explorationCategory = new Category("Exploration");
+        Category shooterCategory = new Category("Shooter");
+        Category arcadeCategory = new Category("Arcade");
+        Category scaryCategory = new Category("Scary");
+        Category retroCategory = new Category("Retro");
+        Category survivalCategory = new Category("Survival");
+        Category platformerCategory = new Category("Platformer");
+        Category warCategory = new Category("War");
+        Category hardCategory = new Category("Hard");
+
+        categories.add(actionCategory);
+        categories.add(adventureCategory);
+        categories.add(casualCategory);
+        categories.add(simulatorCategory);
+        categories.add(strategyCategory);
+        categories.add(rolCategory);
+        categories.add(singlePlayerCategory);
+        categories.add(freeToPlayCategory);
+        categories.add(twoDimensionCategory);            
+        categories.add(violentCategory);
+        categories.add(sportsCategory);
+        categories.add(multiplayerCategory);
+        categories.add(puzzlesCategory);
+        categories.add(racingCategory);
+        categories.add(fantasyCategory);
+        categories.add(threeDimensionCategory);
+        categories.add(nudityCategory);
+        categories.add(animeCategory);
+        categories.add(pixelCategory);
+        categories.add(firstPersonCategory);
+        categories.add(funCategory);
+        categories.add(scienceFictionCategory);
+        categories.add(explorationCategory);
+        categories.add(shooterCategory);
+        categories.add(arcadeCategory);
+        categories.add(scaryCategory);
+        categories.add(retroCategory);
+        categories.add(survivalCategory);
+        categories.add(platformerCategory);
+        categories.add(warCategory);
+        categories.add(hardCategory);
+        
+        categoriaRepository.saveAll(categories);
+        
+        /*
+        ================= GAMES =================
+         */
+        
+        Set<Category> iceSecretCategories = new HashSet<Category>();
+        iceSecretCategories.add(funCategory);
+        iceSecretCategories.add(arcadeCategory);
+
+        Date fecha = new Date();
+
+        Game iceSecret = new Game("Ice' secret",
+                "Ice was a necessity but can't be found",
+                "Dual Core and 4GB of Ram",
+                9.99,
+                "1619011155211_blob",
+                true,
+                alvvaqjim,
+                null, 
+                iceSecretCategories, fecha, 12,0.,
+                new ArrayList<String>(),
+                null);
+        gameRepository.save(iceSecret);
+        
+        Set<Category> aLovelyAfternoonCategories = new HashSet<Category>();
+        aLovelyAfternoonCategories.add(funCategory);
+        aLovelyAfternoonCategories.add(arcadeCategory);
+
+        Game aLovelyAfternoon = new Game("A lovely afternoon",
+                "Two friends looking having a blast together",
+                "Dual Core and 4GB of Ram",
+                2.0,
+                "1619011221431_blob",
+                true,
+                alvvaqjim,
+                null, 
+                aLovelyAfternoonCategories, fecha, 18,0.,
+                new ArrayList<String>(),
+                null);
+        gameRepository.save(aLovelyAfternoon);
+
+        /*
+        ================= REVIEWS =================
+        */
+      
+      	Review r1 = new Review("Loved the story but found it hard to play", 4., false, iceSecret, alvaro);
+		      reviewRepository.save(r1);
+      
+        /*
+        ================= OWNED-GAMES =================
+         */
+        
+        List<Game> gamesOfDeveloperAlvaro = new ArrayList<Game>();
+        gamesOfDeveloperAlvaro.add(iceSecret);
+        OwnedGame ownedGame1 = new OwnedGame(alvaro, gamesOfDeveloperAlvaro);
+        
+        ownedGameRepository.save(ownedGame1);
+        
+        /*
+        ================= SUBSCRIPTIONS =================
+         */
+        
+        DeveloperSubscription devSub1 = new DeveloperSubscription(master,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+        developerSubscriptionRepository.save(devSub1);
+                    
+        DeveloperSubscription devSub2 = new DeveloperSubscription(alvaro,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+        developerSubscriptionRepository.save(devSub2);
+        
+        DeveloperSubscription devSub3 = new DeveloperSubscription(fernando,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+        developerSubscriptionRepository.save(devSub3);
+        
+        DeveloperSubscription devSub4 = new DeveloperSubscription(alvvaqjim,LocalDate.of(2000, 01, 01),LocalDate.of(2021, 9, 30));
+        developerSubscriptionRepository.save(devSub4);
+        
+        
+        /* Subscripciones de los profesores */
+        
+        DeveloperSubscription subCarlos = new DeveloperSubscription(carlos,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+        
+        DeveloperSubscription subBedilia = new DeveloperSubscription(bedilia,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+        
+        DeveloperSubscription subPablo = new DeveloperSubscription(pablo,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+        
+        DeveloperSubscription subCristina = new DeveloperSubscription(cristina,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+        
+        DeveloperSubscription subAntonio = new DeveloperSubscription(antonio,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+        
+        DeveloperSubscription subRafael = new DeveloperSubscription(rafael,LocalDate.of(2000, 01, 01),LocalDate.of(2999, 12, 31));
+        
+        developerSubscriptionRepository.save(subCarlos);
+        developerSubscriptionRepository.save(subBedilia);
+        developerSubscriptionRepository.save(subPablo);
+        developerSubscriptionRepository.save(subCristina);
+        developerSubscriptionRepository.save(subAntonio);
+        developerSubscriptionRepository.save(subRafael);
+        
+        /*
+        ================= FOLLOWERS =================
+         */
+        
+        alvaro.getFollowing().add(fernando);
+        alvaro.getFollowing().add(alvvaqjim);
+        developerRepository.save(alvaro);
+        
+        fernando.getFollowing().add(alvvaqjim);
+        developerRepository.save(fernando);
+        
+        /*
+        ================= Spam Words =================
+         */
+        
+        spamWordRepository.save(new SpamWord("anal"));
+        spamWordRepository.save(new SpamWord("anus"));
+        spamWordRepository.save(new SpamWord("arse"));
+        spamWordRepository.save(new SpamWord("ass"));
+        spamWordRepository.save(new SpamWord("ass fuck"));
+        spamWordRepository.save(new SpamWord("ass hole"));
+        spamWordRepository.save(new SpamWord("assfucker"));
+        spamWordRepository.save(new SpamWord("asshole"));
+        spamWordRepository.save(new SpamWord("assshole"));
+        spamWordRepository.save(new SpamWord("bastard"));
+        spamWordRepository.save(new SpamWord("bitch"));
+        spamWordRepository.save(new SpamWord("black cock"));
+        spamWordRepository.save(new SpamWord("bloody hell"));
+        spamWordRepository.save(new SpamWord("boong"));
+        spamWordRepository.save(new SpamWord("cock"));
+        spamWordRepository.save(new SpamWord("cockfucker"));
+        spamWordRepository.save(new SpamWord("cocksuck"));
+        spamWordRepository.save(new SpamWord("cocksucker"));
+        spamWordRepository.save(new SpamWord("coon"));
+        spamWordRepository.save(new SpamWord("coonnass"));
+        spamWordRepository.save(new SpamWord("crap"));
+        spamWordRepository.save(new SpamWord("cunt"));
+        spamWordRepository.save(new SpamWord("cyberfuck"));
+        spamWordRepository.save(new SpamWord("damn"));
+        spamWordRepository.save(new SpamWord("darn"));
+        spamWordRepository.save(new SpamWord("dick"));
+        spamWordRepository.save(new SpamWord("dirty"));
+        spamWordRepository.save(new SpamWord("douche"));
+        spamWordRepository.save(new SpamWord("dummy"));
+        spamWordRepository.save(new SpamWord("erect"));
+        spamWordRepository.save(new SpamWord("erection"));
+        spamWordRepository.save(new SpamWord("erotic"));
+        spamWordRepository.save(new SpamWord("escort"));
+        spamWordRepository.save(new SpamWord("fag"));
+        spamWordRepository.save(new SpamWord("faggot"));
+        spamWordRepository.save(new SpamWord("fuck"));
+        spamWordRepository.save(new SpamWord("fuck off"));
+        spamWordRepository.save(new SpamWord("fuck you"));
+        spamWordRepository.save(new SpamWord("fuckass"));
+        spamWordRepository.save(new SpamWord("fuckhole"));
+        spamWordRepository.save(new SpamWord("god damn"));
+        spamWordRepository.save(new SpamWord("gook"));
+        spamWordRepository.save(new SpamWord("god damn"));
+        spamWordRepository.save(new SpamWord("hard core"));
+        spamWordRepository.save(new SpamWord("hardcore"));
+        spamWordRepository.save(new SpamWord("homoerotic"));
+        spamWordRepository.save(new SpamWord("hore"));
+        spamWordRepository.save(new SpamWord("lesbian"));
+        spamWordRepository.save(new SpamWord("lesbians"));
+        spamWordRepository.save(new SpamWord("mother fucker"));
+        spamWordRepository.save(new SpamWord("motherfuck"));
+        spamWordRepository.save(new SpamWord("motherfucker"));
+        spamWordRepository.save(new SpamWord("negro"));
+        spamWordRepository.save(new SpamWord("nigger"));
+        spamWordRepository.save(new SpamWord("niger"));
+        spamWordRepository.save(new SpamWord("orgasim"));
+        spamWordRepository.save(new SpamWord("orgasm"));
+        spamWordRepository.save(new SpamWord("orgasm"));
+        spamWordRepository.save(new SpamWord("penis"));
+        spamWordRepository.save(new SpamWord("penisfucker"));
+        spamWordRepository.save(new SpamWord("piss"));
+        spamWordRepository.save(new SpamWord("piss off"));
+        spamWordRepository.save(new SpamWord("porn"));
+        spamWordRepository.save(new SpamWord("porno"));
+        spamWordRepository.save(new SpamWord("pornography"));
+        spamWordRepository.save(new SpamWord("pussy"));
+        spamWordRepository.save(new SpamWord("retard"));
+        spamWordRepository.save(new SpamWord("sadist"));
+        spamWordRepository.save(new SpamWord("sex"));
+        spamWordRepository.save(new SpamWord("sexy"));
+        spamWordRepository.save(new SpamWord("shit"));
+        spamWordRepository.save(new SpamWord("slut"));
+        spamWordRepository.save(new SpamWord("son of a bitch"));
+        spamWordRepository.save(new SpamWord("suck"));
+        spamWordRepository.save(new SpamWord("tits"));
+        spamWordRepository.save(new SpamWord("viagra"));
+        spamWordRepository.save(new SpamWord("whore"));
+        spamWordRepository.save(new SpamWord("xxx"));
         };
 
     }
