@@ -51,7 +51,7 @@ public class PaypalController {
 	@Autowired
 	private DeveloperSubscriptionService devSubscrService;
 
-	public static final String MAIN_PAGE_DEPLOYED_URL = "https://level4-indvelopers.herokuapp.com";
+	public static final String MAIN_PAGE_DEPLOYED_URL = "https://continuous-indvelopers.herokuapp.com";
 
 //	public static final String MAIN_PAGE_DEPLOYED_URL = "http://localhost:3000";
 
