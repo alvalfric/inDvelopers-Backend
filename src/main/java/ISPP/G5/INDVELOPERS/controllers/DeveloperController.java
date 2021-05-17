@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ISPP.G5.INDVELOPERS.dtos.GetDeveloperDTO;
 import ISPP.G5.INDVELOPERS.mappers.DeveloperDTOConverter;
 import ISPP.G5.INDVELOPERS.models.Developer;
+import ISPP.G5.INDVELOPERS.models.LoginData;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.services.DeveloperService;
 
@@ -51,8 +52,8 @@ public class DeveloperController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
-		return ResponseEntity.status(HttpStatus.OK).body(developerService.login(username, password));
+	public ResponseEntity<String> login(@RequestBody LoginData loginData) {
+		return ResponseEntity.status(HttpStatus.OK).body(developerService.login(loginData.getUsername(), loginData.getPassword()));
 	}
 
 	@GetMapping

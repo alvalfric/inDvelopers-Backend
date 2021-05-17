@@ -61,10 +61,10 @@ public class PaypalController {
 
 	@Autowired
 	private DeveloperSubscriptionService devSubscrService;
-  
-	public static final String MAIN_PAGE_DEPLOYED_URL = "https://continuous-indvelopers.herokuapp.com";
 
-//	public static final String MAIN_PAGE_DEPLOYED_URL = "http://localhost:3000";
+//	public static final String MAIN_PAGE_DEPLOYED_URL = "https://level4-indvelopers.herokuapp.com";
+
+	public static final String MAIN_PAGE_DEPLOYED_URL = "http://localhost:3000";
 
 	public static final String SUCCESS_URL = "/success";
 	public static final String CANCEL_URL = "/cancel";
@@ -75,12 +75,11 @@ public class PaypalController {
 			Game game = gameService.findById(gameId);
 			String email = game.getCreator().getEmail();
 			Order order;
-			if(game.getDiscount()==0.) {
-				order = new Order(game.getPrice(), "EUR", "Paypal", "Sale", "This is a pay for a game.", email,
-						gameId);
-			}else {
-				order = new Order(Math.ceil(game.getPrice()-game.getPrice()*game.getDiscount()), "EUR", "Paypal", "Sale", "This is a pay for a game.", email,
-						gameId);
+			if (game.getDiscount() == 0.) {
+				order = new Order(game.getPrice(), "EUR", "Paypal", "Sale", "This is a pay for a game.", email, gameId);
+			} else {
+				order = new Order(Math.ceil(game.getPrice() - game.getPrice() * game.getDiscount()), "EUR", "Paypal",
+						"Sale", "This is a pay for a game.", email, gameId);
 			}
 			this.orderService.save(order);
 			return ResponseEntity.ok(order);
@@ -144,7 +143,8 @@ public class PaypalController {
 		try {
 			Developer developer = developerService.findCurrentDeveloper();
 			// considerando que la suscripcion son 50EUR
-			Order order = new Order(7.99, "EUR", "Paypal", "Sale", "This is a pay for a game.", developer.getEmail(),"");
+			Order order = new Order(7.99, "EUR", "Paypal", "Sale", "This is a pay for a game.", developer.getEmail(),
+					"");
 			this.orderService.save(order);
 			Payment payment = service.createPaymentToUs(order.getPrice(), order.getCurrency(), order.getMethod(),
 					order.getIntent(), order.getDescription(), MAIN_PAGE_DEPLOYED_URL + CANCEL_URL,

@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.assertj.core.util.Lists;
@@ -29,6 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ISPP.G5.INDVELOPERS.dtos.GetDeveloperDTO;
 import ISPP.G5.INDVELOPERS.models.Developer;
 import ISPP.G5.INDVELOPERS.models.Incident;
 import ISPP.G5.INDVELOPERS.models.UserRole;
@@ -92,6 +94,7 @@ class IncidentControllerTests {
 
 		mockMvc.perform(get("/incidents/" + "333")).andExpect(status().isOk()).andExpect(jsonPath("$.cause").value(incident1.getCause()));
 	}
+	
 
 	@Test
 	@DisplayName("Create incident")
@@ -104,5 +107,31 @@ class IncidentControllerTests {
 		ObjectMapper om = new ObjectMapper();
 		String json = om.writeValueAsString(incident);
 		mockMvc.perform(post("/incidents/add").contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().isCreated());
+	}
+	
+	@Test
+	@DisplayName("Bad Requests")
+	@WithMockUser(value = "spring")
+	void badRequestsTest() throws Exception {
+		
+		ObjectMapper om = new ObjectMapper();
+		
+		when(developerService.findByUsername(any(String.class))).thenThrow(IllegalArgumentException.class);
+		when(incidentService.deleteIncident("333")).thenThrow(IllegalArgumentException.class);
+		when(incidentService.findAll()).thenThrow(IllegalArgumentException.class);
+		when(incidentService.findById("id1")).thenThrow(IllegalArgumentException.class);
+		when(incidentService.findNotSolved()).thenThrow(IllegalArgumentException.class);
+		when(incidentService.setIncidentAsSolved("333")).thenThrow(IllegalArgumentException.class);
+		
+		String json = om.writeValueAsString(incident1);
+		
+		mockMvc.perform(post("/incidents/add").contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().isBadRequest());
+		mockMvc.perform(get("/incidents/findall")).andExpect(status().isBadRequest());
+		mockMvc.perform(get("/incidents/" + "id1")).andExpect(status().isBadRequest());
+		mockMvc.perform(get("/incidents/notSolved")).andExpect(status().isBadRequest());
+		
+		
+		
+		
 	}
 }

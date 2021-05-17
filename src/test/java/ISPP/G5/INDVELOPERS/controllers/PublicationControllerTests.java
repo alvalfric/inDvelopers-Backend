@@ -158,4 +158,41 @@ public class PublicationControllerTests {
 		String requestJson = ow.writeValueAsString(o);
 		return requestJson;
 	}
+	
+//	@Test
+//	@DisplayName("Edit publication test")
+//	@WithMockUser(value = "spring")
+//	void editPublications() throws Exception {
+//		when(this.publicationService.findById("TEST_PUBLICATION1_ID")).thenReturn(publication1);
+//		when(this.publicationService.updatePublication(any())).thenReturn("publication1");
+//		publication1.setUsername("publicationNumber1");
+//		
+//		mockMvc.perform(put("/publications/edit/" + "TEST_PUBLICATION1_ID")).andExpect(status().isOk());
+//	}
+	
+	@Test
+	@DisplayName("Bad Requests")
+	@WithMockUser(value = "spring")
+	void badRequestsTest() throws Exception {
+		
+		ObjectMapper om = new ObjectMapper();
+		
+		
+		when(publicationService.findAll()).thenThrow(IllegalArgumentException.class);
+		when(publicationService.findById("1")).thenThrow(IllegalArgumentException.class);
+		when(publicationService.addPublication(any(Publication.class), any(Developer.class))).thenThrow(IllegalArgumentException.class);
+		when(publicationService.deletePublication(any(Publication.class), any(Developer.class))).thenThrow(IllegalArgumentException.class);
+		when(publicationService.updatePublication(any(Publication.class))).thenThrow(IllegalArgumentException.class);
+		
+		
+		
+		mockMvc.perform(get("/publications/findAll")).andExpect(status().isBadRequest());
+		mockMvc.perform(get("/publications/findById/" + "1")).andExpect(status().isBadRequest());
+		mockMvc.perform(post("/publications/add/")).andExpect(status().isBadRequest());
+		mockMvc.perform(delete("/publications/delete/" + "1")).andExpect(status().isBadRequest());
+		mockMvc.perform(put("/publications/edit/" + "1")).andExpect(status().isBadRequest());
+		
+	}
+	
 }
+		

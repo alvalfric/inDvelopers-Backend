@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ISPP.G5.INDVELOPERS.models.Developer;
+import ISPP.G5.INDVELOPERS.models.LoginData;
 import ISPP.G5.INDVELOPERS.models.UserRole;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
 
@@ -88,11 +89,15 @@ class DeveloperControllerIntegrationTests {
 	@Test
 	@DisplayName("Login as developer")
 	void loginDeveloper() throws Exception {
-		Developer developer3 = new Developer("developer3", "password", "email3@gmail.com", null, setRole1, null, null, null, null, new ArrayList<Developer>());
-		repo.save(developer3);
-		mockMvc.perform(post("/developers/login?username=dummyDeveloper&password=dummyDeveloper")).andExpect(status().isOk());
-		repo.delete(developer1);
-
+		ObjectMapper om = new ObjectMapper();
+		String json = om.writeValueAsString(developer2);
+		mockMvc.perform(post("/developers/sign-up").contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().isCreated());
+		
+		LoginData data = new LoginData("developer2", "password");
+		om = new ObjectMapper();
+		json = om.writeValueAsString(data);
+		
+		mockMvc.perform(post("/developers/login").contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().isOk());
 	}
 
 	@Test
