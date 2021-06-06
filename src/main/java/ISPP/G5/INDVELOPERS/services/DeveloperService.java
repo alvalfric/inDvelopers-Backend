@@ -19,9 +19,23 @@ import org.springframework.stereotype.Service;
 import ISPP.G5.INDVELOPERS.Security.JwtTokenProvider;
 import ISPP.G5.INDVELOPERS.dtos.GetDeveloperDTO;
 import ISPP.G5.INDVELOPERS.mappers.DeveloperDTOConverter;
+import ISPP.G5.INDVELOPERS.models.Commentary;
 import ISPP.G5.INDVELOPERS.models.Developer;
+import ISPP.G5.INDVELOPERS.models.DeveloperSubscription;
+import ISPP.G5.INDVELOPERS.models.Forum;
+import ISPP.G5.INDVELOPERS.models.Game;
+import ISPP.G5.INDVELOPERS.models.OwnedGame;
+import ISPP.G5.INDVELOPERS.models.Publication;
+import ISPP.G5.INDVELOPERS.models.Review;
 import ISPP.G5.INDVELOPERS.models.UserRole;
+import ISPP.G5.INDVELOPERS.repositories.CommentaryRepository;
 import ISPP.G5.INDVELOPERS.repositories.DeveloperRepository;
+import ISPP.G5.INDVELOPERS.repositories.DeveloperSubscriptionRepository;
+import ISPP.G5.INDVELOPERS.repositories.ForumRepository;
+import ISPP.G5.INDVELOPERS.repositories.GameRepository;
+import ISPP.G5.INDVELOPERS.repositories.OwnedGameRepository;
+import ISPP.G5.INDVELOPERS.repositories.PublicationRepository;
+import ISPP.G5.INDVELOPERS.repositories.ReviewRepository;
 import io.jsonwebtoken.lang.Assert;
 import lombok.AllArgsConstructor;
 
@@ -32,6 +46,13 @@ public class DeveloperService {
 	private JwtTokenProvider jwtTokenProvider;
 	private AuthenticationManager authenticationManager;
 	private DeveloperRepository developerRepository;
+	private GameRepository gameRepository;
+	private CommentaryRepository commentaryRepository;
+	private ReviewRepository reviewRepository;
+	private ForumRepository forumRepository;
+	private PublicationRepository publicationRepository;
+	private DeveloperSubscriptionRepository subscriptionRepository;
+	private OwnedGameRepository ownedRepository;
 
 	public List<Developer> getAll() {
 		return this.developerRepository.findAll();
@@ -131,6 +152,56 @@ public class DeveloperService {
 			if (!admin.getRoles().contains(UserRole.ADMIN)) {
 				return "Only administrators can remove developers";
 			} else {
+				List<Commentary> commentaries=commentaryRepository.findByDeveloper(toDeleteDeveloperId);
+				if(!commentaries.isEmpty()) {
+				for(Commentary c: commentaries) {
+					commentaryRepository.delete(c);
+				}
+				}
+				List<Review> reviews=reviewRepository.findByMyReviews(toDeleteDeveloperId);
+				if(!reviews.isEmpty()) {
+				for(Review r: reviews) {
+					reviewRepository.delete(r);
+				}
+				}
+				List<Publication> publications=publicationRepository.findByDeveloper(toDeleteDeveloperId);
+				if(!publications.isEmpty()) {
+				for(Publication p: publications) {
+					publicationRepository.delete(p);
+				}
+				}
+				List<Forum> forums=forumRepository.findByDeveloper(toDeleteDeveloperId);
+				if(!forums.isEmpty()) {
+				for(Forum f: forums) {
+					forumRepository.delete(f);
+				}
+				}
+				List<Game> games=gameRepository.findByDeveloper(toDeleteDeveloperId);
+				List<OwnedGame> ownedGames=ownedRepository.findAll();
+				if(!ownedGames.isEmpty()) {
+					for(OwnedGame o: ownedGames) {
+						for(Game g1: games) {
+							if(o.getOwnedGames().contains(g1)) {
+								o.getOwnedGames().remove(g1);
+								ownedRepository.save(o);
+							}
+						}
+					}
+				}
+				if(!games.isEmpty()) {
+				for(Game g:games) {
+					gameRepository.delete(g);
+				}
+				}
+				List<Developer> developers=developerRepository.findAll();
+				if(!developers.isEmpty()) {
+					for(Developer p : developers){
+						if(p.getFollowing().contains(toDeleteDeveloper)) {
+							p.getFollowing().remove(toDeleteDeveloper);
+							developerRepository.save(p);
+						}
+					}
+				}
 				String result = "Developer with username " + this.findById(toDeleteDeveloperId).getUsername()
 						+ " has been removed sucessfully";
 				this.developerRepository.deleteById(toDeleteDeveloperId);

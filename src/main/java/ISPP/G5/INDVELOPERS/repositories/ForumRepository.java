@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import ISPP.G5.INDVELOPERS.models.Commentary;
 import ISPP.G5.INDVELOPERS.models.Forum;
 
 @Repository
@@ -16,5 +17,8 @@ public interface ForumRepository extends MongoRepository<Forum, String>{
 	
 	@Query("{'title': {'$regex': ?0, '$options': 'i'}}")
 	List<Forum> findByTitle(String title);
+	
+	@Query("{ 'developer.id' : ?0 }")
+	List<Forum> findByDeveloper(String developerId);
 
 }

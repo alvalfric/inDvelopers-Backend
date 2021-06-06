@@ -21,6 +21,6 @@ public interface PublicationRepository extends MongoRepository<Publication, Stri
 	
 	Optional<Publication> findById(String id) throws DataAccessException;
 	
-	@Query("{ 'creator.id' : ?0 }")
+	@Query("{ 'developer.id' : ?0 }")
 	List<Publication> findByDeveloper(String developerId);
 }
