@@ -42,7 +42,7 @@ class DeveloperServiceTests {
 	
 	DeveloperRepository repo = mock(DeveloperRepository.class);
 
-	DeveloperService developerService = new DeveloperService(null, null, repo);
+	DeveloperService developerService = new DeveloperService(null, null, repo, null, null, null, null, null, null, null);
 
 	Developer d1;
 	Developer d2;
